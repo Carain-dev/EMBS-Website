@@ -12,4 +12,7 @@ const achievementSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+achievementSchema.index({ featured: 1, date: -1 });
+achievementSchema.index({ category: 1 });
+
 module.exports = mongoose.model('Achievement', achievementSchema);

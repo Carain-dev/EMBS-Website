@@ -4,11 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gallery – IEEE EMBS</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="description" content="Photographs from events, workshops, competitions and activities hosted by the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
+  <meta name="author" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
+  <meta name="theme-color" content="#0a0e1a" />
+
+  <!-- Open Graph / link previews. Set og:url and og:image to the full
+       https://<your-domain>/... form once the site has its final URL. -->
+  <meta property="og:site_name" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
+  <meta property="og:title" content="Gallery – IEEE EMBS KPRIET" />
+  <meta property="og:description" content="Photographs from events, workshops, competitions and activities hosted by the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="logo-cropped.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Gallery – IEEE EMBS KPRIET" />
+  <meta name="twitter:description" content="Photographs from events, workshops, competitions and activities hosted by the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="navbar.css" />
-  <script>window.EMBS_API_BASE = 'https://embs-website.onrender.com/api';</script>
+  <script src="config.js"></script>
   <style>
     /* ── Hero / Featured Section ── */
     #gallery-featured {
@@ -540,8 +558,15 @@
       .gallery-tl-item { grid-template-columns: 60px 16px 1fr; }
     }
   </style>
+  <style>
+    /* Gallery grid sits on a near-white section, so the shared empty state
+       needs dark text to stay readable. */
+    .embs-empty { color: #4a4062; }
+  </style>
 </head>
 <body>
+<a class="skip-link" href="#gallery-main">Skip to main content</a>
+
 
 <!-- ═══════════════════════════════════════
      NAVBAR
@@ -626,7 +651,7 @@
 <!-- ═══════════════════════════════════════
      MAIN CONTENT
 ════════════════════════════════════════ -->
-<main id="gallery-main">
+<main id="gallery-main" tabindex="-1">
 
 <section id="gallery-featured">
   <div class="gallery-featured-inner">
@@ -666,10 +691,6 @@
             <span class="gallery-stat-number" contenteditable="true">250+</span>
             <span class="gallery-stat-label">Participants</span>
           </div>
-        </div>
-        <div class="gallery-card-actions">
-          <a href="#" class="gallery-btn gallery-btn--primary">View Album &rarr;</a>
-          <a href="#" class="gallery-btn gallery-btn--ghost">Download Photos</a>
         </div>
       </div>
     </div>
@@ -861,7 +882,7 @@
     <p class="gallery-cta-desc">Be part of the IEEE EMBS story. Join us at our next event, contribute to our research, and help document the innovations that shape the future of biomedical engineering.</p>
     <div class="gallery-cta-actions">
       <a href="events.html" class="gallery-btn gallery-btn--primary">View Events</a>
-      <a href="#" class="gallery-btn gallery-btn--ghost">Become a Volunteer</a>
+      <a href="contact.html" class="gallery-btn gallery-btn--ghost">Become a Volunteer</a>
     </div>
   </div>
 </section>
@@ -877,7 +898,7 @@
 
       <div class="footer-col footer-brand">
         <div class="footer-brand-top">
-          <div class="footer-logo-placeholder"></div>
+          <img src="embs-logo.png" alt="" class="footer-logo-img" width="38" height="38" />
           <span class="footer-brand-name">IEEE EMBS Chapter</span>
         </div>
         <p class="footer-desc">Advancing innovation at the intersection of engineering and medicine. A student-driven community committed to biomedical research, technology, and impact.</p>
@@ -948,6 +969,7 @@
 <script src="navbar.js" defer></script>
 <script src="announceBar.js" defer></script>
 <script src="newsletter.js" defer></script>
+<script src="gallery-public.js" defer></script>
 
 </body>
 </html>

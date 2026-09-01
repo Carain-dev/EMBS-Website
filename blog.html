@@ -4,14 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blog &amp; Articles – IEEE EMBS</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="description" content="Technical articles and write-ups on biomedical engineering, signal processing and medical imaging, written by students of the IEEE EMBS Chapter at KPRIET." />
+  <meta name="author" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
+  <meta name="theme-color" content="#0a0e1a" />
+
+  <!-- Open Graph / link previews. Set og:url and og:image to the full
+       https://<your-domain>/... form once the site has its final URL. -->
+  <meta property="og:site_name" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
+  <meta property="og:title" content="Blog &amp; Articles – IEEE EMBS KPRIET" />
+  <meta property="og:description" content="Technical articles and write-ups on biomedical engineering, signal processing and medical imaging, written by students of the IEEE EMBS Chapter at KPRIET." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="logo-cropped.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Blog &amp; Articles – IEEE EMBS KPRIET" />
+  <meta name="twitter:description" content="Technical articles and write-ups on biomedical engineering, signal processing and medical imaging, written by students of the IEEE EMBS Chapter at KPRIET." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="navbar.css" />
-  <script>window.EMBS_API_BASE = 'https://embs-website.onrender.com/api';</script>
+  <script src="config.js"></script>
   <link rel="stylesheet" href="blog.css" />
 </head>
 <body>
+<a class="skip-link" href="#blog-main">Skip to main content</a>
+
 
 <!-- ═══════════════════════════════════════
      NAVBAR
@@ -96,7 +116,7 @@
 <!-- ═══════════════════════════════════════
      MAIN CONTENT
 ════════════════════════════════════════ -->
-<main id="blog-main">
+<main id="blog-main" tabindex="-1">
 
 <!-- ═══════════════════════════════════════
      HERO SECTION
@@ -112,7 +132,7 @@
 
     <div class="blog-hero-right">
       <!-- Edit src to change the hero image -->
-      <img src="bg image embs/network.jpeg" alt="IEEE EMBS Blog and Articles" class="blog-hero-img" />
+      <img src="bg-image-embs/network.jpeg" alt="IEEE EMBS Blog and Articles" class="blog-hero-img" />
     </div>
 
   </div>
@@ -156,7 +176,7 @@
       <article class="blog-card" data-category="biomedical-trends">
         <div class="blog-card-img-wrap">
           <!-- Replace src with article image -->
-          <img src="bg image embs/bluebg.jpeg" alt="How AI is Revolutionising Early Cancer Detection" class="blog-card-img" />
+          <img src="bg-image-embs/bluebg.jpeg" alt="How AI is Revolutionising Early Cancer Detection" class="blog-card-img" />
           <span class="blog-card-cat">Biomedical Trend</span>
         </div>
         <div class="blog-card-body">
@@ -179,7 +199,7 @@
       <!-- Article 2 -->
       <article class="blog-card" data-category="tutorials">
         <div class="blog-card-img-wrap">
-          <img src="bg image embs/bluedns.jpeg" alt="ECG Signal Processing in Python" class="blog-card-img" />
+          <img src="bg-image-embs/bluedns.jpeg" alt="ECG Signal Processing in Python" class="blog-card-img" />
           <span class="blog-card-cat">Tutorial</span>
         </div>
         <div class="blog-card-body">
@@ -202,7 +222,7 @@
       <!-- Article 3 -->
       <article class="blog-card" data-category="event-reports">
         <div class="blog-card-img-wrap">
-          <img src="bg image embs/glassdna.jpeg" alt="BioMed Symposium 2024" class="blog-card-img" />
+          <img src="bg-image-embs/glassdna.jpeg" alt="BioMed Symposium 2024" class="blog-card-img" />
           <span class="blog-card-cat">Event Report</span>
         </div>
         <div class="blog-card-body">
@@ -225,7 +245,7 @@
       <!-- Article 4 -->
       <article class="blog-card" data-category="student-articles">
         <div class="blog-card-img-wrap">
-          <img src="bg image embs/heart.jpeg" alt="Building a Low-Cost Prosthetic Hand with Arduino" class="blog-card-img" />
+          <img src="bg-image-embs/heart.jpeg" alt="Building a Low-Cost Prosthetic Hand with Arduino" class="blog-card-img" />
           <span class="blog-card-cat">Student Article</span>
         </div>
         <div class="blog-card-body">
@@ -248,7 +268,7 @@
       <!-- Article 5 -->
       <article class="blog-card" data-category="research-summaries">
         <div class="blog-card-img-wrap">
-          <img src="bg image embs/network.jpeg" alt="Latest Advances in Brain–Computer Interfaces" class="blog-card-img" />
+          <img src="bg-image-embs/network.jpeg" alt="Latest Advances in Brain–Computer Interfaces" class="blog-card-img" />
           <span class="blog-card-cat">Research Summary</span>
         </div>
         <div class="blog-card-body">
@@ -271,7 +291,7 @@
       <!-- Article 6 -->
       <article class="blog-card" data-category="ai-healthcare">
         <div class="blog-card-img-wrap">
-          <img src="bg image embs/bluebg.jpeg" alt="Machine Learning Applications in Medical Imaging" class="blog-card-img" />
+          <img src="bg-image-embs/bluebg.jpeg" alt="Machine Learning Applications in Medical Imaging" class="blog-card-img" />
           <span class="blog-card-cat">AI in Healthcare</span>
         </div>
         <div class="blog-card-body">
@@ -306,7 +326,7 @@
 
       <div class="footer-col footer-brand">
         <div class="footer-brand-top">
-          <div class="footer-logo-placeholder"></div>
+          <img src="embs-logo.png" alt="" class="footer-logo-img" width="38" height="38" />
           <span class="footer-brand-name">IEEE EMBS Chapter</span>
         </div>
         <p class="footer-desc">Advancing innovation at the intersection of engineering and medicine. A student-driven community committed to biomedical research, technology, and impact.</p>

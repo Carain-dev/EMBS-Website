@@ -1,0 +1,7 @@
+# The Express API is deployed separately on Render — it must not be uploaded
+# to Vercel. Without this, Vercel would also upload backend/node_modules.
+backend/
+
+node_modules/
+.git/
+_redirects

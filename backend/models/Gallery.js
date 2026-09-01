@@ -11,4 +11,7 @@ const gallerySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+gallerySchema.index({ order: 1, createdAt: -1 });
+gallerySchema.index({ event: 1 });
+
 module.exports = mongoose.model('Gallery', gallerySchema);

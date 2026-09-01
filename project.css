@@ -1,0 +1,245 @@
+/* ════════════════════════════════════════════════
+   project.css — single project detail page
+   Extends the shared tokens from navbar.css.
+   ════════════════════════════════════════════════ */
+
+#project-main {
+  /* Clears the fixed navbar (68px) plus the announcement bar (44px). */
+  padding-top: 112px;
+  min-height: 70vh;
+}
+
+.pd-shell {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+/* ── Back link ─────────────────────────────── */
+.pd-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  padding: 0.5rem 1rem 0.5rem 0.75rem;
+  margin-bottom: 1.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 169, 157, 0.28);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(0, 169, 157, 0.9);
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.pd-back:hover {
+  background: rgba(0, 169, 157, 0.1);
+  color: #00A99D;
+}
+
+.pd-back:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+/* ── Header ────────────────────────────────── */
+.pd-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.pd-chip {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(107, 45, 139, 0.35);
+  background: rgba(107, 45, 139, 0.15);
+  color: rgba(220, 205, 245, 0.9);
+}
+
+.pd-chip--status { border-color: rgba(0, 169, 157, 0.35); background: rgba(0, 169, 157, 0.12); color: rgba(190, 240, 235, 0.95); }
+
+.pd-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #e8eaf6;
+  margin-bottom: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.pd-hero-img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid rgba(107, 45, 139, 0.25);
+  margin: 1.5rem 0 2rem;
+  background: rgba(107, 45, 139, 0.08);
+}
+
+/* ── Body ──────────────────────────────────── */
+.pd-section-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #e8eaf6;
+  margin-bottom: 0.6rem;
+}
+
+.pd-desc {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.75;
+  color: rgba(210, 218, 245, 0.8);
+  margin-bottom: 2rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.pd-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.pd-fact {
+  padding: 1rem 1.15rem;
+  border-radius: 12px;
+  border: 1px solid rgba(107, 45, 139, 0.2);
+  background: rgba(12, 18, 38, 0.55);
+}
+
+.pd-fact-label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(0, 169, 157, 0.8);
+  margin-bottom: 0.35rem;
+}
+
+.pd-fact-value {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: rgba(225, 230, 250, 0.9);
+  overflow-wrap: anywhere;
+}
+
+.pd-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.pd-tag {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 169, 157, 0.22);
+  color: rgba(190, 225, 225, 0.85);
+}
+
+/* ── Actions ───────────────────────────────── */
+.pd-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.pd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 46px;
+  padding: 0.65rem 1.4rem;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: linear-gradient(90deg, #6B2D8B, #00A99D);
+  color: #fff;
+  box-shadow: 0 3px 14px rgba(107, 45, 139, 0.28);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pd-btn--ghost {
+  background: none;
+  border: 1px solid rgba(107, 45, 139, 0.4);
+  color: rgba(220, 210, 245, 0.9);
+  box-shadow: none;
+}
+
+.pd-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(107, 45, 139, 0.35); }
+.pd-btn:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+/* ── Loading / empty / error ───────────────── */
+.pd-state {
+  padding: 4rem 1.5rem;
+  text-align: center;
+  font-family: var(--font-body);
+  color: rgba(200, 210, 255, 0.6);
+}
+
+.pd-state-title {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  color: #e8eaf6;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 520px) {
+  .pd-shell { padding: 1.75rem 1.15rem 3rem; }
+  .pd-actions .pd-btn { width: 100%; }
+}
+
+/* ── Article detail (post.html) ───────────────── */
+.post-byline {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: rgba(200, 210, 240, 0.7);
+  margin-bottom: 0.5rem;
+}
+
+.post-byline strong { color: rgba(230, 235, 255, 0.95); font-weight: 600; }
+
+.post-lede {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: rgba(220, 228, 250, 0.9);
+  padding-left: 1rem;
+  border-left: 3px solid rgba(0, 169, 157, 0.5);
+  margin-bottom: 2rem;
+}
+
+.post-body {
+  font-family: var(--font-body);
+  font-size: 1.02rem;
+  line-height: 1.85;
+  color: rgba(210, 218, 245, 0.82);
+}
+
+/* Comfortable reading measure: long lines are hard to track back from. */
+.post-body p {
+  margin-bottom: 1.35rem;
+  max-width: 68ch;
+  overflow-wrap: anywhere;
+}

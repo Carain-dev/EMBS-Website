@@ -1,14 +1,15 @@
 const asyncHandler = require('express-async-handler');
 const mongoose     = require('mongoose');
 const Blog         = require('../models/Blog');
+const { paginate } = require('../utils/paginate');
 const { sendResponse, sendError } = require('../utils/sendResponse');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 exports.getAll = asyncHandler(async (req, res) => {
   const filter = req.query.drafts === 'true' ? {} : { published: true };
-  const posts = await Blog.find(filter).sort({ publishedAt: -1 }).populate('author', 'name');
-  sendResponse(res, 200, posts);
+  const { rows, meta } = await paginate(Blog, filter, { publishedAt: -1 }, req.query, { path: 'author', select: 'name' });
+  sendResponse(res, 200, rows, 'Success', meta);
 });
 
 exports.getOne = asyncHandler(async (req, res) => {

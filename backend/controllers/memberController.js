@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const mongoose     = require('mongoose');
 const Member       = require('../models/Member');
+const { paginate } = require('../utils/paginate');
 const { sendResponse, sendError } = require('../utils/sendResponse');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
@@ -8,8 +9,8 @@ const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 /* ── Get All Members ─────────────────────────── */
 exports.getAll = asyncHandler(async (req, res) => {
   const filter = req.query.all === 'true' ? {} : { active: true };
-  const members = await Member.find(filter).sort({ order: 1 });
-  sendResponse(res, 200, members);
+  const { rows, meta } = await paginate(Member, filter, { order: 1 }, req.query);
+  sendResponse(res, 200, rows, 'Success', meta);
 });
 
 /* ── Get Single Member ───────────────────────── */

@@ -4,14 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Podcast – IEEE EMBS</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="description" content="The EMBS Podcast: conversations with researchers, clinicians and alumni about biomedical engineering research, careers and the path from lab to bedside." />
+  <meta name="author" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
+  <meta name="theme-color" content="#0a0e1a" />
+
+  <!-- Open Graph / link previews. Set og:url and og:image to the full
+       https://<your-domain>/... form once the site has its final URL. -->
+  <meta property="og:site_name" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
+  <meta property="og:title" content="EMBS Podcast – IEEE EMBS KPRIET" />
+  <meta property="og:description" content="The EMBS Podcast: conversations with researchers, clinicians and alumni about biomedical engineering research, careers and the path from lab to bedside." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="logo-cropped.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="EMBS Podcast – IEEE EMBS KPRIET" />
+  <meta name="twitter:description" content="The EMBS Podcast: conversations with researchers, clinicians and alumni about biomedical engineering research, careers and the path from lab to bedside." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="navbar.css" />
-  <script>window.EMBS_API_BASE = 'https://embs-website.onrender.com/api';</script>
+  <script src="config.js"></script>
   <link rel="stylesheet" href="podcast.css" />
 </head>
 <body>
+<a class="skip-link" href="#podcast-main">Skip to main content</a>
+
 
 <!-- ═══════════════════════════════════════
      NAVBAR
@@ -96,7 +116,7 @@
 <!-- ═══════════════════════════════════════
      MAIN CONTENT
 ════════════════════════════════════════ -->
-<main id="podcast-main">
+<main id="podcast-main" tabindex="-1">
 
   <!-- ═══════════════════════════════════════
        SECTION 1 — HERO
@@ -120,7 +140,7 @@
         <p class="pod-hero-desc">Deep-dive discussions with researchers, clinicians, and engineers shaping the future of healthcare. New episodes every fortnight — free on all major platforms.</p>
 
         <div class="pod-hero-btns">
-          <a href="#" class="pod-btn-primary" aria-label="Listen on Spotify">
+          <a href="#" data-social="spotify" class="pod-btn-primary" aria-label="Listen on Spotify">
             <!-- Spotify icon -->
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.076-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 0 1-.973-.519.781.781 0 0 1 .52-.973c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
             Listen on Spotify
@@ -214,7 +234,6 @@
           <span class="pod-particle pod-particle--4"></span>
 
         </div>
-        <!-- END illustration — replace above div contents with <img src="your-image.png" alt="..."> -->
 
       </div>
 
@@ -248,7 +267,7 @@
             <!-- Replace src with episode cover image -->
             <div class="pod-feat-thumb-wrap">
               <img
-                src="bg image embs/glassdna.jpeg"
+                src="bg-image-embs/glassdna.jpeg"
                 alt="Episode cover — AI in Healthcare: From Research to Real Hospitals"
                 class="pod-feat-thumb-img"
               />
@@ -396,7 +415,7 @@
         <article class="pod-ep-card">
           <div class="pod-ep-thumb-wrap">
             <!-- Replace src to change episode thumbnail -->
-            <img src="bg image embs/network.jpeg" alt="Wearable Health Monitoring episode thumbnail" class="pod-ep-thumb" />
+            <img src="bg-image-embs/network.jpeg" alt="Wearable Health Monitoring episode thumbnail" class="pod-ep-thumb" />
             <span class="pod-ep-num">EP. 06</span>
             <span class="pod-ep-badge">Wearables</span>
           </div>
@@ -436,7 +455,7 @@
         <!-- ── Card 2 — EP 05 ── -->
         <article class="pod-ep-card">
           <div class="pod-ep-thumb-wrap">
-            <img src="bg image embs/bluedns.jpeg" alt="AI in Medical Imaging episode thumbnail" class="pod-ep-thumb" />
+            <img src="bg-image-embs/bluedns.jpeg" alt="AI in Medical Imaging episode thumbnail" class="pod-ep-thumb" />
             <span class="pod-ep-num">EP. 05</span>
             <span class="pod-ep-badge">AI</span>
           </div>
@@ -476,7 +495,7 @@
         <!-- ── Card 3 — EP 04 ── -->
         <article class="pod-ep-card">
           <div class="pod-ep-thumb-wrap">
-            <img src="bg image embs/heart.jpeg" alt="Future of Biomedical Devices episode thumbnail" class="pod-ep-thumb" />
+            <img src="bg-image-embs/heart.jpeg" alt="Future of Biomedical Devices episode thumbnail" class="pod-ep-thumb" />
             <span class="pod-ep-num">EP. 04</span>
             <span class="pod-ep-badge">Devices</span>
           </div>
@@ -516,7 +535,7 @@
         <!-- ── Card 4 — EP 03 ── -->
         <article class="pod-ep-card">
           <div class="pod-ep-thumb-wrap">
-            <img src="bg image embs/bluebg.jpeg" alt="IoT in Healthcare episode thumbnail" class="pod-ep-thumb" />
+            <img src="bg-image-embs/bluebg.jpeg" alt="IoT in Healthcare episode thumbnail" class="pod-ep-thumb" />
             <span class="pod-ep-num">EP. 03</span>
             <span class="pod-ep-badge">IoT</span>
           </div>
@@ -556,7 +575,7 @@
         <!-- ── Card 5 — EP 02 ── -->
         <article class="pod-ep-card">
           <div class="pod-ep-thumb-wrap">
-            <img src="bg image embs/glassdna.jpeg" alt="Rehabilitation Engineering episode thumbnail" class="pod-ep-thumb" />
+            <img src="bg-image-embs/glassdna.jpeg" alt="Rehabilitation Engineering episode thumbnail" class="pod-ep-thumb" />
             <span class="pod-ep-num">EP. 02</span>
             <span class="pod-ep-badge">Rehabilitation</span>
           </div>
@@ -596,7 +615,7 @@
         <!-- ── Card 6 — EP 01 ── -->
         <article class="pod-ep-card">
           <div class="pod-ep-thumb-wrap">
-            <img src="bg image embs/bluebg.jpeg" alt="Biomedical Startups episode thumbnail" class="pod-ep-thumb" />
+            <img src="bg-image-embs/bluebg.jpeg" alt="Biomedical Startups episode thumbnail" class="pod-ep-thumb" />
             <span class="pod-ep-num">EP. 01</span>
             <span class="pod-ep-badge">Startups</span>
           </div>
@@ -762,7 +781,7 @@
           <div class="pod-guest-avatar-wrap">
             <!-- Replace src with guest photo -->
             <img
-              src="bg image embs/bluebg.jpeg"
+              src="bg-image-embs/bluebg.jpeg"
               alt="Dr. Ravi Kumar"
               class="pod-guest-avatar"
             />
@@ -785,7 +804,7 @@
           <div class="pod-guest-avatar-wrap">
             <!-- Replace src with guest photo -->
             <img
-              src="bg image embs/glassdna.jpeg"
+              src="bg-image-embs/glassdna.jpeg"
               alt="Prof. Meera Krishnan"
               class="pod-guest-avatar"
             />
@@ -807,7 +826,7 @@
           <div class="pod-guest-avatar-wrap">
             <!-- Replace src with guest photo -->
             <img
-              src="bg image embs/network.jpeg"
+              src="bg-image-embs/network.jpeg"
               alt="Dr. Ananya Raman"
               class="pod-guest-avatar"
             />
@@ -829,7 +848,7 @@
           <div class="pod-guest-avatar-wrap">
             <!-- Replace src with guest photo -->
             <img
-              src="bg image embs/heart.jpeg"
+              src="bg-image-embs/heart.jpeg"
               alt="Arjun Vijay"
               class="pod-guest-avatar"
             />
@@ -902,7 +921,7 @@
       </div>
 
       <!-- Spotify follow button -->
-      <a href="#" class="pod-subscribe-spotify" aria-label="Follow IEEE EMBS Podcast on Spotify">
+      <a href="#" data-social="spotify" class="pod-subscribe-spotify" aria-label="Follow IEEE EMBS Podcast on Spotify">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.076-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 0 1-.973-.519.781.781 0 0 1 .52-.973c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
         Follow on Spotify
       </a>
@@ -929,7 +948,6 @@
 
       <!-- Microphone illustration -->
       <div class="pod-become-illus" aria-hidden="true">
-        <!-- Replace this SVG with <img src="your-mic-illustration.png" alt=""> -->
         <svg class="pod-become-mic-svg" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- Stand base -->
           <rect x="75" y="218" width="50" height="8" rx="4" fill="rgba(0,169,157,0.4)"/>
@@ -1004,11 +1022,11 @@
 
         <!-- CTA buttons -->
         <div class="pod-become-actions">
-          <a href="#" class="pod-become-btn pod-become-btn--primary" aria-label="Apply as a podcast guest">
+          <a href="contact.html" class="pod-become-btn pod-become-btn--primary" aria-label="Apply as a podcast guest">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 17v5M9 22h6"/></svg>
             Apply as Guest
           </a>
-          <a href="#" class="pod-become-btn pod-become-btn--secondary" aria-label="Suggest a podcast topic">
+          <a href="contact.html" class="pod-become-btn pod-become-btn--secondary" aria-label="Suggest a podcast topic">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             Suggest a Topic
           </a>
@@ -1025,6 +1043,7 @@
 <script src="navbar.js" defer></script>
 <script src="announceBar.js" defer></script>
 <script src="newsletter.js" defer></script>
+<script src="podcast-public.js" defer></script>
 
 </body>
 </html>

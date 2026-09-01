@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const API_BASE = window.EMBS_API_BASE || 'https://embs-website.onrender.com/api';
+  const API_BASE = window.EMBS_API_BASE;
 
   const CLOCK_SVG = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
 
@@ -70,7 +70,7 @@
       const items = json.data || json;
 
       if (!Array.isArray(items) || !items.length) {
-        grid.innerHTML = `<p style="color:rgba(200,210,230,0.5);text-align:center;grid-column:1/-1;padding:3rem;">No announcements yet.</p>`;
+        grid.innerHTML = `<p class="embs-empty">No announcements yet.</p>`;
         // hide featured section too
         const feat = document.getElementById('featured-notice');
         if (feat) feat.style.display = 'none';
@@ -95,11 +95,25 @@
           deadlineEl.style.display = featured.expiresAt ? '' : 'none';
           if (featured.expiresAt) deadlineEl.innerHTML = `${CLOCK_SVG} Deadline: ${fmtDate(featured.expiresAt)}`;
         }
+        /* Fall back to the contact page rather than "#". An announcement
+           without its own application link still needs somewhere to send
+           an interested reader. */
         const applyBtn = featSection.querySelector('.ann-featured-apply');
-        if (applyBtn) applyBtn.href = featured.link || '#';
+        if (applyBtn) {
+          const target = featured.link || 'contact.html';
+          applyBtn.href = target;
+          const external = /^https?:\/\//i.test(target);
+          if (external) {
+            applyBtn.target = '_blank';
+            applyBtn.rel = 'noopener';
+          } else {
+            applyBtn.removeAttribute('target');
+            applyBtn.removeAttribute('rel');
+          }
+        }
       }
     } catch {
-      grid.innerHTML = `<p style="color:rgba(200,210,230,0.5);text-align:center;grid-column:1/-1;padding:3rem;">Failed to load announcements.</p>`;
+      grid.innerHTML = `<p class="embs-empty">Failed to load announcements.</p>`;
     }
   }
 

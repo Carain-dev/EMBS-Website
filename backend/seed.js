@@ -84,6 +84,23 @@ const members = [
 /* ── Seeder ──────────────────────────────────── */
 
 const seed = async () => {
+  /* This script DELETES every user, event and member before inserting.
+     On a live database that is unrecoverable, so require an explicit flag.
+     To add content without destroying anything, use seedContent.js instead. */
+  if (!process.argv.includes('--force')) {
+    console.error('');
+    console.error('  seed.js wipes ALL users, events and members before inserting.');
+    console.error('  Any admin account, real event or member record will be lost.');
+    console.error('');
+    console.error('  To add demo content without deleting anything, run:');
+    console.error('      npm run seed:content');
+    console.error('');
+    console.error('  If you really do want to reset the database, run:');
+    console.error('      node seed.js --force');
+    console.error('');
+    process.exit(1);
+  }
+
   try {
     await mongoose.connect(process.env.MONGO_URI);
     console.log('MongoDB connected');

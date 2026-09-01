@@ -1,13 +1,14 @@
 const asyncHandler = require('express-async-handler');
 const mongoose     = require('mongoose');
 const Podcast      = require('../models/Podcast');
+const { paginate } = require('../utils/paginate');
 const { sendResponse, sendError } = require('../utils/sendResponse');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 exports.getAll = asyncHandler(async (req, res) => {
-  const episodes = await Podcast.find().sort({ episodeNumber: -1 });
-  sendResponse(res, 200, episodes);
+  const { rows, meta } = await paginate(Podcast, {}, { episodeNumber: -1 }, req.query);
+  sendResponse(res, 200, rows, 'Success', meta);
 });
 
 exports.getOne = asyncHandler(async (req, res) => {

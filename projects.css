@@ -419,3 +419,26 @@
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(107, 45, 139, 0.35);
 }
+
+/* Loading / empty / error state inside the projects grid. */
+.proj-grid-message {
+  grid-column: 1 / -1;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  color: rgba(200, 210, 255, 0.55);
+}
+
+/* Card footer buttons wrap instead of overflowing on narrow phones. */
+.proj-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.proj-btn { min-height: 40px; }
+
+/* This page's content grid sits on a near-white section (luminance 246),
+   so the empty state needs dark text to stay readable. */
+.embs-empty { color: #4a4062; }

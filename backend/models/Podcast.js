@@ -17,4 +17,6 @@ const podcastSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+podcastSchema.index({ episodeNumber: -1 });
+
 module.exports = mongoose.model('Podcast', podcastSchema);

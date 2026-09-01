@@ -120,7 +120,7 @@ body {
   right: -15%;
   width: 100%;
   height: 140%;
-  background: url('bg image embs/glassdna.jpeg') center center / cover no-repeat;
+  background: url('bg-image-embs/glassdna.jpeg') center center / cover no-repeat;
   opacity: 0.18;
   mix-blend-mode: multiply;
   filter: hue-rotate(200deg) saturate(2) brightness(0.85);

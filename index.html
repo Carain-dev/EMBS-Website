@@ -4,13 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IEEE EMBS – KPR Institute Student Chapter</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="description" content="The IEEE Engineering in Medicine and Biology Society student chapter at KPR Institute of Engineering and Technology. Events, student research, podcasts and outreach at the intersection of engineering and medicine." />
+  <meta name="author" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
+  <meta name="theme-color" content="#0a0e1a" />
+
+  <!-- Open Graph / link previews. Set og:url and og:image to the full
+       https://<your-domain>/... form once the site has its final URL. -->
+  <meta property="og:site_name" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
+  <meta property="og:title" content="IEEE EMBS Student Chapter – KPRIET" />
+  <meta property="og:description" content="The IEEE Engineering in Medicine and Biology Society student chapter at KPR Institute of Engineering and Technology. Events, student research, podcasts and outreach at the intersection of engineering and medicine." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="logo-cropped.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="IEEE EMBS Student Chapter – KPRIET" />
+  <meta name="twitter:description" content="The IEEE Engineering in Medicine and Biology Society student chapter at KPR Institute of Engineering and Technology. Events, student research, podcasts and outreach at the intersection of engineering and medicine." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="navbar.css" />
-  <script>window.EMBS_API_BASE = 'https://embs-website.onrender.com/api';</script>
+  <script src="config.js"></script>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
 
 <nav class="navbar" id="navbar">
   <div class="nav-inner">
@@ -76,10 +96,12 @@
   </div>
 </div>
 
+<main id="main-content" tabindex="-1">
+
 <section class="hero" id="hero">
 
   <!-- Heart image left -->
-  <img class="hero-heart" src="bg image embs/heart.jpeg" alt="" />
+  <img class="hero-heart" src="bg-image-embs/heart.jpeg" alt="" />
 
 
 
@@ -494,6 +516,8 @@
 </section>
 
 <!-- Footer -->
+</main>
+
 <footer class="footer">
   <div class="footer-main">
     <div class="footer-grid">
@@ -501,7 +525,7 @@
       <!-- Col 1: Brand -->
       <div class="footer-col footer-brand">
         <div class="footer-brand-top">
-          <div class="footer-logo-placeholder"></div>
+          <img src="embs-logo.png" alt="" class="footer-logo-img" width="38" height="38" />
           <span class="footer-brand-name">IEEE EMBS Chapter</span>
         </div>
         <p class="footer-desc">Advancing innovation at the intersection of engineering and medicine. A student-driven community committed to biomedical research, technology, and impact.</p>

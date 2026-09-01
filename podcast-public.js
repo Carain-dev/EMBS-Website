@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const API_BASE = window.EMBS_API_BASE || 'https://embs-website.onrender.com/api';
+  const API_BASE = window.EMBS_API_BASE;
 
   const PLAY_SVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5,3 19,12 5,21"/></svg>`;
   const SPOTIFY_SVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.076-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 0 1-.973-.519.781.781 0 0 1 .52-.973c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>`;
@@ -13,7 +13,7 @@
     return `<span style="--h:${heights[i]}%"></span>`;
   }).join('');
 
-  const FALLBACK_IMG = 'bg image embs/bluebg.jpeg';
+  const FALLBACK_IMG = 'bg-image-embs/bluebg.jpeg';
 
   function buildEpisodeCard(ep) {
     const article = document.createElement('article');
@@ -33,9 +33,9 @@
         ${ep.description ? `<p class="pod-ep-desc">${ep.description}</p>` : ''}
         <div class="pod-ep-waveform" aria-hidden="true">${WAVE_BARS}</div>
         <div class="pod-ep-actions">
-          <a href="${ep.audioUrl || ep.spotifyUrl || '#'}" target="_blank" rel="noopener" class="pod-ep-btn pod-ep-btn--play">
-            ${PLAY_SVG} Play Episode
-          </a>
+          ${(ep.audioUrl || ep.spotifyUrl)
+            ? `<a href="${ep.audioUrl || ep.spotifyUrl}" target="_blank" rel="noopener" class="pod-ep-btn pod-ep-btn--play">${PLAY_SVG} Play Episode</a>`
+            : ''}
           ${ep.spotifyUrl ? `<a href="${ep.spotifyUrl}" target="_blank" rel="noopener" class="pod-ep-btn pod-ep-btn--spotify">${SPOTIFY_SVG} Spotify</a>` : ''}
         </div>
       </div>`;
@@ -68,7 +68,12 @@
     if (summary) summary.textContent = ep.description || '';
 
     const playBtn = card.querySelector('.pod-feat-btn--play');
-    if (playBtn) playBtn.href = ep.audioUrl || ep.spotifyUrl || '#';
+    if (playBtn) {
+      const playUrl = ep.audioUrl || ep.spotifyUrl;
+      playBtn.href = playUrl || '#';
+      // No audio uploaded yet, so hide it rather than offer a button to nowhere.
+      playBtn.hidden = !playUrl;
+    }
 
     const spotifyBtn = card.querySelector('.pod-feat-btn--spotify');
     if (spotifyBtn) {
@@ -87,7 +92,7 @@
       const episodes = (json.data || json).sort((a, b) => b.episodeNumber - a.episodeNumber);
 
       if (!episodes.length) {
-        epGrid.innerHTML = `<p style="color:rgba(200,210,240,0.5);text-align:center;grid-column:1/-1;padding:3rem;">No episodes yet.</p>`;
+        epGrid.innerHTML = `<p class="embs-empty">No episodes yet.</p>`;
         return;
       }
 

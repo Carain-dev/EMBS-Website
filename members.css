@@ -961,3 +961,6 @@
   .smem-tags { justify-content: center; }
   .smem-meta { justify-content: center; }
 }
+
+/* This page's grid sits on a white section, so the empty state needs dark text. */
+.embs-empty { color: #4a4062; }

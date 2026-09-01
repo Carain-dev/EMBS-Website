@@ -1,12 +1,13 @@
 const Event = require('../models/Event');
+const { paginate } = require('../utils/paginate');
 const mongoose = require('mongoose');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 exports.getEvents = async (req, res, next) => {
   try {
-    const events = await Event.find().sort({ createdAt: -1 });
-    res.status(200).json({ success: true, data: events });
+    const { rows, meta } = await paginate(Event, {}, { createdAt: -1 }, req.query);
+    res.status(200).json({ success: true, data: rows, ...(meta && { meta }) });
   } catch (err) { next(err); }
 };
 

@@ -1,4 +1,4 @@
-const API_BASE    = 'https://embs-website.onrender.com/api';
+const API_BASE    = window.EMBS_API_BASE;
 const SESSION_KEY = 'embs_admin_auth';
 const TOKEN_KEY   = 'embs_admin_token';
 

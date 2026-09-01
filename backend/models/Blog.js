@@ -14,4 +14,9 @@ const blogSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+/* The public listing filters on published and sorts newest first. */
+blogSchema.index({ published: 1, publishedAt: -1 });
+blogSchema.index({ tags: 1 });
+blogSchema.index({ createdAt: -1 });
+
 module.exports = mongoose.model('Blog', blogSchema);

@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  const API_BASE = window.EMBS_API_BASE || 'https://embs-website.onrender.com/api';
+  const API_BASE = window.EMBS_API_BASE;
   const CARDS_PER_PAGE = 9;
   let currentPage  = 1;
   let activeFilter = 'all';
@@ -38,11 +38,11 @@
           <span class="ev-date">${fmtDate(ev.date)}</span>
           ${ev.mode ? `<span class="ev-mode">${ev.mode}</span>` : ''}
         </div>
-        <h3 class="ev-title">${ev.title}</h3>
+        <h3 class="ev-title"><a href="event.html?id=${encodeURIComponent(ev._id)}">${ev.title}</a></h3>
         <p class="ev-desc">${ev.description || ''}</p>
         <div class="ev-footer">
           ${ev.venue ? `<span class="ev-location">${ev.venue}</span>` : ''}
-          ${ev.registrationLink ? `<a href="${ev.registrationLink}" target="_blank" rel="noopener" class="act-btn act-btn--primary">Register</a>` : ''}
+          <a href="event.html?id=${encodeURIComponent(ev._id)}" class="act-btn act-btn--primary">View Details</a>
         </div>
       </div>`;
     return div;
@@ -129,7 +129,7 @@
       allCards = events.map(ev => { const card = buildCard(ev); grid.appendChild(card); return card; });
       renderPage();
     } catch {
-      grid.innerHTML = '<p style="color:rgba(200,210,255,0.5);text-align:center;grid-column:1/-1;padding:3rem;">Failed to load events.</p>';
+      grid.innerHTML = '<p class="embs-empty">Failed to load events.</p>';
     }
   }
 

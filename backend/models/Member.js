@@ -15,4 +15,7 @@ const memberSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+/* The directory lists active members in display order. */
+memberSchema.index({ active: 1, order: 1 });
+
 module.exports = mongoose.model('Member', memberSchema);

@@ -4,12 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gallery Management - IEEE EMBS Admin</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
+  <link rel="manifest" href="../site.webmanifest" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="dashboard.css" />
   <link rel="stylesheet" href="events.css" />
   <link rel="stylesheet" href="gallery.css" />
+  <script src="../config.js"></script>
 </head>
 <body>
 
@@ -263,10 +268,10 @@
 
   <!-- Lightbox -->
   <div class="gal-lightbox" id="lightbox" style="display:none;">
-    <button class="gal-lb-close" id="lbClose">
+    <button class="gal-lb-close" id="lbClose" aria-label="Close image viewer">
       <svg viewBox="0 0 24 24" fill="none" width="20" height="20"><line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
     </button>
-    <button class="gal-lb-nav gal-lb-prev" id="lbPrev">
+    <button class="gal-lb-nav gal-lb-prev" id="lbPrev" aria-label="Previous image">
       <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><polyline points="15,18 9,12 15,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div class="gal-lb-content">
@@ -276,7 +281,7 @@
         <span class="gal-lb-meta" id="lbMeta"></span>
       </div>
     </div>
-    <button class="gal-lb-nav gal-lb-next" id="lbNext">
+    <button class="gal-lb-nav gal-lb-next" id="lbNext" aria-label="Next image">
       <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><polyline points="9,18 15,12 9,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
   </div>

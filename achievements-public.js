@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const API_BASE = window.EMBS_API_BASE || 'https://embs-website.onrender.com/api';
+  const API_BASE = window.EMBS_API_BASE;
 
   const CATEGORY_MAP = {
     'student-awards':  { label: 'Student Award',    badgeClass: 'ach-card-badge--award',       icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" stroke="#6B2D8B" stroke-width="1.5" stroke-linejoin="round"/></svg>` },
@@ -67,7 +67,7 @@
       const items = json.data || json;
 
       if (!Array.isArray(items) || !items.length) {
-        grid.innerHTML = `<p style="color:rgba(200,210,230,0.5);text-align:center;grid-column:1/-1;padding:3rem;">No achievements yet.</p>`;
+        grid.innerHTML = `<p class="embs-empty">No achievements yet.</p>`;
         return;
       }
 
@@ -75,7 +75,7 @@
       const cards = items.map(item => { const c = buildCard(item); grid.appendChild(c); return c; });
       initFilters(cards);
     } catch {
-      grid.innerHTML = `<p style="color:rgba(200,210,230,0.5);text-align:center;grid-column:1/-1;padding:3rem;">Failed to load achievements.</p>`;
+      grid.innerHTML = `<p class="embs-empty">Failed to load achievements.</p>`;
     }
   }
 

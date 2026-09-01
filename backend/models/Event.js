@@ -19,4 +19,9 @@ const eventSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+/* Queried by status and sorted by date on the events page. */
+eventSchema.index({ status: 1, date: -1 });
+eventSchema.index({ featured: 1 });
+eventSchema.index({ createdAt: -1 });
+
 module.exports = mongoose.model('Event', eventSchema);

@@ -4,14 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Activities – IEEE EMBS</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="description" content="Workshops, seminars, competitions and outreach programmes run by the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
+  <meta name="author" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
+  <meta name="theme-color" content="#0a0e1a" />
+
+  <!-- Open Graph / link previews. Set og:url and og:image to the full
+       https://<your-domain>/... form once the site has its final URL. -->
+  <meta property="og:site_name" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
+  <meta property="og:title" content="Activities – IEEE EMBS KPRIET" />
+  <meta property="og:description" content="Workshops, seminars, competitions and outreach programmes run by the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="logo-cropped.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Activities – IEEE EMBS KPRIET" />
+  <meta name="twitter:description" content="Workshops, seminars, competitions and outreach programmes run by the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="navbar.css" />
-  <script>window.EMBS_API_BASE = 'https://embs-website.onrender.com/api';</script>
+  <script src="config.js"></script>
   <link rel="stylesheet" href="activities.css" />
 </head>
 <body>
+<a class="skip-link" href="#activities-main">Skip to main content</a>
+
 
 <!-- ═══════════════════════════════════════
      NAVBAR
@@ -96,7 +116,7 @@
 <!-- ═══════════════════════════════════════
      MAIN CONTENT
 ════════════════════════════════════════ -->
-<main id="activities-main">
+<main id="activities-main" tabindex="-1">
 
 <!-- ═══════════════════════════════════════
      SECTION 1 — HERO
@@ -112,7 +132,7 @@
 
     <div class="act-hero-right">
       <!-- Replace src with a biomedical-themed illustration or photo -->
-      <img src="bg image embs/network.jpeg" alt="IEEE EMBS Activities" class="act-hero-img" />
+      <img src="bg-image-embs/network.jpeg" alt="IEEE EMBS Activities" class="act-hero-img" />
     </div>
 
   </div>
@@ -135,7 +155,7 @@
       <article class="act-card">
         <div class="act-card-img-wrap">
           <!-- Replace src with an events photo -->
-          <img src="bg image embs/bluebg.jpeg" alt="IEEE EMBS Events" class="act-card-img" />
+          <img src="bg-image-embs/bluebg.jpeg" alt="IEEE EMBS Events" class="act-card-img" />
           <div class="act-card-icon" aria-hidden="true">
             <!-- Calendar icon -->
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -161,7 +181,7 @@
       <article class="act-card">
         <div class="act-card-img-wrap">
           <!-- Replace src with a research/lab photo -->
-          <img src="bg image embs/glassdna.jpeg" alt="IEEE EMBS Projects and Research" class="act-card-img" />
+          <img src="bg-image-embs/glassdna.jpeg" alt="IEEE EMBS Projects and Research" class="act-card-img" />
           <div class="act-card-icon" aria-hidden="true">
             <!-- Flask / research icon -->
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -183,7 +203,7 @@
       <article class="act-card">
         <div class="act-card-img-wrap">
           <!-- Replace src with a writing/articles photo -->
-          <img src="bg image embs/bluedns.jpeg" alt="IEEE EMBS Blog and Articles" class="act-card-img" />
+          <img src="bg-image-embs/bluedns.jpeg" alt="IEEE EMBS Blog and Articles" class="act-card-img" />
           <div class="act-card-icon" aria-hidden="true">
             <!-- Document / article icon -->
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -205,7 +225,7 @@
       <article class="act-card">
         <div class="act-card-img-wrap">
           <!-- Replace src with a podcast/microphone photo -->
-          <img src="bg image embs/heart.jpeg" alt="IEEE EMBS Podcast" class="act-card-img" />
+          <img src="bg-image-embs/heart.jpeg" alt="IEEE EMBS Podcast" class="act-card-img" />
           <div class="act-card-icon" aria-hidden="true">
             <!-- Microphone icon -->
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -228,7 +248,7 @@
       <article class="act-card">
         <div class="act-card-img-wrap">
           <!-- Replace src with a gallery/event moments photo -->
-          <img src="bg image embs/bluebg.jpeg" alt="IEEE EMBS Gallery" class="act-card-img" />
+          <img src="bg-image-embs/bluebg.jpeg" alt="IEEE EMBS Gallery" class="act-card-img" />
           <div class="act-card-icon" aria-hidden="true">
             <!-- Image / gallery icon -->
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -314,7 +334,7 @@
 
       <div class="footer-col footer-brand">
         <div class="footer-brand-top">
-          <div class="footer-logo-placeholder"></div>
+          <img src="embs-logo.png" alt="" class="footer-logo-img" width="38" height="38" />
           <span class="footer-brand-name">IEEE EMBS Chapter</span>
         </div>
         <p class="footer-desc">Advancing innovation at the intersection of engineering and medicine. A student-driven community committed to biomedical research, technology, and impact.</p>

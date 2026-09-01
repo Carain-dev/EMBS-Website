@@ -1,0 +1,13 @@
+{
+  "name": "IEEE EMBS Student Chapter — KPRIET",
+  "short_name": "IEEE EMBS",
+  "description": "IEEE Engineering in Medicine and Biology Society student chapter at KPR Institute of Engineering and Technology.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0a0e1a",
+  "theme_color": "#0a0e1a",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

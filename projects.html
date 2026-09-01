@@ -4,14 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projects &amp; Research – IEEE EMBS</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="description" content="Student research projects in biomedical engineering from IEEE EMBS KPRIET, spanning AI in healthcare, medical imaging, wearables and rehabilitation engineering." />
+  <meta name="author" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
+  <meta name="theme-color" content="#0a0e1a" />
+
+  <!-- Open Graph / link previews. Set og:url and og:image to the full
+       https://<your-domain>/... form once the site has its final URL. -->
+  <meta property="og:site_name" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
+  <meta property="og:title" content="Projects &amp; Research – IEEE EMBS KPRIET" />
+  <meta property="og:description" content="Student research projects in biomedical engineering from IEEE EMBS KPRIET, spanning AI in healthcare, medical imaging, wearables and rehabilitation engineering." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="logo-cropped.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Projects &amp; Research – IEEE EMBS KPRIET" />
+  <meta name="twitter:description" content="Student research projects in biomedical engineering from IEEE EMBS KPRIET, spanning AI in healthcare, medical imaging, wearables and rehabilitation engineering." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="navbar.css" />
-  <script>window.EMBS_API_BASE = 'https://embs-website.onrender.com/api';</script>
+  <script src="config.js"></script>
   <link rel="stylesheet" href="projects.css" />
 </head>
 <body>
+<a class="skip-link" href="#projects-main">Skip to main content</a>
+
 
 <!-- ═══════════════════════════════════════
      NAVBAR
@@ -96,7 +116,7 @@
 <!-- ═══════════════════════════════════════
      MAIN CONTENT
 ════════════════════════════════════════ -->
-<main id="projects-main">
+<main id="projects-main" tabindex="-1">
 
 <!-- ═══════════════════════════════════════
      HERO SECTION
@@ -112,7 +132,7 @@
 
     <div class="proj-hero-right">
       <!-- Edit src to change the hero image -->
-      <img src="bg image embs/glassdna.jpeg" alt="IEEE EMBS Biomedical Research" class="proj-hero-img" />
+      <img src="bg-image-embs/glassdna.jpeg" alt="IEEE EMBS Biomedical Research" class="proj-hero-img" />
     </div>
 
   </div>
@@ -125,15 +145,15 @@
   <div class="proj-filters-inner">
     <span class="proj-filters-label">Research Categories</span>
     <div class="proj-filters" role="group" aria-label="Filter projects by category">
-      <button class="filter-chip active" data-filter="all">All</button>
-      <button class="filter-chip" data-filter="ai-healthcare">AI in Healthcare</button>
-      <button class="filter-chip" data-filter="biomedical-devices">Biomedical Devices</button>
-      <button class="filter-chip" data-filter="medical-imaging">Medical Imaging</button>
-      <button class="filter-chip" data-filter="signal-processing">Signal Processing</button>
-      <button class="filter-chip" data-filter="wearables-iot">Wearables &amp; IoT</button>
-      <button class="filter-chip" data-filter="rehabilitation">Rehabilitation Engineering</button>
-      <button class="filter-chip" data-filter="bioinformatics">Bioinformatics</button>
-      <button class="filter-chip" data-filter="healthcare-ai">Healthcare AI</button>
+      <button type="button" class="filter-chip active" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" class="filter-chip" data-filter="ai-healthcare" aria-pressed="false">AI in Healthcare</button>
+      <button type="button" class="filter-chip" data-filter="biomedical-devices" aria-pressed="false">Biomedical Devices</button>
+      <button type="button" class="filter-chip" data-filter="medical-imaging" aria-pressed="false">Medical Imaging</button>
+      <button type="button" class="filter-chip" data-filter="signal-processing" aria-pressed="false">Signal Processing</button>
+      <button type="button" class="filter-chip" data-filter="wearables-iot" aria-pressed="false">Wearables &amp; IoT</button>
+      <button type="button" class="filter-chip" data-filter="rehabilitation-engineering" aria-pressed="false">Rehabilitation Engineering</button>
+      <button type="button" class="filter-chip" data-filter="bioinformatics" aria-pressed="false">Bioinformatics</button>
+      <button type="button" class="filter-chip" data-filter="healthcare-ai" aria-pressed="false">Healthcare AI</button>
     </div>
   </div>
 </section>
@@ -156,7 +176,7 @@
       <article class="proj-card" data-category="ai-healthcare">
         <div class="proj-card-img-wrap">
           <!-- Replace src with project image -->
-          <img src="bg image embs/bluebg.jpeg" alt="Smart ECG Arrhythmia Detector" class="proj-card-img" />
+          <img src="bg-image-embs/bluebg.jpeg" alt="Smart ECG Arrhythmia Detector" class="proj-card-img" />
           <span class="proj-card-status proj-card-status--completed">Completed</span>
           <span class="proj-card-category">AI in Healthcare</span>
         </div>
@@ -187,7 +207,7 @@
       <!-- Card 2 -->
       <article class="proj-card" data-category="biomedical-devices">
         <div class="proj-card-img-wrap">
-          <img src="bg image embs/bluedns.jpeg" alt="Low-Cost EMG Prosthetic Arm" class="proj-card-img" />
+          <img src="bg-image-embs/bluedns.jpeg" alt="Low-Cost EMG Prosthetic Arm" class="proj-card-img" />
           <span class="proj-card-status proj-card-status--ongoing">Ongoing</span>
           <span class="proj-card-category">Biomedical Devices</span>
         </div>
@@ -218,7 +238,7 @@
       <!-- Card 3 -->
       <article class="proj-card" data-category="medical-imaging">
         <div class="proj-card-img-wrap">
-          <img src="bg image embs/glassdna.jpeg" alt="Brain Tumor MRI Segmentation" class="proj-card-img" />
+          <img src="bg-image-embs/glassdna.jpeg" alt="Brain Tumor MRI Segmentation" class="proj-card-img" />
           <span class="proj-card-status proj-card-status--published">Published</span>
           <span class="proj-card-category">Medical Imaging</span>
         </div>
@@ -249,7 +269,7 @@
       <!-- Card 4 -->
       <article class="proj-card" data-category="wearables-iot">
         <div class="proj-card-img-wrap">
-          <img src="bg image embs/network.jpeg" alt="Wearable Stress Monitoring System" class="proj-card-img" />
+          <img src="bg-image-embs/network.jpeg" alt="Wearable Stress Monitoring System" class="proj-card-img" />
           <span class="proj-card-status proj-card-status--ongoing">Ongoing</span>
           <span class="proj-card-category">Wearables &amp; IoT</span>
         </div>
@@ -280,7 +300,7 @@
       <!-- Card 5 -->
       <article class="proj-card" data-category="signal-processing">
         <div class="proj-card-img-wrap">
-          <img src="bg image embs/heart.jpeg" alt="Biomedical Signal Classification" class="proj-card-img" />
+          <img src="bg-image-embs/heart.jpeg" alt="Biomedical Signal Classification" class="proj-card-img" />
           <span class="proj-card-status proj-card-status--completed">Completed</span>
           <span class="proj-card-category">Signal Processing</span>
         </div>
@@ -311,7 +331,7 @@
       <!-- Card 6 -->
       <article class="proj-card" data-category="bioinformatics">
         <div class="proj-card-img-wrap">
-          <img src="bg image embs/bluebg.jpeg" alt="Non-Invasive Glucose Monitor" class="proj-card-img" />
+          <img src="bg-image-embs/bluebg.jpeg" alt="Non-Invasive Glucose Monitor" class="proj-card-img" />
           <span class="proj-card-status proj-card-status--published">Published</span>
           <span class="proj-card-category">Bioinformatics</span>
         </div>
@@ -354,7 +374,7 @@
 
       <div class="footer-col footer-brand">
         <div class="footer-brand-top">
-          <div class="footer-logo-placeholder"></div>
+          <img src="embs-logo.png" alt="" class="footer-logo-img" width="38" height="38" />
           <span class="footer-brand-name">IEEE EMBS Chapter</span>
         </div>
         <p class="footer-desc">Advancing innovation at the intersection of engineering and medicine. A student-driven community committed to biomedical research, technology, and impact.</p>

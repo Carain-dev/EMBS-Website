@@ -1,14 +1,15 @@
 const asyncHandler = require('express-async-handler');
 const mongoose     = require('mongoose');
 const Gallery      = require('../models/Gallery');
+const { paginate } = require('../utils/paginate');
 const { sendResponse, sendError } = require('../utils/sendResponse');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 exports.getAll = asyncHandler(async (req, res) => {
   const query = req.query.event ? { event: req.query.event } : {};
-  const items = await Gallery.find(query).sort({ order: 1 }).populate('event', 'title');
-  sendResponse(res, 200, items);
+  const { rows, meta } = await paginate(Gallery, query, { order: 1 }, req.query, { path: 'event', select: 'title' });
+  sendResponse(res, 200, rows, 'Success', meta);
 });
 
 exports.getOne = asyncHandler(async (req, res) => {

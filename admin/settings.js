@@ -329,7 +329,7 @@ document.getElementById('savePwdBtn').addEventListener('click', () => {
 
   /* Call real API */
   const token = localStorage.getItem('embs_admin_token');
-  fetch('https://embs-website.onrender.com/api/auth/update-password', {
+  fetch(`${window.EMBS_API_BASE}/auth/update-password`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
     body: JSON.stringify({ currentPassword: current, newPassword: newPwd })

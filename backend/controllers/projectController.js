@@ -1,13 +1,14 @@
 const asyncHandler = require('express-async-handler');
 const mongoose     = require('mongoose');
 const Project      = require('../models/Project');
+const { paginate } = require('../utils/paginate');
 const { sendResponse, sendError } = require('../utils/sendResponse');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 exports.getAll = asyncHandler(async (req, res) => {
-  const projects = await Project.find().sort({ createdAt: -1 }).populate('members', 'name role');
-  sendResponse(res, 200, projects);
+  const { rows, meta } = await paginate(Project, {}, { createdAt: -1 }, req.query, { path: 'members', select: 'name role' });
+  sendResponse(res, 200, rows, 'Success', meta);
 });
 
 exports.getOne = asyncHandler(async (req, res) => {

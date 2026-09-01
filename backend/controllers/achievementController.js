@@ -1,13 +1,14 @@
 const asyncHandler  = require('express-async-handler');
 const mongoose      = require('mongoose');
 const Achievement   = require('../models/Achievement');
+const { paginate } = require('../utils/paginate');
 const { sendResponse, sendError } = require('../utils/sendResponse');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 exports.getAll = asyncHandler(async (req, res) => {
-  const items = await Achievement.find().sort({ date: -1 });
-  sendResponse(res, 200, items);
+  const { rows, meta } = await paginate(Achievement, {}, { date: -1 }, req.query);
+  sendResponse(res, 200, rows, 'Success', meta);
 });
 
 exports.getOne = asyncHandler(async (req, res) => {

@@ -1,7 +1,7 @@
 if (localStorage.getItem('embs_admin_auth') !== 'true') window.location.href = 'index.html';
 'use strict';
 
-const API = 'https://embs-website.onrender.com/api';
+const API = window.EMBS_API_BASE;
 const TOKEN = () => localStorage.getItem('embs_admin_token');
 const authH = () => ({ 'Authorization': `Bearer ${TOKEN()}` });
 
