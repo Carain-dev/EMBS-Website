@@ -23,12 +23,14 @@ exports.create = asyncHandler(async (req, res) => {
   const { title, body } = req.body;
   if (!title || !body)
     return sendError(res, 400, 'Title and body are required');
+  if (req.file) req.body.attachmentUrl = req.file.path;
   const item = await Announcement.create(req.body);
   sendResponse(res, 201, item, 'Announcement created');
 });
 
 exports.update = asyncHandler(async (req, res) => {
   if (!isValidId(req.params.id)) return sendError(res, 400, 'Invalid announcement ID');
+  if (req.file) req.body.attachmentUrl = req.file.path;
   const item = await Announcement.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
   if (!item) return sendError(res, 404, 'Announcement not found');
   sendResponse(res, 200, item, 'Announcement updated');

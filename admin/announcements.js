@@ -63,13 +63,21 @@ function renderTable() {
     const expiryHTML = a.expiresAt
       ? `<span class="td-expiry ${expired ? 'td-expiry--past' : ''}">${fmtDate(a.expiresAt)}</span>`
       : `<span class="td-expiry td-expiry--none">No expiry</span>`;
+    const categoryHTML = a.category
+      ? `<span class="td-category">${a.category}</span>`
+      : `<span class="td-category td-category--none">General</span>`;
+    const fileHTML = a.attachmentUrl
+      ? `<a class="td-file-link" href="${a.attachmentUrl}" target="_blank" rel="noopener">View</a>`
+      : `<span class="td-file-none">—</span>`;
     return `<tr data-id="${a._id}">
       <td>
         <div class="td-ann-title" title="${a.title}">${a.title}</div>
         <div class="td-ann-body">${(a.body||'').slice(0,80)}${(a.body||'').length > 80 ? '...' : ''}</div>
       </td>
       <td><span class="priority-badge priority-badge--${a.pinned ? 'urgent' : 'normal'}">${a.pinned ? 'Pinned' : 'Normal'}</span></td>
+      <td>${categoryHTML}</td>
       <td>${expiryHTML}</td>
+      <td>${fileHTML}</td>
       <td><span class="status-badge status-badge--${expired ? 'draft' : 'published'}">${expired ? 'Expired' : 'Published'}</span></td>
       <td><div class="action-btns">
         <button class="action-btn action-btn--edit" onclick="editAnn('${a._id}')">
@@ -83,6 +91,22 @@ function renderTable() {
   }).join('');
 }
 
+/* ── Attachment UI ── */
+const attachInput  = document.getElementById('attachInput');
+const attachInner  = document.getElementById('attachInner');
+const attachFile   = document.getElementById('attachFile');
+const attachName   = document.getElementById('attachFileName');
+const attachRemove = document.getElementById('attachRemove');
+attachInput.addEventListener('change', () => {
+  const f = attachInput.files[0]; if (!f) return;
+  attachName.textContent = f.name;
+  attachInner.style.display = 'none'; attachFile.style.display = 'flex';
+});
+attachRemove.addEventListener('click', e => {
+  e.stopPropagation(); attachInput.value = '';
+  attachFile.style.display = 'none'; attachInner.style.display = 'flex';
+});
+
 /* ── Form Panel ── */
 const formPanel = document.getElementById('annFormPanel');
 document.getElementById('collapseFormBtn').addEventListener('click', () => formPanel.classList.toggle('collapsed'));
@@ -93,6 +117,8 @@ document.getElementById('toggleFormBtn').addEventListener('click', () => {
 
 function resetForm() {
   document.getElementById('annForm').reset();
+  attachInput.value = '';
+  attachFile.style.display = 'none'; attachInner.style.display = 'flex';
   editingId = null;
   document.getElementById('formPanelTitle').textContent = 'New Announcement';
   document.getElementById('publishBtn').textContent     = 'Publish';
@@ -105,6 +131,7 @@ function getFormData() {
     body:      document.getElementById('annBody').value.trim(),
     pinned:    document.getElementById('annPriority')?.value === 'urgent',
     expiresAt: document.getElementById('annExpiry')?.value || null,
+    category:  document.getElementById('annCategory')?.value || '',
   };
 }
 
@@ -131,11 +158,19 @@ document.getElementById('publishBtn').addEventListener('click', async () => {
 });
 
 async function saveAnn() {
-  const body = getFormData();
+  const fields = getFormData();
+  const fd = new FormData();
+  fd.append('title',     fields.title);
+  fd.append('body',      fields.body);
+  fd.append('pinned',    fields.pinned);
+  fd.append('category',  fields.category);
+  if (fields.expiresAt) fd.append('expiresAt', fields.expiresAt);
+  const file = attachInput.files[0];
+  if (file) fd.append('attachment', file);
   try {
     const url    = editingId ? `${API}/announcements/${editingId}` : `${API}/announcements`;
     const method = editingId ? 'PATCH' : 'POST';
-    const res    = await fetch(url, { method, headers: jsonH(), body: JSON.stringify(body) });
+    const res    = await fetch(url, { method, headers: authH(), body: fd });
     const data   = await res.json();
     if (!res.ok) throw new Error(data.message);
     resetForm(); formPanel.classList.add('collapsed');
@@ -150,6 +185,7 @@ function editAnn(id) {
   document.getElementById('annTitle').value = a.title || '';
   document.getElementById('annBody').value  = a.body  || '';
   document.getElementById('annPriority') && (document.getElementById('annPriority').value = a.pinned ? 'urgent' : 'normal');
+  document.getElementById('annCategory') && (document.getElementById('annCategory').value = a.category || '');
   document.getElementById('annExpiry')   && (document.getElementById('annExpiry').value   = a.expiresAt ? a.expiresAt.slice(0,10) : '');
   document.getElementById('formPanelTitle').textContent = 'Edit Announcement';
   document.getElementById('publishBtn').textContent     = 'Update';

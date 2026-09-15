@@ -86,6 +86,10 @@ function editAch(id) {
   document.getElementById('achYear').value     = a.date || '';
   document.getElementById('achIssuer') && (document.getElementById('achIssuer').value = '');
   document.getElementById('achDesc').value     = a.description || '';
+  if (a.image) {
+    achImgName.textContent = 'Current image saved';
+    achImgInner.style.display = 'none'; achImgFile.style.display = 'flex';
+  }
   document.getElementById('manualFormTitle').textContent = 'Edit Achievement';
   document.getElementById('saveAchBtnLabel').textContent = 'Update Achievement';
   document.getElementById('manualFormPanel').classList.remove('collapsed');
@@ -95,11 +99,29 @@ function editAch(id) {
 /* ── Reset ── */
 function resetManualForm() {
   document.getElementById('manualForm').reset();
+  achImageInput.value = '';
+  achImgFile.style.display = 'none'; achImgInner.style.display = 'flex';
   editingId = null;
   document.getElementById('manualFormTitle').textContent = 'Add Achievement Manually';
   document.getElementById('saveAchBtnLabel').textContent = 'Save Achievement';
 }
 document.getElementById('resetManualBtn').addEventListener('click', resetManualForm);
+
+/* ── Image Upload UI ── */
+const achImageInput = document.getElementById('achImageInput');
+const achImgInner   = document.getElementById('achImgInner');
+const achImgFile    = document.getElementById('achImgFile');
+const achImgName    = document.getElementById('achImgFileName');
+const achImgRemove  = document.getElementById('achImgRemove');
+achImageInput.addEventListener('change', () => {
+  const f = achImageInput.files[0]; if (!f) return;
+  achImgName.textContent = f.name;
+  achImgInner.style.display = 'none'; achImgFile.style.display = 'flex';
+});
+achImgRemove.addEventListener('click', e => {
+  e.stopPropagation(); achImageInput.value = '';
+  achImgFile.style.display = 'none'; achImgInner.style.display = 'flex';
+});
 
 /* ── Save ── */
 document.getElementById('saveAchBtn').addEventListener('click', async () => {
@@ -113,6 +135,7 @@ document.getElementById('saveAchBtn').addEventListener('click', async () => {
   fd.append('category',    category);
   fd.append('date',        date);
   fd.append('description', document.getElementById('achDesc').value.trim());
+  if (achImageInput.files[0]) fd.append('image', achImageInput.files[0]);
 
   try {
     const url    = editingId ? `${API}/achievements/${editingId}` : `${API}/achievements`;

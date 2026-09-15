@@ -37,7 +37,7 @@
         <p class="ann-card-desc">${item.body}</p>
         ${item.expiresAt ? `<span class="ann-card-deadline">${CLOCK_SVG} Deadline: ${fmtDate(item.expiresAt)}</span>` : ''}
       </div>
-      ${item.link ? `<div class="ann-card-footer"><a href="${item.link}" target="_blank" rel="noopener" class="ann-card-apply">Learn More</a></div>` : ''}`;
+      ${item.attachmentUrl ? `<div class="ann-card-footer"><a href="${item.attachmentUrl}" target="_blank" rel="noopener" class="ann-card-apply">View Attachment</a></div>` : (item.link ? `<div class="ann-card-footer"><a href="${item.link}" target="_blank" rel="noopener" class="ann-card-apply">Learn More</a></div>` : '')}`;
     return article;
   }
 

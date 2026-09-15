@@ -30,6 +30,7 @@
     div.setAttribute('data-search', `${ev.title} ${ev.speaker} ${ev.venue} ${(ev.tags||[]).join(' ')}`.toLowerCase());
     div.innerHTML = `
       <div class="ev-card-top" style="background:linear-gradient(135deg,#1a0533,#0a2a2a)">
+        ${ev.thumbnail ? `<img src="${ev.thumbnail}" alt="${ev.title}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.55;" loading="lazy" />` : ''}
         <span class="ev-tag ev-tag--${ev.status || 'upcoming'}">${ev.status || 'Upcoming'}</span>
         <div class="ev-card-type">${ev.type || ''}</div>
       </div>
