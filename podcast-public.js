@@ -82,6 +82,41 @@
     }
   }
 
+  function renderGuests(episodes) {
+    const grid = document.querySelector('.pod-guests-grid');
+    const section = document.getElementById('pod-guests');
+    if (!grid || !section) return;
+
+    // Deduplicate by lowercased guestName; skip episodes with no guest.
+    const seen = new Set();
+    const guests = [];
+    episodes.forEach(ep => {
+      const name = (ep.guestName || '').trim();
+      if (!name) return;
+      const key = name.toLowerCase();
+      if (seen.has(key)) return;
+      seen.add(key);
+      guests.push({ name, designation: (ep.guestDesignation || '').trim() });
+    });
+
+    if (!guests.length) { section.style.display = 'none'; return; }
+
+    const GUEST_SVG = `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="20" cy="15" r="7" stroke="rgba(0,169,157,0.7)" stroke-width="1.5"/><path d="M6 36c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="rgba(0,169,157,0.7)" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+    const SPOTIFY_BADGE = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.076-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 0 1-.973-.519.781.781 0 0 1 .52-.973c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>`;
+
+    grid.innerHTML = guests.map(g => `
+      <article class="pod-guest-card">
+        <div class="pod-guest-avatar-wrap">
+          <div class="pod-guest-avatar" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;">${GUEST_SVG}</div>
+        </div>
+        <div class="pod-guest-info">
+          <h3 class="pod-guest-name">${g.name}</h3>
+          ${g.designation ? `<span class="pod-guest-designation">${g.designation}</span>` : ''}
+          <span class="pod-guest-spotify-badge" aria-label="Podcast guest">${SPOTIFY_BADGE} Podcast Guest</span>
+        </div>
+      </article>`).join('');
+  }
+
   async function init() {
     const epGrid = document.querySelector('.pod-ep-grid');
     if (!epGrid) return;
@@ -93,6 +128,8 @@
 
       if (!episodes.length) {
         epGrid.innerHTML = `<p class="embs-empty">No episodes yet.</p>`;
+        const section = document.getElementById('pod-guests');
+        if (section) section.style.display = 'none';
         return;
       }
 
@@ -103,11 +140,17 @@
       epGrid.innerHTML = '';
       episodes.forEach(ep => epGrid.appendChild(buildEpisodeCard(ep)));
 
+      // Render guest section from real episode data
+      renderGuests(episodes);
+
       // Update hero meta counts
       const metaNums = document.querySelectorAll('.pod-hero-meta-num');
       if (metaNums[0]) metaNums[0].textContent = `${episodes.length}+`;
     } catch (err) {
       console.error('Failed to load podcasts:', err);
+      epGrid.innerHTML = `<p class="embs-empty">Could not load episodes. Please try again later.</p>`;
+      const section = document.getElementById('pod-guests');
+      if (section) section.style.display = 'none';
     }
   }
 

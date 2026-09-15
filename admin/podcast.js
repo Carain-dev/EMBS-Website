@@ -17,7 +17,6 @@ if (sidebarToggle) {
 let episodes = [];
 let editingId = null;
 let deleteTargetId = null;
-let tags = [];
 let activeFilter = 'all';
 
 /* ── DOM ── */
@@ -35,9 +34,6 @@ const coverPreview     = document.getElementById('coverPreview');
 const coverImg         = document.getElementById('coverImg');
 const coverInner       = document.getElementById('coverInner');
 const coverRemove      = document.getElementById('coverRemove');
-const tagsWrap         = document.getElementById('tagsWrap');
-const tagsList         = document.getElementById('tagsList');
-const tagsInput        = document.getElementById('tagsInput');
 const episodeFormPanel = document.getElementById('episodeFormPanel');
 const tableSearch      = document.getElementById('tableSearch');
 const episodeTableBody = document.getElementById('episodeTableBody');
@@ -112,26 +108,6 @@ function renderTable() {
     btn.addEventListener('click', () => openDeleteModal(btn.dataset.id))
   );
 }
-
-/* ── Tags ── */
-function renderTags() {
-  tagsList.innerHTML = tags.map((t, i) =>
-    `<span class="tag-chip">${t}<button class="tag-chip-remove" data-i="${i}" type="button">×</button></span>`
-  ).join('');
-  tagsList.querySelectorAll('.tag-chip-remove').forEach(btn =>
-    btn.addEventListener('click', () => { tags.splice(parseInt(btn.dataset.i), 1); renderTags(); })
-  );
-}
-tagsInput.addEventListener('keydown', e => {
-  if ((e.key === 'Enter' || e.key === ',') && tagsInput.value.trim()) {
-    e.preventDefault();
-    const val = tagsInput.value.trim().replace(/,$/, '');
-    if (val && !tags.includes(val)) { tags.push(val); renderTags(); }
-    tagsInput.value = '';
-  }
-  if (e.key === 'Backspace' && !tagsInput.value && tags.length) { tags.pop(); renderTags(); }
-});
-tagsWrap.addEventListener('click', () => tagsInput.focus());
 
 /* ── Cover Upload ── */
 coverInput.addEventListener('change', () => handleCoverFile(coverInput.files[0]));
@@ -225,7 +201,7 @@ document.getElementById('confirmDelete').addEventListener('click', async () => {
 
 /* ── Reset ── */
 function resetForm() {
-  editingId = null; episodeForm.reset(); tags = []; renderTags();
+  editingId = null; episodeForm.reset();
   coverImg.src = ''; coverPreview.style.display = 'none'; coverInner.style.display = 'flex'; coverInput.value = '';
   document.getElementById('formPanelTitle').textContent = 'Add New Episode';
 }

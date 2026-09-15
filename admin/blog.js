@@ -23,7 +23,6 @@ let tags = [];
 const blogForm       = document.getElementById('blogForm');
 const blogTitle      = document.getElementById('blogTitle');
 const blogCategory   = document.getElementById('blogCategory');
-const blogAuthor     = document.getElementById('blogAuthor');
 const editorBody     = document.getElementById('editorBody');
 const tagsInput      = document.getElementById('tagsInput');
 const tagsList       = document.getElementById('tagsList');
@@ -147,7 +146,9 @@ function collectForm(published) {
   fd.append('title',     title);
   fd.append('content',   content);
   fd.append('published', published);
-  tags.forEach(t => fd.append('tags', t));
+  const category = blogCategory ? blogCategory.value.trim() : '';
+  const allTags = category ? [category, ...tags.filter(t => t !== category)] : [...tags];
+  allTags.forEach(t => fd.append('tags', t));
   if (coverInput.files[0]) fd.append('thumbnail', coverInput.files[0]);
   return fd;
 }
@@ -179,7 +180,11 @@ function loadEdit(id) {
   editingId = id;
   blogTitle.value      = b.title;
   editorBody.innerHTML = b.content;
-  tags = [...(b.tags || [])]; renderTags();
+  /* Restore category select: tags[0] is the category by convention. */
+  const savedCategory = Array.isArray(b.tags) && b.tags.length ? b.tags[0] : '';
+  if (blogCategory) blogCategory.value = savedCategory;
+  tags = Array.isArray(b.tags) ? b.tags.slice(1) : []; renderTags();
+  if (b.thumbnail) showPreview(b.thumbnail);
   formTitle.textContent = 'Edit Blog Post';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }

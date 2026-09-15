@@ -33,12 +33,27 @@ form.addEventListener('submit', async function (e) {
   loginBtn.classList.add('loading');
   errorBox.classList.remove('visible');
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30000);
+
   try {
-    const res  = await fetch(`${API_BASE}/auth/login`, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ email: 'admin@ieeoembs.com', password: pw }),
-    });
+    let res;
+    try {
+      res = await fetch(`${API_BASE}/auth/login`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email: 'admin@ieeoembs.com', password: pw }),
+        signal:  controller.signal,
+      });
+    } catch (networkErr) {
+      throw new Error(
+        networkErr.name === 'AbortError'
+          ? 'Request timed out. The server may be waking up — please try again in a moment.'
+          : 'Could not reach the server. Check your connection or wait a moment and retry.'
+      );
+    } finally {
+      clearTimeout(timeout);
+    }
 
     const data = await res.json();
 
@@ -52,6 +67,7 @@ form.addEventListener('submit', async function (e) {
       throw new Error(data.message || 'Invalid password');
     }
   } catch (err) {
+    clearTimeout(timeout);
     loginBtn.disabled = false;
     loginBtn.classList.remove('loading');
     document.getElementById('loginErrorText').textContent = err.message || 'Incorrect password. Please try again.';

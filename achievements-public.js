@@ -27,6 +27,7 @@
         <div class="ach-card-icon">${cat.icon}</div>
         <span class="ach-card-badge ${cat.badgeClass}">${cat.label}</span>
       </div>
+      ${item.image ? `<div class="ach-card-img-wrap"><img src="${item.image}" alt="${item.title}" class="ach-card-img" loading="lazy" /></div>` : ''}
       <div class="ach-card-body">
         <h3 class="ach-card-title">${item.title}</h3>
         ${item.description ? `<p class="ach-card-desc">${item.description}</p>` : ''}

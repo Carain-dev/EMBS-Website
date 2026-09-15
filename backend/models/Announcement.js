@@ -10,8 +10,14 @@ const announcementSchema = new mongoose.Schema(
        before it existed, so the button always fell back to href="#". */
     link: { type: String, default: '' },
 
+    category: {
+      type: String,
+      default: '',
+      enum: ['', 'internships', 'competitions', 'scholarships', 'conferences', 'workshops', 'deadlines'],
+    },
     pinned: { type: Boolean, default: false },
     expiresAt: { type: Date },
+    attachmentUrl: { type: String, default: '' },
   },
   { timestamps: true }
 );
