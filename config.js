@@ -7,7 +7,7 @@
    Include no trailing slash. The path must end in /api.
    ════════════════════════════════════════════════════════════════ */
 
-window.EMBS_API_BASE = 'https://embs-website.onrender.com/api';
+window.EMBS_API_BASE = 'https://embs-website-b3de.onrender.com/api';
 
 
 /* ── Social links ────────────────────────────────────────────
