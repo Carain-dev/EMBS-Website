@@ -275,4 +275,4 @@ The API is probably asleep or redeploying. Open `https://embs-website-89fl.onren
 
 ## Credits
 
-Built by the IEEE EMBS Web Team, KPR Institute of Engineering and Technology.
+Built by IEEE EMBS design team, KPR Institute of Engineering and Technology.
