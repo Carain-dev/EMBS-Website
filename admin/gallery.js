@@ -21,7 +21,7 @@ let pendingFiles = [];
 /* ── Load ── */
 async function loadGallery() {
   try {
-    const res = await fetch(`${API}/gallery`);
+    const res = await fetch(`${API}/gallery?drafts=true`, { headers: authH() });
     const data = await res.json();
     images = data.data || [];
     renderGallery(); updateStats();
@@ -57,12 +57,17 @@ function renderGallery() {
     const imgContent = img.imageUrl
       ? `<img src="${img.imageUrl}" alt="${img.title}" loading="lazy" />`
       : `<div class="gal-card-img-placeholder">${(img.title||'').slice(0,2).toUpperCase()}</div>`;
+    const statusClass = img.published ? 'published' : 'draft';
+    const statusText = img.published ? 'Published' : 'Draft';
     return `<div class="gal-card" data-id="${img._id}" data-idx="${idx}">
       <div class="gal-card-img-wrap">
         ${imgContent}
         <div class="gal-card-overlay">
           <button class="gal-card-action gal-card-action--view" onclick="openLightbox(${idx});event.stopPropagation();" title="View">
             <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/></svg>
+          </button>
+          <button class="gal-card-action gal-card-action--toggle" onclick="toggleGalleryPublished('${img._id}', ${!!img.published});event.stopPropagation();" title="${img.published ? 'Unpublish' : 'Publish'}">
+            <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
           </button>
           <button class="gal-card-action gal-card-action--delete" onclick="openDeleteModal('${img._id}');event.stopPropagation();" title="Delete">
             <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -72,6 +77,7 @@ function renderGallery() {
       <div class="gal-card-body">
         <div class="gal-card-name" title="${img.title}">${img.title}</div>
         <div class="gal-card-meta"><span class="gal-album-tag">${img.caption||''}</span></div>
+        <div class="gal-card-meta"><span class="status-badge status-badge--${statusClass}">${statusText}</span></div>
       </div>
     </div>`;
   }).join('');
@@ -135,9 +141,10 @@ document.getElementById('uploadSubmitBtn').addEventListener('click', async () =>
   for (const pf of pendingFiles) {
     const fd = new FormData();
     const name = pf.file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
-    fd.append('title',   name);
+    fd.append('title', name);
     fd.append('caption', caption);
-    fd.append('image',   pf.file);
+    fd.append('published', 'true');
+    fd.append('image', pf.file);
     try {
       const res = await fetch(`${API}/gallery`, { method: 'POST', headers: authH(), body: fd });
       if (res.ok) uploaded++;
@@ -148,6 +155,23 @@ document.getElementById('uploadSubmitBtn').addEventListener('click', async () =>
   resetUpload(); uploadPanel.classList.add('collapsed');
   await loadGallery();
 });
+
+async function toggleGalleryPublished(id, currentPublished) {
+  try {
+    const res = await fetch(`${API}/gallery/${id}`, {
+      method: 'PATCH',
+      headers: { ...authH(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ published: !currentPublished })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to update image status');
+    showToast(currentPublished ? 'Image moved to draft.' : 'Image published.', 'success');
+    await loadGallery();
+  } catch (err) {
+    showToast(err.message || 'Failed to update image status.', 'error');
+  }
+}
+window.toggleGalleryPublished = toggleGalleryPublished;
 
 /* ── Search ── */
 document.getElementById('gallerySearch').addEventListener('input', renderGallery);

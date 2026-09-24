@@ -20,7 +20,7 @@ let activeFilter = 'all';
 /* ── Load ── */
 async function loadProjects() {
   try {
-    const res = await fetch(`${API}/projects`);
+    const res = await fetch(`${API}/projects?all=true`, { headers: authH() });
     const data = await res.json();
     projects = data.data || [];
     renderTable(); updateStats();
@@ -29,11 +29,16 @@ async function loadProjects() {
 
 /* ── Stats ── */
 function updateStats() {
+  const published = projects.filter(p => p.featured && p.visibility !== 'hidden').length;
+  const draft = projects.filter(p => (!p.featured && p.visibility !== 'hidden') || p.visibility === 'hidden').length;
+  const ongoing = projects.filter(p => String(p.status || '').toLowerCase() === 'ongoing').length;
+  const completed = projects.filter(p => String(p.status || '').toLowerCase() === 'completed').length;
+
   document.getElementById('statTotal').textContent     = projects.length;
-  document.getElementById('statPublished').textContent = projects.filter(p => p.featured).length;
-  document.getElementById('statDraft').textContent     = projects.filter(p => !p.featured).length;
-  document.getElementById('statOngoing').textContent   = 0;
-  document.getElementById('statCompleted').textContent = projects.length;
+  document.getElementById('statPublished').textContent = published;
+  document.getElementById('statDraft').textContent     = draft;
+  document.getElementById('statOngoing').textContent   = ongoing;
+  document.getElementById('statCompleted').textContent = completed;
 }
 
 /* ── Render Table ── */
@@ -46,7 +51,9 @@ function renderTable() {
   const filtered = projects.filter(p => {
     const matchSearch = !q ||
       (p.title||'').toLowerCase().includes(q) ||
-      (p.description||'').toLowerCase().includes(q);
+      (p.description||'').toLowerCase().includes(q) ||
+      (p.category||'').toLowerCase().includes(q) ||
+      ((p.teamMembers || []).join(' ').toLowerCase().includes(q));
     return matchSearch;
   });
 
@@ -58,14 +65,18 @@ function renderTable() {
     const thumbCell = p.thumbnail
       ? `<img class="td-thumb" src="${p.thumbnail}" alt="thumb" />`
       : `<div class="td-thumb-placeholder"></div>`;
+    const teamText = Array.isArray(p.teamMembers) ? p.teamMembers.join(', ') : (p.teamMembers || '—');
     const githubBtn = `<a class="td-link-btn td-link-btn--github ${p.repoUrl ? '' : 'disabled'}" ${p.repoUrl ? `href="${p.repoUrl}" target="_blank" rel="noopener"` : ''} title="GitHub">GitHub</a>`;
-    const liveBtn   = `<a class="td-link-btn ${p.liveUrl ? '' : 'disabled'}" ${p.liveUrl ? `href="${p.liveUrl}" target="_blank" rel="noopener"` : ''} title="Live">Live</a>`;
+    const paperBtn = `<a class="td-link-btn ${p.paperUrl || p.liveUrl ? '' : 'disabled'}" ${p.paperUrl || p.liveUrl ? `href="${p.paperUrl || p.liveUrl}" target="_blank" rel="noopener"` : ''} title="Paper">Paper</a>`;
+    const statusText = p.featured ? 'Published' : (p.visibility === 'hidden' ? 'Hidden' : 'Draft');
     return `<tr data-id="${p._id}">
       <td class="col-proj-thumb">${thumbCell}</td>
       <td><div class="td-proj-title" title="${p.title}">${p.title}</div></td>
-      <td><span class="cat-badge">${(p.tags||[]).join(', ') || '—'}</span></td>
-      <td><div class="td-links">${githubBtn}${liveBtn}</div></td>
-      <td><span class="status-badge status-badge--${p.featured ? 'published' : 'draft'}">${p.featured ? 'Featured' : 'Normal'}</span></td>
+      <td><span class="cat-badge">${p.category || (p.tags || []).join(', ') || '—'}</span></td>
+      <td>${teamText || '—'}</td>
+      <td><div class="td-links">${githubBtn}${paperBtn}</div></td>
+      <td><span class="status-badge status-badge--${String(p.status || 'ongoing').toLowerCase() === 'completed' ? 'completed' : 'draft'}">${p.status || 'ongoing'}</span></td>
+      <td><span class="status-badge status-badge--${p.featured ? 'published' : 'draft'}">${statusText}</span></td>
       <td><div class="action-btns">
         <button class="action-btn action-btn--edit" onclick="editProject('${p._id}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Edit
@@ -115,13 +126,29 @@ document.getElementById('resetFormBtn').addEventListener('click', resetForm);
 
 function getFormData(featured) {
   const fd = new FormData();
-  fd.append('title',       document.getElementById('projTitle').value.trim());
+  const teamMembers = (document.getElementById('projTeam')?.value || '')
+    .split(',')
+    .map(v => v.trim())
+    .filter(Boolean);
+  const tags = (document.getElementById('projTechnologies')?.value || '')
+    .split(',')
+    .map(v => v.trim())
+    .filter(Boolean);
+
+  fd.append('title', document.getElementById('projTitle').value.trim());
   fd.append('description', document.getElementById('projDesc').value.trim());
-  fd.append('repoUrl',     document.getElementById('projGithub')?.value.trim() || '');
-  fd.append('liveUrl',     document.getElementById('projPaper')?.value.trim() || '');
-  fd.append('featured',    featured);
-  const tagsVal = document.getElementById('projCategory')?.value;
-  if (tagsVal) fd.append('tags', tagsVal);
+  fd.append('category', document.getElementById('projCategory')?.value.trim() || '');
+  fd.append('status', document.getElementById('projStatus')?.value.trim() || 'ongoing');
+  fd.append('mentor', document.getElementById('projFaculty')?.value.trim() || '');
+  fd.append('featured', String(Boolean(featured)));
+  fd.append('visibility', featured ? 'visible' : 'hidden');
+  fd.append('repoUrl', document.getElementById('projGithub')?.value.trim() || '');
+  fd.append('paperUrl', document.getElementById('projPaper')?.value.trim() || '');
+  fd.append('liveUrl', document.getElementById('projDemo')?.value.trim() || '');
+
+  teamMembers.forEach(member => fd.append('teamMembers', member));
+  tags.forEach(tag => fd.append('tags', tag));
+
   if (thumbInput.files[0]) fd.append('thumbnail', thumbInput.files[0]);
   return fd;
 }
@@ -144,8 +171,8 @@ async function saveProject(featured) {
     const method = editingId ? 'PATCH' : 'POST';
     const res    = await fetch(url, { method, headers: authH(), body: fd });
     const data   = await res.json();
-    if (!res.ok) throw new Error(data.message);
-    showToast(editingId ? 'Project updated.' : 'Project published.', 'success');
+    if (!res.ok) throw new Error(data.message || 'Failed to save project');
+    showToast(editingId ? 'Project updated.' : (featured ? 'Project published.' : 'Draft saved.'), 'success');
     resetForm(); formPanel.classList.add('collapsed');
     await loadProjects();
   } catch (err) { showToast(err.message || 'Failed to save.', 'error'); }
@@ -156,9 +183,14 @@ function editProject(id) {
   editingId = id;
   document.getElementById('projTitle').value    = p.title || '';
   document.getElementById('projDesc').value     = p.description || '';
-  document.getElementById('projGithub') && (document.getElementById('projGithub').value = p.repoUrl || '');
-  document.getElementById('projPaper')  && (document.getElementById('projPaper').value  = p.liveUrl || '');
-  document.getElementById('projCategory') && (document.getElementById('projCategory').value = (p.tags||[])[0] || '');
+  document.getElementById('projCategory').value = p.category || '';
+  document.getElementById('projStatus').value    = p.status || 'ongoing';
+  document.getElementById('projFaculty').value   = p.mentor || '';
+  document.getElementById('projTeam').value      = Array.isArray(p.teamMembers) ? p.teamMembers.join(', ') : '';
+  document.getElementById('projGithub').value    = p.repoUrl || '';
+  document.getElementById('projPaper').value     = p.paperUrl || '';
+  document.getElementById('projDemo').value      = p.liveUrl || '';
+  document.getElementById('projTechnologies').value = Array.isArray(p.tags) ? p.tags.join(', ') : '';
   if (p.thumbnail) { thumbImg.src = p.thumbnail; thumbInner.style.display = 'none'; thumbPreview.style.display = 'flex'; }
   document.getElementById('formPanelTitle').textContent = 'Edit Project';
   document.getElementById('publishBtn').textContent     = 'Update Project';

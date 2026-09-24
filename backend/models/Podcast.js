@@ -12,7 +12,8 @@ const podcastSchema = new mongoose.Schema(
     youtubeUrl:        { type: String, default: '' },
     guestName:         { type: String, default: '' },
     guestDesignation:  { type: String, default: '' },
-    publishedAt:       { type: String, default: '' },
+    published:         { type: Boolean, default: false },
+    publishedAt:       { type: Date, default: null },
   },
   { timestamps: true }
 );

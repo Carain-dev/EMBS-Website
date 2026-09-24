@@ -67,7 +67,7 @@
     try {
       const res = await fetch(`${API_BASE}/announcements`);
       const json = await res.json();
-      const items = json.data || json;
+      const items = (json.data || json).filter(item => !item || !item.expiresAt || new Date(item.expiresAt) > new Date());
 
       if (!Array.isArray(items) || !items.length) {
         grid.innerHTML = `<p class="embs-empty">No announcements yet.</p>`;

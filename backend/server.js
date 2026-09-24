@@ -21,6 +21,8 @@ const galleryRoutes      = require('./routes/galleryRoutes');
 const projectRoutes      = require('./routes/projectRoutes');
 const newsletterRoutes   = require('./routes/newsletterRoutes');
 const contactRoutes      = require('./routes/contactRoutes');
+const documentRoutes     = require('./routes/documentRoutes');
+const siteSettingsRoutes = require('./routes/siteSettingsRoutes');
 
 const app = express();
 
@@ -119,6 +121,8 @@ app.use('/api/gallery',       galleryRoutes);
 app.use('/api/projects',      projectRoutes);
 app.use('/api/newsletter',    newsletterRoutes);
 app.use('/api/contact',       contactRoutes);
+app.use('/api/documents',     documentRoutes);
+app.use('/api/site-settings', siteSettingsRoutes);
 
 /* ── Health Check ────────────────────────────── */
 app.get('/api/health', (req, res) => {
