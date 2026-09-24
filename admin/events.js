@@ -22,7 +22,7 @@ let activeFilter = 'all';
 /* ── Load events from API ── */
 async function loadEvents() {
   try {
-    const res = await fetch(`${API}/events`);
+    const res = await fetch(`${API}/events?all=true`, { headers: authH() });
     const data = await res.json();
     events = data.data || [];
     renderTable();
@@ -55,7 +55,10 @@ function renderTable() {
   const count = document.getElementById('tableCount');
 
   let filtered = events.filter(ev => {
-    const matchFilter = activeFilter === 'all' || ev.status === activeFilter;
+    const matchFilter = activeFilter === 'all'
+      || (activeFilter === 'published' && ev.published)
+      || (activeFilter === 'draft' && !ev.published)
+      || ev.status === activeFilter;
     const matchSearch = !query ||
       (ev.title || '').toLowerCase().includes(query) ||
       (ev.type || '').toLowerCase().includes(query) ||
@@ -68,13 +71,16 @@ function renderTable() {
   if (!filtered.length) { tbody.innerHTML = ''; empty.style.display = 'flex'; return; }
   empty.style.display = 'none';
 
-  tbody.innerHTML = filtered.map(ev => `
+  tbody.innerHTML = filtered.map(ev => {
+    const stateLabel = ev.published ? 'Published' : 'Draft';
+    const stateClass = ev.published ? 'published' : 'draft';
+    return `
     <tr data-id="${ev._id}">
       <td><div class="td-title">${ev.title}</div><div class="td-speaker">${ev.speaker || ''}</div></td>
       <td><span class="type-badge type-badge--${typeClass(ev.type)}">${ev.type || ''}</span></td>
       <td>${fmtDate(ev.date)}</td>
       <td><span class="mode-badge"><span class="mode-dot mode-dot--${modeClass(ev.mode)}"></span>${ev.mode || ''}</span></td>
-      <td><span class="status-badge status-badge--${ev.status}">${ev.status ? ev.status.charAt(0).toUpperCase()+ev.status.slice(1) : ''}</span></td>
+      <td><span class="status-badge status-badge--${stateClass}">${stateLabel}</span></td>
       <td><div class="action-btns">
         <button class="action-btn action-btn--edit" onclick="editEvent('${ev._id}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Edit
@@ -83,7 +89,8 @@ function renderTable() {
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Delete
         </button>
       </div></td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
 }
 
 /* ── Tags ── */
@@ -162,6 +169,7 @@ function editEvent(id) {
   document.getElementById('evTitle').value   = ev.title || '';
   document.getElementById('evType').value    = ev.type || '';
   document.getElementById('evDate').value    = ev.date || '';
+  document.getElementById('evTime').value    = ev.time || '';
   document.getElementById('evVenue').value   = ev.venue || '';
   document.getElementById('evMode').value    = ev.mode || '';
   document.getElementById('evSpeaker').value = ev.speaker || '';
@@ -175,17 +183,19 @@ function editEvent(id) {
 }
 
 /* ── Get Form Data ── */
-function getFormData(status) {
+function getFormData(status, published) {
   const fd = new FormData();
   fd.append('title',            document.getElementById('evTitle').value.trim());
   fd.append('type',             document.getElementById('evType').value);
   fd.append('date',             document.getElementById('evDate').value);
+  fd.append('time',             document.getElementById('evTime').value);
   fd.append('venue',            document.getElementById('evVenue').value.trim());
   fd.append('mode',             document.getElementById('evMode').value || 'offline');
   fd.append('speaker',          document.getElementById('evSpeaker').value.trim());
   fd.append('registrationLink', document.getElementById('evRegLink').value.trim());
   fd.append('description',      document.getElementById('evDesc').value.trim());
   fd.append('status',           status);
+  fd.append('published',        String(Boolean(published)));
   activeTags.forEach(t => fd.append('tags', t));
   const thumbFile   = document.getElementById('thumbInput').files[0];
   const speakerFile = document.getElementById('speakerInput').files[0];
@@ -198,7 +208,9 @@ function getFormData(status) {
 document.getElementById('saveDraftBtn').addEventListener('click', async () => {
   const title = document.getElementById('evTitle').value.trim();
   if (!title) { showToast('Please enter an event title.', 'error'); return; }
-  await saveEvent('upcoming');
+  const date = document.getElementById('evDate').value;
+  const status = date && new Date(date) > new Date() ? 'upcoming' : 'completed';
+  await saveEvent(status, false);
 });
 
 /* ── Publish Event ── */
@@ -207,15 +219,37 @@ document.getElementById('publishBtn').addEventListener('click', async () => {
   const date  = document.getElementById('evDate').value;
   if (!title || !date) { showToast('Title and Date are required.', 'error'); return; }
   const status = new Date(date) > new Date() ? 'upcoming' : 'completed';
-  await saveEvent(status);
+  await saveEvent(status, true);
 });
 
-async function saveEvent(status) {
-  const fd = getFormData(status);
+async function saveEvent(status, published) {
+  const url = editingId ? `${API}/events/${editingId}` : `${API}/events`;
+  const method = editingId ? 'PUT' : 'POST';
+  const hasAttachedFiles = Boolean(document.getElementById('thumbInput').files[0] || document.getElementById('speakerInput').files[0]);
+
   try {
-    const url = editingId ? `${API}/events/${editingId}` : `${API}/events`;
-    const method = editingId ? 'PUT' : 'POST';
-    const res = await fetch(url, { method, headers: authH(), body: fd });
+    let res;
+    if (hasAttachedFiles) {
+      const fd = getFormData(status, published);
+      res = await fetch(url, { method, headers: authH(), body: fd });
+    } else {
+      const payload = {
+        title: document.getElementById('evTitle').value.trim(),
+        type: document.getElementById('evType').value,
+        date: document.getElementById('evDate').value,
+        time: document.getElementById('evTime').value,
+        venue: document.getElementById('evVenue').value.trim(),
+        mode: document.getElementById('evMode').value || 'offline',
+        speaker: document.getElementById('evSpeaker').value.trim(),
+        registrationLink: document.getElementById('evRegLink').value.trim(),
+        description: document.getElementById('evDesc').value.trim(),
+        tags: [...activeTags],
+        status,
+        published: Boolean(published),
+      };
+      res = await fetch(url, { method, headers: jsonH(), body: JSON.stringify(payload) });
+    }
+
     const data = await res.json();
     if (!res.ok) throw new Error(data.message);
     showToast(editingId ? 'Event updated successfully.' : 'Event published successfully.', 'success');

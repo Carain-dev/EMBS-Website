@@ -46,7 +46,7 @@ const toast            = document.getElementById('toast');
 /* ── Load ── */
 async function loadEpisodes() {
   try {
-    const res = await fetch(`${API}/podcasts`);
+    const res = await fetch(`${API}/podcasts?drafts=true`, { headers: authH() });
     const data = await res.json();
     episodes = data.data || [];
     renderTable(); updateStats();
@@ -55,9 +55,10 @@ async function loadEpisodes() {
 
 /* ── Stats ── */
 function updateStats() {
+  const publishedCount = episodes.filter(e => e.published).length;
   document.getElementById('statTotal').textContent     = episodes.length;
-  document.getElementById('statPublished').textContent = episodes.length;
-  document.getElementById('statDraft').textContent     = 0;
+  document.getElementById('statPublished').textContent = publishedCount;
+  document.getElementById('statDraft').textContent     = episodes.length - publishedCount;
   document.getElementById('statGuests').textContent    = new Set(episodes.map(e => (e.guestName||'').trim().toLowerCase()).filter(Boolean)).size;
 }
 
@@ -70,7 +71,7 @@ function renderTable() {
       (e.guestName||'').toLowerCase().includes(q);
     return matchSearch;
   });
-  filtered.sort((a, b) => b.episodeNumber - a.episodeNumber);
+  filtered.sort((a, b) => Number(b.episodeNumber || 0) - Number(a.episodeNumber || 0));
 
   episodeTableBody.innerHTML = '';
   tableEmpty.style.display = filtered.length === 0 ? 'flex' : 'none';
@@ -78,6 +79,8 @@ function renderTable() {
 
   filtered.forEach(ep => {
     const tr = document.createElement('tr');
+    const statusClass = ep.published ? 'status-badge--published' : 'status-badge--draft';
+    const statusLabel = ep.published ? 'Published' : 'Draft';
     tr.innerHTML = `
       <td><span class="td-ep-num">${ep.episodeNumber}</span></td>
       <td>
@@ -89,7 +92,7 @@ function renderTable() {
         <div class="td-guest-desig">${ep.guestDesignation||''}</div>
       </td>
       <td><span class="td-duration">${ep.duration||''}</span></td>
-      <td><span class="status-badge status-badge--published">Published</span></td>
+      <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
       <td><div class="action-btns">
         <button class="action-btn action-btn--edit" data-id="${ep._id}">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> Edit
@@ -123,7 +126,7 @@ coverRemove.addEventListener('click', e => {
 });
 
 /* ── Collect Form ── */
-function collectForm() {
+function collectForm(isPublished) {
   const num   = parseInt(epNumber.value);
   const title = epTitle.value.trim();
   const dur   = epDuration.value.trim();
@@ -137,18 +140,19 @@ function collectForm() {
   fd.append('spotifyUrl',       epSpotify.value.trim());
   fd.append('duration',         dur);
   fd.append('description',      epDesc.value.trim());
+  fd.append('published',        String(Boolean(isPublished)));
   if (coverInput.files[0]) fd.append('thumbnail', coverInput.files[0]);
   return fd;
 }
 
 /* ── Save ── */
 document.getElementById('saveDraftBtn').addEventListener('click', async () => {
-  const fd = collectForm(); if (!fd) return;
+  const fd = collectForm(false); if (!fd) return;
   await saveEpisode(fd);
-  showToast('Episode saved!', 'success');
+  showToast('Episode saved as draft!', 'success');
 });
 document.getElementById('publishBtn').addEventListener('click', async () => {
-  const fd = collectForm(); if (!fd) return;
+  const fd = collectForm(true); if (!fd) return;
   await saveEpisode(fd);
   showToast(`EP ${epNumber.value} published!`, 'success');
 });

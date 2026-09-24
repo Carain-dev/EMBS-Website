@@ -205,8 +205,12 @@
               <input type="text" class="settings-input" id="chapterName" value="IEEE Engineering in Medicine and Biology Society" />
             </div>
             <div class="settings-form-group">
-              <label class="settings-label">Organization</label>
-              <input type="text" class="settings-input" id="orgName" value="College of Engineering, Trivandrum" />
+              <label class="settings-label">Institution</label>
+              <input type="text" class="settings-input" id="institutionName" value="College of Engineering, Trivandrum" />
+            </div>
+            <div class="settings-form-group">
+              <label class="settings-label">Department</label>
+              <input type="text" class="settings-input" id="departmentName" value="Biomedical Engineering" />
             </div>
             <div class="settings-form-group">
               <label class="settings-label">Contact Email</label>
@@ -217,6 +221,10 @@
               <input type="tel" class="settings-input" id="sitePhone" value="+91 471 2515 565" />
             </div>
             <div class="settings-form-group">
+              <label class="settings-label">Faculty Contact</label>
+              <input type="text" class="settings-input" id="facultyContact" value="" />
+            </div>
+            <div class="settings-form-group">
               <label class="settings-label">Google Maps Link</label>
               <input type="url" class="settings-input" id="mapsLink" value="https://maps.google.com/?q=College+of+Engineering+Trivandrum" />
             </div>
@@ -225,8 +233,8 @@
               <input type="text" class="settings-input" id="siteAddress" value="College of Engineering, Thiruvananthapuram, Kerala 695016" />
             </div>
             <div class="settings-form-group settings-span-full">
-              <label class="settings-label">Website Description</label>
-              <textarea class="settings-input settings-textarea" id="siteDesc" rows="3">IEEE EMBS Student Chapter at CET is dedicated to advancing biomedical engineering through events, research, and community outreach.</textarea>
+              <label class="settings-label">Footer Text</label>
+              <textarea class="settings-input settings-textarea" id="footerText" rows="3">IEEE EMBS Student Chapter at CET is dedicated to advancing biomedical engineering through events, research, and community outreach.</textarea>
             </div>
           </div>
           <div class="settings-card-footer">
@@ -485,6 +493,13 @@
             <div class="settings-form-group">
               <label class="settings-label social-lbl">
                 <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                Spotify URL
+              </label>
+              <input type="url" class="settings-input" id="spotifyUrl" value="" />
+            </div>
+            <div class="settings-form-group">
+              <label class="settings-label social-lbl">
+                <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
                 Website URL
               </label>
               <input type="url" class="settings-input" id="webUrl" value="https://ieeeembscet.org" />
@@ -551,6 +566,86 @@
               <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="1.6"/><polyline points="17,21 17,13 7,13 7,21" stroke="currentColor" stroke-width="1.6"/><polyline points="7,3 7,8 15,8" stroke="currentColor" stroke-width="1.6"/></svg>
               Save Changes
             </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Documents & Brochures Card ── -->
+      <div class="panel settings-card settings-card--wide">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <span class="panel-title">Documents &amp; Brochures</span>
+            <span class="panel-subtitle">Manage chapter documents stored in the CMS</span>
+          </div>
+        </div>
+        <div class="settings-card-body">
+          <div class="document-form-grid">
+            <div class="settings-form-group">
+              <label class="settings-label">Document Title</label>
+              <input type="text" class="settings-input" id="docTitle" placeholder="Chapter brochure" />
+            </div>
+            <div class="settings-form-group">
+              <label class="settings-label">Category</label>
+              <input type="text" class="settings-input" id="docCategory" placeholder="Brochure, Membership, Report" />
+            </div>
+            <div class="settings-form-group settings-span-full">
+              <label class="settings-label">Description</label>
+              <textarea class="settings-input settings-textarea" id="docDescription" rows="3" placeholder="Document summary or purpose"></textarea>
+            </div>
+            <div class="settings-form-group">
+              <label class="settings-label">Document File</label>
+              <input type="file" class="settings-input" id="docFileInput" />
+              <small class="field-note" id="docFileName">No file selected</small>
+            </div>
+            <div class="settings-form-group">
+              <label class="settings-label">Visibility</label>
+              <div class="toggle-list compact-toggle-list">
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <span class="toggle-title">Published</span>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" id="docPublished" checked />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <span class="toggle-title">Public</span>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" id="docPublic" checked />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="settings-card-footer document-actions-row">
+            <button class="btn-save-settings" id="saveDocumentBtn">
+              Save Document
+            </button>
+            <button class="btn-danger btn-danger--outline" id="resetDocumentFormBtn" type="button">
+              Clear
+            </button>
+          </div>
+          <div class="document-table-wrap">
+            <table class="document-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>File</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="documentsTableBody">
+                <tr>
+                  <td colspan="5" class="table-empty-state">No documents available.</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

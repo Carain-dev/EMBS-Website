@@ -21,7 +21,7 @@
     try {
       const res = await fetch(`${API_BASE}/gallery`);
       const json = await res.json();
-      const items = json.data || json;
+      const items = (json.data || json || []).filter(item => item && item.published !== false);
 
       if (!Array.isArray(items) || !items.length) return;
 

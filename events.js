@@ -24,6 +24,12 @@
   }
 
   function buildCard(ev) {
+    const eventUrl = `event.html?id=${encodeURIComponent(ev._id)}`;
+    const registrationUrl = /^https?:\/\//i.test(String(ev.registrationLink || '')) ? ev.registrationLink : '';
+    const actionUrl = registrationUrl || eventUrl;
+    const actionText = registrationUrl ? 'Register' : 'View Details';
+    const shouldOpenNewTab = Boolean(registrationUrl);
+
     const div = document.createElement('div');
     div.className = 'ev-card';
     div.setAttribute('data-category', (ev.type || '').toLowerCase());
@@ -37,13 +43,14 @@
       <div class="ev-card-body">
         <div class="ev-meta">
           <span class="ev-date">${fmtDate(ev.date)}</span>
+          ${ev.time ? `<span class="ev-mode">${ev.time}</span>` : ''}
           ${ev.mode ? `<span class="ev-mode">${ev.mode}</span>` : ''}
         </div>
-        <h3 class="ev-title"><a href="event.html?id=${encodeURIComponent(ev._id)}">${ev.title}</a></h3>
+        <h3 class="ev-title"><a href="${eventUrl}">${ev.title}</a></h3>
         <p class="ev-desc">${ev.description || ''}</p>
         <div class="ev-footer">
           ${ev.venue ? `<span class="ev-location">${ev.venue}</span>` : ''}
-          <a href="event.html?id=${encodeURIComponent(ev._id)}" class="act-btn act-btn--primary">View Details</a>
+          <a href="${actionUrl}" class="act-btn act-btn--primary" ${shouldOpenNewTab ? 'target="_blank" rel="noopener noreferrer"' : ''}>${actionText}</a>
         </div>
       </div>`;
     return div;
