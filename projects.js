@@ -126,7 +126,7 @@ import { apiGet } from './api.js';
 
     try {
       const res = await apiGet('/projects');
-      const projects = (res.data || res).filter(p => p.visibility !== 'hidden');
+      const projects = (res.data || res).filter(p => p.featured && p.visibility !== 'hidden');
 
       if (!projects.length) {
         message(grid, 'No projects have been published yet. Check back soon.');

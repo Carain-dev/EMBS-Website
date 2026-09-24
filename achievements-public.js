@@ -65,7 +65,7 @@
     try {
       const res = await fetch(`${API_BASE}/achievements`);
       const json = await res.json();
-      const items = json.data || json;
+      const items = (json.data || json).filter(item => item && item.featured !== false);
 
       if (!Array.isArray(items) || !items.length) {
         grid.innerHTML = `<p class="embs-empty">No achievements yet.</p>`;

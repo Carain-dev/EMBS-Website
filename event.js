@@ -44,6 +44,7 @@
 
     const facts = [
       ev.date && { label: 'Date', value: fmtDate(ev.date) },
+      ev.time && { label: 'Time', value: ev.time },
       ev.venue && { label: 'Venue', value: ev.venue },
       ev.mode && { label: 'Mode', value: ev.mode },
       ev.speaker && { label: 'Speaker', value: ev.speaker },

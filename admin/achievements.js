@@ -86,6 +86,8 @@ function editAch(id) {
   document.getElementById('achYear').value     = a.date || '';
   document.getElementById('achIssuer') && (document.getElementById('achIssuer').value = '');
   document.getElementById('achDesc').value     = a.description || '';
+  const featuredBox = document.getElementById('achFeatured');
+  if (featuredBox) featuredBox.checked = Boolean(a.featured);
   if (a.image) {
     achImgName.textContent = 'Current image saved';
     achImgInner.style.display = 'none'; achImgFile.style.display = 'flex';
@@ -99,6 +101,8 @@ function editAch(id) {
 /* ── Reset ── */
 function resetManualForm() {
   document.getElementById('manualForm').reset();
+  const featuredBox = document.getElementById('achFeatured');
+  if (featuredBox) featuredBox.checked = true;
   achImageInput.value = '';
   achImgFile.style.display = 'none'; achImgInner.style.display = 'flex';
   editingId = null;
@@ -135,6 +139,7 @@ document.getElementById('saveAchBtn').addEventListener('click', async () => {
   fd.append('category',    category);
   fd.append('date',        date);
   fd.append('description', document.getElementById('achDesc').value.trim());
+  fd.append('featured', String(document.getElementById('achFeatured').checked));
   if (achImageInput.files[0]) fd.append('image', achImageInput.files[0]);
 
   try {

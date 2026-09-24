@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
      The markup ships four icons pointing at "#". Rather than leave
      dead links on every page, each is matched to its entry in
      window.EMBS_SOCIAL and hidden when no URL is configured. */
-  (function wireSocialLinks() {
+  function wireSocialLinks() {
     var config = window.EMBS_SOCIAL || {};
 
     // Footer icons and the contact page's larger social buttons.
@@ -27,7 +27,76 @@ document.addEventListener("DOMContentLoaded", function () {
         icon.hidden = true;
       }
     });
-  })();
+  }
+
+  function normalizeText(value) {
+    return typeof value === 'string' ? value.trim() : '';
+  }
+
+  function applyPublicSiteSettings(settings) {
+    if (!settings) return;
+
+    var socialLinks = settings.socialLinks || {};
+    window.EMBS_SOCIAL = Object.assign({}, window.EMBS_SOCIAL || {}, socialLinks);
+    wireSocialLinks();
+
+    var mapUrl = normalizeText(settings.mapUrl);
+    var mapFrame = document.querySelector('.contact-map-card iframe');
+    if (mapFrame && mapUrl) {
+      mapFrame.setAttribute('src', mapUrl);
+    }
+
+    var infoItems = document.querySelectorAll('.contact-info-item');
+    infoItems.forEach(function (item) {
+      var label = (item.querySelector('.contact-info-label') || {}).textContent || '';
+      var text = item.querySelector('.contact-info-text');
+      if (!text) return;
+
+      var lower = label.toLowerCase();
+      if (lower.indexOf('address') !== -1) {
+        var address = normalizeText(settings.address);
+        if (address) {
+          text.textContent = address;
+        }
+      } else if (lower.indexOf('email') !== -1 && lower.indexOf('podcast') === -1) {
+        var email = normalizeText(settings.officialEmail);
+        if (email) {
+          text.textContent = email;
+        }
+      } else if (lower.indexOf('faculty') !== -1 || lower.indexOf('in-charge') !== -1) {
+        var faculty = normalizeText(settings.facultyContact);
+        if (faculty) {
+          text.textContent = faculty;
+        }
+      }
+    });
+  }
+
+  async function loadPublicSiteSettings() {
+    var apiBase = window.EMBS_API_BASE || '';
+    if (!apiBase) return;
+
+    try {
+      var response = await fetch(apiBase + '/site-settings/public', {
+        credentials: 'include',
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (!response.ok) {
+        throw new Error('Request failed with status ' + response.status);
+      }
+
+      var payload = await response.json();
+      if (payload && payload.success && payload.data) {
+        applyPublicSiteSettings(payload.data);
+      }
+    } catch (error) {
+      console.warn('Public site settings unavailable:', error.message);
+    }
+  }
+
+  wireSocialLinks();
+  loadPublicSiteSettings();
 
   /* Back to top. This lived in ten separate page scripts, so on the pages
      that load none of them (gallery, contact) the button did nothing. */

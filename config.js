@@ -7,8 +7,16 @@
    Include no trailing slash. The path must end in /api.
    ════════════════════════════════════════════════════════════════ */
 
-window.EMBS_API_BASE = 'https://embs-website-b3de.onrender.com/api';
+(function () {
+  var host = window.location.hostname;
+  var protocol = window.location.protocol || '';
+  var isLocalFile = protocol === 'file:';
+  var isLocal = isLocalFile || host === 'localhost' || host === '127.0.0.1';
 
+  window.EMBS_API_BASE = isLocal
+    ? 'http://localhost:5000/api'
+    : 'https://embs-website-b3de.onrender.com/api';
+})();
 
 /* ── Social links ────────────────────────────────────────────
    Fill these in with the chapter's real accounts. Any left empty
