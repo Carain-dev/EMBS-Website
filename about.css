@@ -641,6 +641,30 @@ body {
   box-shadow: 0 8px 28px rgba(107, 45, 139, 0.4);
 }
 
+/* Brochure actions row — wraps both CTA buttons side by side */
+.join-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+/* Outline variant for the secondary (brochure) button */
+.join-btn--outline {
+  background: transparent;
+  border: 1.5px solid rgba(107, 45, 139, 0.65);
+  color: rgba(220, 225, 245, 0.9);
+  box-shadow: 0 2px 12px rgba(107, 45, 139, 0.15);
+}
+
+.join-btn--outline:hover {
+  background: rgba(107, 45, 139, 0.12);
+  border-color: #6B2D8B;
+  box-shadow: 0 6px 22px rgba(107, 45, 139, 0.3);
+}
+
 /* Glass DNA SVG */
 .about-dna-bg {
   position: absolute;

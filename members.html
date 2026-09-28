@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="navbar.css" />
   <script src="config.js"></script>
   <link rel="stylesheet" href="members.css" />
+  <link rel="stylesheet" href="responsive.css" />
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -260,135 +261,9 @@
       </div>
     </div>
 
-    <!-- Member Grid -->
+    <!-- Member Grid — populated by members-public.js via GET /api/members -->
     <div class="smem-grid" id="memberGrid">
-
-      <article class="smem-card" data-dept="bme" data-year="3" data-search="arjun kumar biomedical engineering signal processing python matlab">
-        <div class="smem-avatar-wrap">
-          <img src="" alt="Arjun Kumar" class="smem-avatar-img" />
-          <div class="smem-avatar-placeholder" aria-hidden="true">AK</div>
-        </div>
-        <div class="smem-card-body">
-          <h3 class="smem-name">Arjun Kumar</h3>
-          <p class="smem-dept">Biomedical Engineering</p>
-          <p class="smem-meta">
-            <span class="smem-year">3rd Year</span>
-            <span class="smem-sep">&bull;</span>
-            <span class="smem-id">IEEE: 98234561</span>
-          </p>
-          <div class="smem-tags">
-            <span class="smem-tag">Signal Processing</span>
-            <span class="smem-tag">Python</span>
-            <span class="smem-tag">MATLAB</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="smem-card" data-dept="cse" data-year="2" data-search="priya nair computer science machine learning deep learning healthcare ai">
-        <div class="smem-avatar-wrap">
-          <img src="" alt="Priya Nair" class="smem-avatar-img" />
-          <div class="smem-avatar-placeholder" aria-hidden="true">PN</div>
-        </div>
-        <div class="smem-card-body">
-          <h3 class="smem-name">Priya Nair</h3>
-          <p class="smem-dept">Computer Science</p>
-          <p class="smem-meta">
-            <span class="smem-year">2nd Year</span>
-            <span class="smem-sep">&bull;</span>
-            <span class="smem-id">IEEE: 98341207</span>
-          </p>
-          <div class="smem-tags">
-            <span class="smem-tag">Machine Learning</span>
-            <span class="smem-tag">Deep Learning</span>
-            <span class="smem-tag">AI</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="smem-card" data-dept="ece" data-year="4" data-search="rahul menon electronics communication embedded systems iot wearables">
-        <div class="smem-avatar-wrap">
-          <img src="" alt="Rahul Menon" class="smem-avatar-img" />
-          <div class="smem-avatar-placeholder" aria-hidden="true">RM</div>
-        </div>
-        <div class="smem-card-body">
-          <h3 class="smem-name">Rahul Menon</h3>
-          <p class="smem-dept">Electronics &amp; Communication</p>
-          <p class="smem-meta">
-            <span class="smem-year">4th Year</span>
-            <span class="smem-sep">&bull;</span>
-            <span class="smem-id">IEEE: 97812340</span>
-          </p>
-          <div class="smem-tags">
-            <span class="smem-tag">Embedded Systems</span>
-            <span class="smem-tag">IoT</span>
-            <span class="smem-tag">Wearables</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="smem-card" data-dept="bme" data-year="2" data-search="sneha rajan biomedical engineering medical imaging mri segmentation">
-        <div class="smem-avatar-wrap">
-          <img src="" alt="Sneha Rajan" class="smem-avatar-img" />
-          <div class="smem-avatar-placeholder" aria-hidden="true">SR</div>
-        </div>
-        <div class="smem-card-body">
-          <h3 class="smem-name">Sneha Rajan</h3>
-          <p class="smem-dept">Biomedical Engineering</p>
-          <p class="smem-meta">
-            <span class="smem-year">2nd Year</span>
-            <span class="smem-sep">&bull;</span>
-            <span class="smem-id">IEEE: 99102834</span>
-          </p>
-          <div class="smem-tags">
-            <span class="smem-tag">Medical Imaging</span>
-            <span class="smem-tag">MRI</span>
-            <span class="smem-tag">Segmentation</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="smem-card" data-dept="eee" data-year="3" data-search="karthik selvam electrical engineering biosensors circuit design pcb">
-        <div class="smem-avatar-wrap">
-          <img src="" alt="Karthik Selvam" class="smem-avatar-img" />
-          <div class="smem-avatar-placeholder" aria-hidden="true">KS</div>
-        </div>
-        <div class="smem-card-body">
-          <h3 class="smem-name">Karthik Selvam</h3>
-          <p class="smem-dept">Electrical Engineering</p>
-          <p class="smem-meta">
-            <span class="smem-year">3rd Year</span>
-            <span class="smem-sep">&bull;</span>
-            <span class="smem-id">IEEE: 98567123</span>
-          </p>
-          <div class="smem-tags">
-            <span class="smem-tag">Biosensors</span>
-            <span class="smem-tag">Circuit Design</span>
-            <span class="smem-tag">PCB</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="smem-card" data-dept="cse" data-year="1" data-search="divya lakshmi computer science data science bioinformatics research">
-        <div class="smem-avatar-wrap">
-          <img src="" alt="Divya Lakshmi" class="smem-avatar-img" />
-          <div class="smem-avatar-placeholder" aria-hidden="true">DL</div>
-        </div>
-        <div class="smem-card-body">
-          <h3 class="smem-name">Divya Lakshmi</h3>
-          <p class="smem-dept">Computer Science</p>
-          <p class="smem-meta">
-            <span class="smem-year">1st Year</span>
-            <span class="smem-sep">&bull;</span>
-            <span class="smem-id">IEEE: 99834012</span>
-          </p>
-          <div class="smem-tags">
-            <span class="smem-tag">Data Science</span>
-            <span class="smem-tag">Bioinformatics</span>
-            <span class="smem-tag">Research</span>
-          </div>
-        </div>
-      </article>
-
+      <!-- Fake placeholder cards removed. Real members load dynamically. -->
     </div>
 
     <!-- Empty state -->
@@ -568,6 +443,7 @@
 <script src="announceBar.js" defer></script>
 <script src="newsletter.js" defer></script>
 <script src="members-public.js" defer></script>
+<script src="page-hero-image.js" defer></script>
 </body>
 </html>
 

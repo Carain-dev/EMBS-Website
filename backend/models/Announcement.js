@@ -18,6 +18,7 @@ const announcementSchema = new mongoose.Schema(
     pinned: { type: Boolean, default: false },
     expiresAt: { type: Date },
     attachmentUrl: { type: String, default: '' },
+    showInUpdates: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

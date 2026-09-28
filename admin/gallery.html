@@ -261,6 +261,210 @@
         </div>
       </div>
 
+      <!-- ══════════════════════════════════════════════════════
+           EVENT GALLERY — manage gallery.html #gallery-grid
+      ══════════════════════════════════════════════════════ -->
+
+      <!-- Event Gallery Add/Edit Form -->
+      <div class="panel form-panel collapsed" id="evtGalFormPanel" style="margin-top:2rem;">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <span class="panel-title" id="evtGalFormTitle">Add Event Gallery Item</span>
+            <span class="panel-subtitle">Upload an event photo for the public Gallery page grid</span>
+          </div>
+          <button class="form-collapse-btn" id="collapseEvtGalFormBtn" aria-label="Collapse">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M18 15l-6-6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <form class="event-form" id="evtGalForm" onsubmit="return false;">
+          <div class="form-row">
+            <div class="form-group mem-photo-group">
+              <label class="form-label">Photo <span class="form-required">*</span></label>
+              <div class="upload-zone mem-photo-zone" id="evtGalPhotoZone">
+                <input type="file" class="upload-input" id="evtGalPhotoInput" accept="image/*" />
+                <div class="upload-inner" id="evtGalPhotoInner">
+                  <svg viewBox="0 0 48 48" fill="none" width="28" height="28"><rect x="6" y="10" width="36" height="28" rx="3" stroke="rgba(107,45,139,0.5)" stroke-width="1.5"/><circle cx="17" cy="20" r="3" stroke="rgba(0,169,157,0.6)" stroke-width="1.5"/><path d="M6 32l10-8 7 6 5-4 14 10" stroke="rgba(107,45,139,0.4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="upload-hint">Click to upload photo</span>
+                </div>
+                <div class="upload-preview" id="evtGalPhotoPreview" style="display:none;">
+                  <img id="evtGalPhotoImg" src="" alt="Preview" />
+                  <button type="button" class="upload-remove" id="evtGalPhotoRemove">✕</button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group form-group--wide">
+              <label class="form-label">Event Title <span class="form-required">*</span></label>
+              <input type="text" class="form-input" id="evtGalTitle" placeholder="e.g. AI in Healthcare Hackathon 2025" />
+            </div>
+            <div class="form-group form-group--wide">
+              <label class="form-label">Caption / Description</label>
+              <input type="text" class="form-input" id="evtGalCaption" placeholder="Optional short caption" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Display Order</label>
+              <input type="number" class="form-input" id="evtGalOrder" min="0" step="1" value="0" style="max-width:120px;" />
+              <span style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;display:block;">Lower = appears first.</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Published</label>
+              <div style="display:flex;align-items:center;gap:10px;margin-top:6px;">
+                <label style="position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;">
+                  <input type="checkbox" id="evtGalPublished" checked style="opacity:0;width:0;height:0;position:absolute;" />
+                  <span id="evtGalPubTrack" style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:rgba(0,169,157,0.85);border-radius:22px;transition:background 0.2s;"></span>
+                  <span id="evtGalPubThumb" style="position:absolute;height:16px;width:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform 0.2s;pointer-events:none;transform:translateX(18px);"></span>
+                </label>
+                <span style="font-size:0.82rem;color:var(--text-muted);">Show on <strong style="color:var(--text-primary)">Gallery page</strong></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-reset" id="resetEvtGalFormBtn">Clear</button>
+            <div class="form-actions-right">
+              <button type="button" class="btn-publish" id="saveEvtGalBtn">
+                <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="1.6"/><polyline points="17,21 17,13 7,13 7,21" stroke="currentColor" stroke-width="1.6"/><polyline points="7,3 7,8 15,8" stroke="currentColor" stroke-width="1.6"/></svg>
+                <span id="saveEvtGalBtnLabel">Save Photo</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Event Gallery Table -->
+      <div class="panel table-panel" style="margin-top:1rem;">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <span class="panel-title">
+              <svg viewBox="0 0 20 20" fill="none" width="16" height="16" style="vertical-align:middle;margin-right:6px;"><rect x="2" y="2" width="16" height="16" rx="3" stroke="#6B2D8B" stroke-width="1.5"/><circle cx="7" cy="7" r="2" stroke="#6B2D8B" stroke-width="1.3"/><path d="M2 13l4-4 3 3 2-2 5 5" stroke="#6B2D8B" stroke-width="1.3" stroke-linecap="round"/></svg>
+              Event Gallery
+            </span>
+            <span class="panel-subtitle" id="evtGalCount">Loading…</span>
+          </div>
+          <button class="btn-primary-action" id="addEvtGalBtn">
+            <svg viewBox="0 0 24 24" fill="none" width="15" height="15"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Add Photo
+          </button>
+        </div>
+        <div class="table-wrap">
+          <table class="events-table" id="evtGalTable">
+            <thead>
+              <tr>
+                <th style="width:8%"></th>
+                <th style="width:32%">Title</th>
+                <th style="width:24%">Caption</th>
+                <th style="width:10%">Order</th>
+                <th style="width:12%">Status</th>
+                <th style="width:14%">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="evtGalTableBody"></tbody>
+          </table>
+          <div class="table-empty" id="evtGalTableEmpty" style="display:none;">
+            <svg viewBox="0 0 48 48" fill="none" width="38" height="38"><rect x="6" y="10" width="36" height="28" rx="3" stroke="rgba(107,45,139,0.25)" stroke-width="1.5"/><circle cx="17" cy="20" r="3" stroke="rgba(107,45,139,0.25)" stroke-width="1.3"/><path d="M6 32l10-8 7 6 5-4 14 10" stroke="rgba(107,45,139,0.2)" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <span>No event gallery photos added yet</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════
+           HIGHLIGHTED VIDEOS — manage gallery.html #gallery-videos
+      ══════════════════════════════════════════════════════ -->
+
+      <!-- Highlighted Videos Add/Edit Form -->
+      <div class="panel form-panel collapsed" id="vidFormPanel" style="margin-top:2rem;">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <span class="panel-title" id="vidFormTitle">Add Highlighted Video</span>
+            <span class="panel-subtitle">Add a YouTube video to the Highlighted Videos section on the Gallery page</span>
+          </div>
+          <button class="form-collapse-btn" id="collapseVidFormBtn" aria-label="Collapse">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M18 15l-6-6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <form class="event-form" id="vidForm" onsubmit="return false;">
+          <div class="form-row">
+            <div class="form-group form-group--wide">
+              <label class="form-label">Video Title <span class="form-required">*</span></label>
+              <input type="text" class="form-input" id="vidTitle" placeholder="e.g. AI in Healthcare Hackathon 2025 – Highlights Reel" />
+            </div>
+            <div class="form-group form-group--wide">
+              <label class="form-label">YouTube URL <span class="form-required">*</span></label>
+              <input type="url" class="form-input" id="vidUrl" placeholder="https://youtu.be/... or https://www.youtube.com/watch?v=..." />
+              <span style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;display:block;">Paste any YouTube link — it will be embedded safely.</span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group form-group--wide">
+              <label class="form-label">Caption / Description</label>
+              <input type="text" class="form-input" id="vidCaption" placeholder="Optional short description" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Display Order</label>
+              <input type="number" class="form-input" id="vidOrder" min="0" step="1" value="0" style="max-width:120px;" />
+              <span style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;display:block;">Lower = appears first.</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Published</label>
+              <div style="display:flex;align-items:center;gap:10px;margin-top:6px;">
+                <label style="position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;">
+                  <input type="checkbox" id="vidPublished" checked style="opacity:0;width:0;height:0;position:absolute;" />
+                  <span id="vidPubTrack" style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:rgba(0,169,157,0.85);border-radius:22px;transition:background 0.2s;"></span>
+                  <span id="vidPubThumb" style="position:absolute;height:16px;width:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform 0.2s;pointer-events:none;transform:translateX(18px);"></span>
+                </label>
+                <span style="font-size:0.82rem;color:var(--text-muted);">Show on <strong style="color:var(--text-primary)">Gallery page</strong></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-reset" id="resetVidFormBtn">Clear</button>
+            <div class="form-actions-right">
+              <button type="button" class="btn-publish" id="saveVidBtn">
+                <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="1.6"/><polyline points="17,21 17,13 7,13 7,21" stroke="currentColor" stroke-width="1.6"/><polyline points="7,3 7,8 15,8" stroke="currentColor" stroke-width="1.6"/></svg>
+                <span id="saveVidBtnLabel">Save Video</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Highlighted Videos Table -->
+      <div class="panel table-panel" style="margin-top:1rem;">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <span class="panel-title">
+              <svg viewBox="0 0 20 20" fill="none" width="16" height="16" style="vertical-align:middle;margin-right:6px;"><rect x="2" y="4" width="16" height="12" rx="3" stroke="#00A99D" stroke-width="1.5"/><polygon points="8,7 14,10 8,13" fill="#00A99D"/></svg>
+              Highlighted Videos
+            </span>
+            <span class="panel-subtitle" id="vidCount">Loading…</span>
+          </div>
+          <button class="btn-primary-action" id="addVidBtn">
+            <svg viewBox="0 0 24 24" fill="none" width="15" height="15"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Add Video
+          </button>
+        </div>
+        <div class="table-wrap">
+          <table class="events-table" id="vidTable">
+            <thead>
+              <tr>
+                <th style="width:32%">Title</th>
+                <th style="width:28%">YouTube URL</th>
+                <th style="width:12%">Order</th>
+                <th style="width:12%">Status</th>
+                <th style="width:16%">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="vidTableBody"></tbody>
+          </table>
+          <div class="table-empty" id="vidTableEmpty" style="display:none;">
+            <svg viewBox="0 0 48 48" fill="none" width="38" height="38"><rect x="4" y="9" width="40" height="30" rx="5" stroke="rgba(0,169,157,0.25)" stroke-width="1.5"/><polygon points="20,18 34,24 20,30" fill="rgba(0,169,157,0.2)"/></svg>
+            <span>No highlighted videos added yet</span>
+          </div>
+        </div>
+      </div>
+
     </main>
   </div>
 
@@ -302,6 +506,32 @@
   </div>
 
   <div class="toast" id="toast"></div>
+
+  <!-- Event Gallery Delete Modal -->
+  <div class="modal-backdrop" id="evtGalDeleteModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-icon"><svg viewBox="0 0 24 24" fill="none" width="26" height="26"><polyline points="3,6 5,6 21,6" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <h3 class="modal-title">Delete Gallery Photo?</h3>
+      <p class="modal-desc">Permanently remove <strong id="evtGalDeleteName"></strong>. This cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" id="cancelEvtGalDelete">Cancel</button>
+        <button class="btn-modal-confirm" id="confirmEvtGalDelete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Highlighted Videos Delete Modal -->
+  <div class="modal-backdrop" id="vidDeleteModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-icon"><svg viewBox="0 0 24 24" fill="none" width="26" height="26"><polyline points="3,6 5,6 21,6" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <h3 class="modal-title">Delete Video?</h3>
+      <p class="modal-desc">Permanently remove <strong id="vidDeleteName"></strong>. This cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" id="cancelVidDelete">Cancel</button>
+        <button class="btn-modal-confirm" id="confirmVidDelete">Delete</button>
+      </div>
+    </div>
+  </div>
 
   <script src="gallery.js"></script>
 </body>

@@ -142,6 +142,7 @@ function getFormData(featured) {
   fd.append('mentor', document.getElementById('projFaculty')?.value.trim() || '');
   fd.append('featured', String(Boolean(featured)));
   fd.append('visibility', featured ? 'visible' : 'hidden');
+  fd.append('showInUpdates', String(Boolean(document.getElementById('projShowInUpdates') && document.getElementById('projShowInUpdates').checked)));
   fd.append('repoUrl', document.getElementById('projGithub')?.value.trim() || '');
   fd.append('paperUrl', document.getElementById('projPaper')?.value.trim() || '');
   fd.append('liveUrl', document.getElementById('projDemo')?.value.trim() || '');
@@ -233,3 +234,27 @@ function showToast(msg, type) {
 
 loadProjects();
 
+
+/* ── Show in Updates toggle ── */
+(function () {
+  var cb    = document.getElementById('projShowInUpdates');
+  var track = document.getElementById('projUpdatesTrack');
+  var thumb = document.getElementById('projUpdatesThumb');
+  function apply(v) {
+    if (track) track.style.background = v ? 'rgba(0,169,157,0.85)' : 'rgba(107,45,139,0.2)';
+    if (thumb) thumb.style.transform  = v ? 'translateX(18px)' : 'translateX(0)';
+  }
+  if (cb) { cb.addEventListener('change', () => apply(cb.checked)); apply(cb.checked); }
+
+  /* Restore on edit */
+  var _orig = typeof loadEdit === 'function' ? loadEdit : null;
+  if (_orig) {
+    window.loadEdit = function (id) {
+      _orig(id);
+      var p = projects ? projects.find(function (x) { return x._id === id; }) : null;
+      if (p && cb) { cb.checked = Boolean(p.showInUpdates); apply(Boolean(p.showInUpdates)); }
+    };
+  }
+  var resetBtn = document.getElementById('resetFormBtn');
+  if (resetBtn) resetBtn.addEventListener('click', function () { if (cb) { cb.checked = false; apply(false); } });
+})();

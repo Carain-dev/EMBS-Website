@@ -49,7 +49,7 @@ form.addEventListener('submit', async function (e) {
       throw new Error(
         networkErr.name === 'AbortError'
           ? 'Request timed out. The server may be waking up — please try again in a moment.'
-          : 'Could not reach the server. Check your connection or wait a moment and retry.'
+          : 'Could not reach the server. The backend may not be running — check that the Node.js server is started and your MongoDB Atlas IP whitelist includes your current IP.'
       );
     } finally {
       clearTimeout(timeout);

@@ -8,7 +8,23 @@ const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 /* ── Get All Members ─────────────────────────── */
 exports.getAll = asyncHandler(async (req, res) => {
-  const filter = req.query.all === 'true' ? {} : { active: true };
+  /* ?all=true — admin view: every member regardless of status
+     ?orgchart=true — public org-chart fetch: only inOrgChart members,
+                      regardless of active flag, sorted by display order
+     default — public directory: active members only */
+  let filter;
+  if (req.query.all === 'true') {
+    filter = {};
+  } else if (req.query.orgchart === 'true') {
+    filter = { inOrgChart: true };
+  } else if (req.query.faculty === 'true') {
+    /* Public home-page Faculty Coordinators section:
+       only members flagged as faculty coordinators AND active */
+    filter = { isFacultyCoordinator: true, active: true };
+  } else {
+    filter = { active: true };
+  }
+
   const { rows, meta } = await paginate(Member, filter, { order: 1 }, req.query);
   sendResponse(res, 200, rows, 'Success', meta);
 });

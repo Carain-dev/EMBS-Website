@@ -73,23 +73,47 @@
     if (!grid) return;
 
     try {
-      const res = await fetch(`${API_BASE}/events`);
+      const res  = await fetch(`${API_BASE}/events`);
       const json = await res.json();
-      const all = json.data || json;
+      const all  = json.data || json;
 
-      if (!Array.isArray(all) || !all.length) return;
+      if (!Array.isArray(all) || !all.length) {
+        /* No published events at all — show a clean empty state instead
+           of the hardcoded placeholder cards. */
+        grid.innerHTML =
+          '<p style="color:rgba(200,210,230,0.4);font-size:0.85rem;' +
+          'text-align:center;padding:2rem 0;width:100%;">No upcoming events yet.</p>';
+        return;
+      }
 
       const now = new Date().toISOString().split('T')[0];
-      const featured = all.filter(e => e.featured);
-      const upcoming = featured.filter(e => (e.date || '') >= now).sort((a, b) => a.date > b.date ? 1 : -1);
-      const past     = featured.filter(e => (e.date || '') <  now).sort((a, b) => a.date < b.date ? 1 : -1);
-      const events   = [...upcoming, ...past].slice(0, 3);
 
-      if (!events.length) return; // keep hardcoded fallback
+      /* --- Try featured events first --- */
+      const featuredAll = all.filter(e => e.featured);
+
+      let events;
+      if (featuredAll.length > 0) {
+        /* Use featured events, upcoming before past, max 3 */
+        const upcoming = featuredAll
+          .filter(e => (e.date || '') >= now)
+          .sort((a, b) => (a.date > b.date ? 1 : -1));
+        const past = featuredAll
+          .filter(e => (e.date || '') < now)
+          .sort((a, b) => (a.date < b.date ? 1 : -1));
+        events = [...upcoming, ...past].slice(0, 3);
+      } else {
+        /* No featured events — fall back to 3 most recent published events */
+        events = all
+          .slice()
+          .sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1))
+          .slice(0, 3);
+      }
+
+      if (!events.length) return; /* keep hardcoded fallback only if truly empty */
 
       grid.innerHTML = events.map((e, i) => buildEventCard(e, i)).join('');
     } catch {
-      // keep hardcoded fallback on error
+      /* keep hardcoded fallback on network error */
     }
   }
 
@@ -128,17 +152,47 @@
       const json = await res.json();
       const episodes = (json.data || json).sort((a, b) => b.episodeNumber - a.episodeNumber).slice(0, 3);
 
-      if (!episodes.length) return;
+      if (!episodes.length) {
+        epContainer.innerHTML =
+          '<p style="color:rgba(200,210,230,0.35);font-size:0.85rem;' +
+          'text-align:center;padding:1.5rem 0;width:100%;">No episodes yet.</p>';
+        return;
+      }
 
       epContainer.innerHTML = episodes.map(buildEpCard).join('');
 
-      // Update cover image with latest episode thumbnail
-      if (coverImg && episodes[0].thumbnail) {
-        coverImg.src = episodes[0].thumbnail;
-        coverImg.style.display = 'block';
-        const placeholder = coverImg.nextElementSibling;
-        if (placeholder && placeholder.classList.contains('podcast-cover-placeholder')) {
-          placeholder.style.display = 'none';
+      // Update cover image:
+      // Priority 1 — latest episode's own thumbnail
+      // Priority 2 — Admin-configured Default Podcast Cover from SiteSettings
+      // Priority 3 — existing placeholder (unchanged)
+      if (coverImg) {
+        const epThumb = episodes[0].thumbnail;
+
+        if (epThumb) {
+          coverImg.src = epThumb;
+          coverImg.style.display = 'block';
+          const placeholder = coverImg.nextElementSibling;
+          if (placeholder && placeholder.classList.contains('podcast-cover-placeholder')) {
+            placeholder.style.display = 'none';
+          }
+        } else {
+          // No episode thumbnail — try Admin default cover from SiteSettings
+          try {
+            const settingsRes  = await fetch(`${API_BASE}/site-settings/public`);
+            const settingsJson = await settingsRes.json();
+            const defaultCover = settingsJson && settingsJson.data && settingsJson.data.podcastCoverUrl;
+            if (defaultCover) {
+              coverImg.src = defaultCover;
+              coverImg.style.display = 'block';
+              const placeholder = coverImg.nextElementSibling;
+              if (placeholder && placeholder.classList.contains('podcast-cover-placeholder')) {
+                placeholder.style.display = 'none';
+              }
+            }
+            // else: no default cover set — leave placeholder visible (existing behaviour)
+          } catch {
+            // SiteSettings fetch failed — leave placeholder visible
+          }
         }
       }
 
@@ -186,16 +240,28 @@
       const json = await res.json();
       const all = json.data || json;
 
-      if (!Array.isArray(all) || !all.length) return;
+      if (!Array.isArray(all) || !all.length) {
+        /* No public achievements at all — clean empty state */
+        grid.innerHTML =
+          '<p style="color:rgba(200,210,230,0.4);font-size:0.85rem;' +
+          'text-align:center;padding:2rem 0;width:100%;">No recent achievements yet.</p>';
+        return;
+      }
 
+      /* Priority 1: featured; Priority 2: latest public (already filtered by API) */
       const featured = all.filter(a => a.featured).slice(0, 3);
-      const items = featured.length ? featured : all.slice(0, 3);
-
-      if (!items.length) return;
+      const items    = featured.length ? featured : all.slice(0, 3);
 
       grid.innerHTML = items.map(buildAchCard).join('');
     } catch {
-      // keep hardcoded fallback
+      /* API error — show empty state rather than leaving fake placeholder cards */
+      const grid2 = document.querySelector('.achievements-grid');
+      if (grid2 && grid2.querySelector('.ach-title')) {
+        /* still has hardcoded cards — replace with empty state */
+        grid2.innerHTML =
+          '<p style="color:rgba(200,210,230,0.4);font-size:0.85rem;' +
+          'text-align:center;padding:2rem 0;width:100%;">No recent achievements yet.</p>';
+      }
     }
   }
 

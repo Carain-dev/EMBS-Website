@@ -276,7 +276,25 @@ html {
   display: flex;
   align-items: center;
   white-space: nowrap;
-  animation: marquee 28s linear infinite;
+  /* Duration is set dynamically by announceBar.js based on content length.
+     Falls back to 30s so the bar is never stuck on a cold paint. */
+  animation: marquee var(--marquee-duration, 30s) linear infinite;
+  /* Don't animate an empty bar */
+  will-change: transform;
+}
+
+/* No announcements — hide the animation entirely so there's no
+   invisible running animation wasting GPU compositing. */
+.announce-track:empty {
+  animation: none;
+}
+
+/* Respect the user's reduced-motion preference: pause the ticker
+   so text is readable without motion discomfort. */
+@media (prefers-reduced-motion: reduce) {
+  .announce-track {
+    animation-play-state: paused;
+  }
 }
 
 .announce-item {
@@ -286,6 +304,18 @@ html {
   color: #ffffff;
   padding: 0 2rem;
   letter-spacing: 0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.announce-item:hover,
+.announce-item:focus {
+  color: #00A99D;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  outline: none;
 }
 
 .announce-sep {

@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="navbar.css" />
   <script src="config.js"></script>
   <link rel="stylesheet" href="about.css" />
+  <link rel="stylesheet" href="responsive.css" />
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -160,7 +161,7 @@
       </svg>
       <span class="about-embs-label">Who We Are</span>
       <h2 class="about-embs-heading">Engineering in Medicine &amp; Biology Society</h2>
-      <p class="about-embs-desc">The IEEE Engineering in Medicine and Biology Society (EMBS) Student Chapter at KPR Institute of Engineering and Technology is a student-driven community dedicated to advancing biomedical engineering through research, innovation, and collaboration. We bridge the gap between technology and healthcare.</p>
+      <p class="about-embs-desc" id="aboutChapterDesc">The IEEE Engineering in Medicine and Biology Society (EMBS) Student Chapter at KPR Institute of Engineering and Technology is a student-driven community dedicated to advancing biomedical engineering through research, innovation, and collaboration. We bridge the gap between technology and healthcare.</p>
 
       <div class="about-vm-cards">
         <!-- Vision card — edit here -->
@@ -169,7 +170,7 @@
             <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="6" stroke="#6B2D8B" stroke-width="1.8"/><circle cx="16" cy="16" r="12" stroke="#6B2D8B" stroke-width="1.2" stroke-dasharray="3 3"/><circle cx="16" cy="16" r="2" fill="#6B2D8B"/></svg>
           </div>
           <h4 class="about-vm-title">Our Vision</h4>
-          <p class="about-vm-text">To be a leading student chapter that inspires the next generation of biomedical engineers and healthcare innovators.</p>
+          <p class="about-vm-text" id="aboutVisionText">To be a leading student chapter that inspires the next generation of biomedical engineers and healthcare innovators.</p>
         </div>
 
         <!-- Mission card — edit here -->
@@ -178,7 +179,7 @@
             <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 16l6 6 14-14" stroke="#00A99D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <h4 class="about-vm-title">Our Mission</h4>
-          <p class="about-vm-text">To foster interdisciplinary learning, research, and community engagement at the intersection of engineering and medicine.</p>
+          <p class="about-vm-text" id="aboutMissionText">To foster interdisciplinary learning, research, and community engagement at the intersection of engineering and medicine.</p>
         </div>
       </div>
     </div>
@@ -189,7 +190,7 @@
         <span>Chapter / Lab Image</span>
       </div>
       <div class="about-est-card">
-        <span class="about-est-year">2018</span>
+        <span class="about-est-year" id="aboutEstYear">2018</span>
         <span class="about-est-sub">Est. at Our College</span>
       </div>
     </div>
@@ -293,48 +294,9 @@
 
       <!-- Left: Scrollable timeline box -->
       <div class="timeline-box">
-        <div class="timeline">
-
-          <!-- Entry 1 — edit here -->
-          <div class="timeline-entry">
-            <div class="timeline-left"><span class="timeline-year">2018</span></div>
-            <div class="timeline-dot"></div>
-            <div class="timeline-right">
-              <h4 class="timeline-entry-title">Chapter Founded</h4>
-              <p class="timeline-entry-desc">The IEEE EMBS Student Chapter was officially established at KPR Institute of Engineering and Technology, marking the beginning of a student-driven biomedical community.</p>
-            </div>
-          </div>
-
-          <!-- Entry 2 — edit here -->
-          <div class="timeline-entry">
-            <div class="timeline-left"><span class="timeline-year">2020</span></div>
-            <div class="timeline-dot"></div>
-            <div class="timeline-right">
-              <h4 class="timeline-entry-title">First Hackathon</h4>
-              <p class="timeline-entry-desc">Organized our first MedTech Hackathon, bringing together students to solve real-world healthcare challenges using engineering and technology.</p>
-            </div>
-          </div>
-
-          <!-- Entry 3 — edit here -->
-          <div class="timeline-entry">
-            <div class="timeline-left"><span class="timeline-year">2022</span></div>
-            <div class="timeline-dot"></div>
-            <div class="timeline-right">
-              <h4 class="timeline-entry-title">Regional Recognition</h4>
-              <p class="timeline-entry-desc">Received recognition at the IEEE Regional level for outstanding chapter activities, research contributions, and student engagement.</p>
-            </div>
-          </div>
-
-          <!-- Entry 4 — edit here -->
-          <div class="timeline-entry">
-            <div class="timeline-left"><span class="timeline-year">2024</span></div>
-            <div class="timeline-dot timeline-dot--active"></div>
-            <div class="timeline-right">
-              <h4 class="timeline-entry-title">Growth Milestone</h4>
-              <p class="timeline-entry-desc">Crossed 340+ active members, launched the EMBS Podcast, and expanded research collaborations across multiple departments.</p>
-            </div>
-          </div>
-
+        <div class="timeline" id="timelineContainer">
+          <!-- Timeline entries are populated dynamically by about-timeline.js -->
+          <!-- Hardcoded entries removed; data comes from GET /api/timeline     -->
         </div>
       </div>
 
@@ -349,8 +311,8 @@
           <div class="org-level">
             <div class="org-card org-card--advisor">
               <span class="org-role">Faculty Advisor</span>
-              <span class="org-name">Dr. Allwyn Gnanadas</span>
-              <span class="org-dept">Biomedical Engineering Dept.</span>
+              <span class="org-name org-name--vacant">To be added</span>
+              <span class="org-dept"></span>
             </div>
           </div>
 
@@ -360,7 +322,7 @@
           <div class="org-level">
             <div class="org-card org-card--chair">
               <span class="org-role">Chapter Chair</span>
-              <span class="org-name">Lingha Dharani</span>
+              <span class="org-name org-name--vacant">To be added</span>
             </div>
           </div>
 
@@ -405,7 +367,35 @@
     <span class="join-label">Be Part of Something Bigger</span>
     <h2 class="join-title">Join IEEE EMBS</h2>
     <p class="join-desc">Whether you are passionate about biomedical research, healthcare technology, or simply want to grow as an engineer — IEEE EMBS is your community. Connect, learn, and lead.</p>
-    <a href="contact.html" class="join-btn">Become a Member</a>
+    <div class="join-actions">
+      <a href="contact.html" class="join-btn">Become a Member</a>
+      <!-- Brochure button — shown/hidden and href populated by about-brochure.js -->
+      <a id="brochureBtn"
+         href="#"
+         class="join-btn join-btn--outline"
+         target="_blank"
+         rel="noopener"
+         aria-label="Download chapter brochure"
+         style="display:none;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+             style="vertical-align:middle;margin-right:6px;" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          <polyline points="7,10 12,15 17,10"
+                    stroke="currentColor" stroke-width="1.7"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="12" y1="15" x2="12" y2="3"
+                stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+        Download Brochure
+      </a>
+      <!-- Shown only when API returns no brochure -->
+      <span id="brochureSoon"
+            style="display:none;font-size:0.78rem;color:rgba(200,210,230,0.35);
+                   font-family:'DM Sans',sans-serif;letter-spacing:0.02em;">
+        Brochure coming soon
+      </span>
+    </div>
   </div>
 </section>
 
@@ -483,6 +473,10 @@
 <script src="announceBar.js" defer></script>
 <script src="newsletter.js" defer></script>
 <script src="members-public.js"></script>
+<script src="about-timeline.js" defer></script>
+<script src="about-info.js" defer></script>
+<script src="about-brochure.js" defer></script>
+<script src="page-hero-image.js" defer></script>
 </body>
 </html>
 

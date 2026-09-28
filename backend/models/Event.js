@@ -17,6 +17,7 @@ const eventSchema = new mongoose.Schema(
     status:           { type: String, enum: ['upcoming', 'completed'], default: 'upcoming' },
     published:        { type: Boolean, default: false },
     featured:         { type: Boolean, default: false },
+    showInUpdates:    { type: Boolean, default: false },
   },
   { timestamps: true }
 );

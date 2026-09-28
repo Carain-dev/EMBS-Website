@@ -27,6 +27,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="navbar.css" />
   <script src="config.js"></script>
+  <link rel="stylesheet" href="responsive.css" />
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -131,22 +132,22 @@
 
     <div class="hero-stats">
       <div class="stat-item">
-        <span class="stat-number">340+</span>
+        <span class="stat-number" id="heroStatMembers">—</span>
         <span class="stat-label">Members</span>
       </div>
       <div class="stat-divider"></div>
       <div class="stat-item">
-        <span class="stat-number">58</span>
+        <span class="stat-number" id="heroStatActivities">—</span>
         <span class="stat-label">Activities</span>
       </div>
       <div class="stat-divider"></div>
       <div class="stat-item">
-        <span class="stat-number">24</span>
+        <span class="stat-number" id="heroStatProjects">—</span>
         <span class="stat-label">Projects</span>
       </div>
       <div class="stat-divider"></div>
       <div class="stat-item">
-        <span class="stat-number">12</span>
+        <span class="stat-number" id="heroStatAwards">—</span>
         <span class="stat-label">Awards</span>
       </div>
     </div>
@@ -166,91 +167,9 @@
     </div>
 
     <div class="activities-grid">
-
-      <!-- Card 1 — edit text here -->
-      <div class="act-card">
-        <div class="act-card-top" style="background: linear-gradient(135deg, #3a0d5e, #00A99D)">
-          <span class="act-tag act-tag--upcoming">Upcoming</span>
-          <svg class="act-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="8" y="14" width="32" height="26" rx="3" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-            <line x1="8" y1="22" x2="40" y2="22" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-            <line x1="16" y1="8" x2="16" y2="18" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="32" y1="8" x2="32" y2="18" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
-            <rect x="14" y="28" width="6" height="6" rx="1" fill="rgba(255,255,255,0.25)"/>
-            <rect x="22" y="28" width="6" height="6" rx="1" fill="rgba(255,255,255,0.25)"/>
-          </svg>
-        </div>
-        <div class="act-card-body">
-          <div class="act-meta">
-            <span class="act-type">Workshop</span>
-            <span class="act-date">Jan 15, 2025</span>
-          </div>
-          <h3 class="act-title">Biomedical Signal Processing Workshop</h3>
-          <p class="act-desc">Hands-on session covering ECG analysis, filtering techniques, and real-world biomedical data processing.</p>
-          <div class="act-footer">
-            <span class="act-location">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="rgba(0,169,157,0.8)" stroke-width="1.8"/><circle cx="12" cy="9" r="2.5" stroke="rgba(0,169,157,0.8)" stroke-width="1.5"/></svg>
-              Engineering Block, Room 204
-            </span>
-            <a href="#" class="act-btn act-btn--primary">Register</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 2 — edit text here -->
-      <div class="act-card">
-        <div class="act-card-top" style="background: linear-gradient(135deg, #1a0a3a, #6B2D8B)">
-          <span class="act-tag act-tag--hackathon">Hackathon</span>
-          <svg class="act-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="24,6 28,18 40,18 30,26 34,38 24,30 14,38 18,26 8,18 20,18" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" fill="rgba(255,255,255,0.06)"/>
-          </svg>
-        </div>
-        <div class="act-card-body">
-          <div class="act-meta">
-            <span class="act-type">Hackathon</span>
-            <span class="act-date">Feb 3, 2025</span>
-          </div>
-          <h3 class="act-title">MedTech Innovation Hackathon 2025</h3>
-          <p class="act-desc">48-hour challenge to design innovative healthcare solutions using embedded systems and AI.</p>
-          <div class="act-footer">
-            <span class="act-location">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="rgba(0,169,157,0.8)" stroke-width="1.8"/><circle cx="12" cy="9" r="2.5" stroke="rgba(0,169,157,0.8)" stroke-width="1.5"/></svg>
-              Main Auditorium
-            </span>
-            <a href="#" class="act-btn act-btn--primary">Register</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 3 — edit text here -->
-      <div class="act-card">
-        <div class="act-card-top" style="background: linear-gradient(135deg, #003d3a, #0d1530)">
-          <span class="act-tag act-tag--completed">Completed</span>
-          <svg class="act-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="24" cy="20" r="10" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-            <line x1="24" y1="30" x2="24" y2="38" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="18" y1="38" x2="30" y2="38" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="24" y1="14" x2="24" y2="18" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="24" y1="22" x2="27" y2="22" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="act-card-body">
-          <div class="act-meta">
-            <span class="act-type">Seminar</span>
-            <span class="act-date">Dec 10, 2024</span>
-          </div>
-          <h3 class="act-title">Guest Lecture: AI in Medical Imaging</h3>
-          <p class="act-desc">An insightful session by Dr. Placeholder on the role of deep learning in modern diagnostic imaging.</p>
-          <div class="act-footer">
-            <span class="act-location">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="rgba(0,169,157,0.8)" stroke-width="1.8"/><circle cx="12" cy="9" r="2.5" stroke="rgba(0,169,157,0.8)" stroke-width="1.5"/></svg>
-              Seminar Hall B
-            </span>
-            <a href="#" class="act-btn act-btn--ghost">Gallery</a>
-          </div>
-        </div>
-      </div>
-
+      <!-- Populated dynamically by featuredEventsService.js
+           Shows featured events, or latest published events, or an empty state.
+           No hardcoded placeholder cards. -->
     </div>
   </div>
 </section>
@@ -279,57 +198,9 @@
       </div>
     </div>
 
-    <!-- Episode Cards -->
+    <!-- Episode Cards — populated by featuredEventsService.js via GET /api/podcasts -->
     <div class="podcast-episodes">
-
-      <!-- Episode 1 — edit here -->
-      <div class="ep-card">
-        <div class="ep-num">EP 01</div>
-        <div class="ep-info">
-          <h4 class="ep-title">The Future of Neural Interfaces</h4>
-          <span class="ep-speaker">Dr. Placeholder &mdash; Neurotechnology Researcher</span>
-        </div>
-        <div class="ep-controls">
-          <button class="ep-play" aria-label="Play">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          </button>
-          <div class="ep-progress"><div class="ep-progress-fill" style="width:62%"></div></div>
-          <span class="ep-duration">38 min</span>
-        </div>
-      </div>
-
-      <!-- Episode 2 — edit here -->
-      <div class="ep-card">
-        <div class="ep-num">EP 02</div>
-        <div class="ep-info">
-          <h4 class="ep-title">Wearables in Clinical Diagnostics</h4>
-          <span class="ep-speaker">Placeholder Speaker &mdash; Biomedical Engineer</span>
-        </div>
-        <div class="ep-controls">
-          <button class="ep-play" aria-label="Play">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          </button>
-          <div class="ep-progress"><div class="ep-progress-fill" style="width:35%"></div></div>
-          <span class="ep-duration">44 min</span>
-        </div>
-      </div>
-
-      <!-- Episode 3 — edit here -->
-      <div class="ep-card">
-        <div class="ep-num">EP 03</div>
-        <div class="ep-info">
-          <h4 class="ep-title">AI-Driven Drug Discovery</h4>
-          <span class="ep-speaker">Placeholder Speaker &mdash; Computational Biologist</span>
-        </div>
-        <div class="ep-controls">
-          <button class="ep-play" aria-label="Play">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          </button>
-          <div class="ep-progress"><div class="ep-progress-fill" style="width:80%"></div></div>
-          <span class="ep-duration">51 min</span>
-        </div>
-      </div>
-
+      <!-- Fake placeholder episodes removed. Real episodes load dynamically. -->
     </div>
   </div>
 </section>
@@ -422,52 +293,8 @@
     </div>
 
     <div class="achievements-grid">
-
-      <!-- Card 1 — edit here -->
-      <div class="ach-card">
-        <div class="ach-card-top">
-          <div class="ach-icon">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20 6l3.09 9.26H32l-7.27 5.27 2.77 8.53L20 24l-7.5 5.06 2.77-8.53L8 15.26h8.91z" stroke="#6B2D8B" stroke-width="1.8" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <span class="ach-tag ach-tag--award">Award</span>
-        </div>
-        <h3 class="ach-title">Best Student Chapter Award</h3>
-        <p class="ach-meta">Placeholder Name &mdash; IEEE Regional Conference 2024</p>
-      </div>
-
-      <!-- Card 2 — edit here -->
-      <div class="ach-card">
-        <div class="ach-card-top">
-          <div class="ach-icon">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="7" y="8" width="26" height="28" rx="3" stroke="#00A99D" stroke-width="1.8"/>
-              <line x1="13" y1="17" x2="27" y2="17" stroke="#00A99D" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="13" y1="22" x2="27" y2="22" stroke="#00A99D" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="13" y1="27" x2="21" y2="27" stroke="#00A99D" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <span class="ach-tag ach-tag--publication">Publication</span>
-        </div>
-        <h3 class="ach-title">Research Paper on Neural Signal Classification</h3>
-        <p class="ach-meta">Placeholder Author &mdash; IEEE EMBC Journal 2024</p>
-      </div>
-
-      <!-- Card 3 — edit here -->
-      <div class="ach-card">
-        <div class="ach-card-top">
-          <div class="ach-icon">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <polygon points="20,5 24,15 35,15 26,22 29,33 20,27 11,33 14,22 5,15 16,15" stroke="#6B2D8B" stroke-width="1.8" stroke-linejoin="round" fill="rgba(107,45,139,0.06)"/>
-            </svg>
-          </div>
-          <span class="ach-tag ach-tag--competition">Competition</span>
-        </div>
-        <h3 class="ach-title">1st Place &mdash; MedTech Hackathon</h3>
-        <p class="ach-meta">Team Placeholder &mdash; National MedTech Challenge 2024</p>
-      </div>
-
+      <!-- Populated dynamically by featuredEventsService.js
+           Shows featured achievements, or latest public achievements, or an empty state. -->
     </div>
   </div>
 </section>
@@ -481,36 +308,8 @@
       <h2 class="faculty-title">Faculty Coordinators</h2>
     </div>
 
-    <div class="faculty-grid">
-
-      <!-- Card 1 — Dr. Allwyn Gnanadas -->
-      <div class="fac-card">
-        <div class="fac-avatar">AG</div>
-        <h3 class="fac-name">Dr. Allwyn Gnanadas</h3>
-        <span class="fac-role">Faculty Coordinator</span>
-      </div>
-
-      <!-- Card 2 — edit name here -->
-      <div class="fac-card">
-        <div class="fac-avatar fac-avatar--empty"></div>
-        <h3 class="fac-name fac-name--empty">Name Placeholder</h3>
-        <span class="fac-role">Faculty Advisor</span>
-      </div>
-
-      <!-- Card 3 — edit name here -->
-      <div class="fac-card">
-        <div class="fac-avatar fac-avatar--empty"></div>
-        <h3 class="fac-name fac-name--empty">Name Placeholder</h3>
-        <span class="fac-role">Faculty Advisor</span>
-      </div>
-
-      <!-- Card 4 — edit name here -->
-      <div class="fac-card">
-        <div class="fac-avatar fac-avatar--empty"></div>
-        <h3 class="fac-name fac-name--empty">Name Placeholder</h3>
-        <span class="fac-role">Faculty Advisor</span>
-      </div>
-
+    <div class="faculty-grid" id="facultyCoordinatorsGrid">
+      <!-- Populated dynamically by faculty-coordinators.js -->
     </div>
   </div>
 </section>
@@ -598,5 +397,7 @@
 <script src="announceBar.js" defer></script>
 <script src="newsletter.js" defer></script>
 <script src="featuredEventsService.js" defer></script>
+<script src="faculty-coordinators.js" defer></script>
+<script src="home-stats.js" defer></script>
 </body>
 </html>

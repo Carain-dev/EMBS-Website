@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter Timeline — IEEE EMBS Admin</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
+  <link rel="manifest" href="../site.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="achievements.css" />
+  <script src="../config.js"></script>
+</head>
+<body>
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="sidebar-brand">
+        <img src="../logo-cropped.png" alt="IEEE EMBS" class="sidebar-logo" />
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">IEEE EMBS</span>
+          <span class="sidebar-brand-sub">Admin Panel</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg>
+          Dashboard
+        </a>
+        <a href="events.html" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.6"/><line x1="8" y1="3" x2="8" y2="7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="3" x2="16" y2="7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Events
+        </a>
+        <a href="achievements.html" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none"><polygon points="12,3 15,9 21,9 16.5,13.5 18.5,20 12,16 5.5,20 7.5,13.5 3,9 9,9" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          Achievements
+        </a>
+        <a href="blog.html" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="17" rx="2" stroke="currentColor" stroke-width="1.6"/><line x1="7" y1="9" x2="17" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="13" x2="17" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="17" x2="12" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Blogs
+        </a>
+        <a href="podcast.html" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><polygon points="10,8.5 17,12 10,15.5" fill="currentColor"/></svg>
+          Podcast
+        </a>
+        <a href="projects.html" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" stroke="currentColor" stroke-width="1.6"/><line x1="12" y1="12" x2="12" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="14" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Projects
+        </a>
+        <a href="gallery.html" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg>
+          Gallery
+        </a>
+        <a href="members.html" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="19" y1="8" x2="19" y2="14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="11" x2="22" y2="11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Members
+        </a>
+        <a href="announcements.html" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Announcements
+        </a>
+        <a href="timeline.html" class="sidebar-link active">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none"><line x1="12" y1="3" x2="12" y2="21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="7"  r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="17" r="2.5" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="7"  x2="20" y2="7"  stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="12" y1="12" x2="18" y2="12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="12" y1="17" x2="20" y2="17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Timeline
+        </a>
+        <a href="settings.html" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" stroke-width="1.6"/></svg>
+          Settings
+        </a>
+      </nav>
+    </div>
+    <div class="sidebar-bottom">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">A</div>
+        <div class="sidebar-user-info">
+          <span class="sidebar-user-name">Admin</span>
+          <span class="sidebar-user-role">Logged in as Admin</span>
+        </div>
+      </div>
+      <a href="../index.html" class="sidebar-viewsite" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        View Site
+      </a>
+    </div>
+  </aside>
+
+  <!-- ── Main Wrapper ── -->
+  <div class="main-wrapper">
+
+    <!-- ── Top Navbar ── -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="topbar-nav">
+          <a href="dashboard.html" class="topbar-nav-link">Overview</a>
+          <a href="#" class="topbar-nav-link active">About</a>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-btn" aria-label="Notices">
+          <svg viewBox="0 0 24 24" fill="none" width="17" height="17"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span class="topbar-badge">3</span>
+        </button>
+        <button class="topbar-profile" aria-label="Admin profile">
+          <div class="topbar-avatar">A</div>
+          <span class="topbar-profile-name">Admin</span>
+          <svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- Page Header -->
+      <div class="content-header">
+        <div>
+          <span class="content-label">About Page</span>
+          <h1 class="content-title">Chapter Timeline</h1>
+        </div>
+        <button class="btn-primary-action" id="toggleFormBtn">
+          <svg viewBox="0 0 24 24" fill="none" width="15" height="15"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Add Entry
+        </button>
+      </div>
+
+      <!-- ── Add / Edit Form Panel ── -->
+      <div class="panel form-panel collapsed" id="timelineFormPanel">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <span class="panel-title" id="formPanelTitle">Add Timeline Entry</span>
+            <span class="panel-subtitle">Fill in the year, title and description for this chapter milestone</span>
+          </div>
+          <button class="form-collapse-btn" id="collapseFormBtn" aria-label="Collapse">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M18 15l-6-6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+
+        <form class="ach-form" id="timelineForm" onsubmit="return false;">
+
+          <!-- Row 1: Year + Title -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Year <span class="form-required">*</span></label>
+              <input type="text" class="form-input" id="tlYear" placeholder="e.g. 2024"
+                     maxlength="10" style="max-width:140px;" />
+            </div>
+            <div class="form-group form-group--wide">
+              <label class="form-label">Milestone Title <span class="form-required">*</span></label>
+              <input type="text" class="form-input" id="tlTitle" placeholder="e.g. Chapter Founded" />
+            </div>
+          </div>
+
+          <!-- Row 2: Description -->
+          <div class="form-row">
+            <div class="form-group form-group--full">
+              <label class="form-label">Description</label>
+              <textarea class="form-input form-textarea" id="tlDesc" rows="4"
+                        placeholder="Brief description of this milestone…"></textarea>
+            </div>
+          </div>
+
+          <!-- Row 3: Order + Visibility -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Display Order</label>
+              <input type="number" class="form-input" id="tlOrder" min="0" step="1" value="0"
+                     style="max-width:120px;"
+                     title="Lower numbers appear first in the timeline." />
+              <span style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;display:block;">
+                Lower = appears first.
+              </span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Visibility</label>
+              <div style="display:flex;align-items:center;gap:10px;margin-top:6px;">
+                <label style="position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;">
+                  <input type="checkbox" id="tlActive" checked
+                         style="opacity:0;width:0;height:0;position:absolute;" />
+                  <span id="tlActiveTrack" style="
+                    position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;
+                    background:rgba(0,169,157,0.85);border-radius:22px;transition:background 0.2s;
+                  "></span>
+                  <span id="tlActiveThumb" style="
+                    position:absolute;height:16px;width:16px;left:3px;top:3px;
+                    background:#fff;border-radius:50%;transition:transform 0.2s;
+                    pointer-events:none;transform:translateX(18px);
+                  "></span>
+                </label>
+                <span style="font-size:0.82rem;color:var(--text-muted);">
+                  Show this entry on the public <strong style="color:var(--text-primary)">About page</strong>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="form-actions">
+            <button type="button" class="btn-reset" id="resetFormBtn">Clear</button>
+            <div class="form-actions-right">
+              <button type="button" class="btn-publish" id="saveEntryBtn">
+                <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="1.6"/><polyline points="17,21 17,13 7,13 7,21" stroke="currentColor" stroke-width="1.6"/><polyline points="7,3 7,8 15,8" stroke="currentColor" stroke-width="1.6"/></svg>
+                <span id="saveEntryBtnLabel">Save Entry</span>
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- ── Entries Table Panel ── -->
+      <div class="panel table-panel">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <span class="panel-title">All Timeline Entries</span>
+            <span class="panel-subtitle" id="tableCount">Showing 0 entries</span>
+          </div>
+          <div class="table-search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" width="15" height="15" class="search-icon"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/><line x1="16.5" y1="16.5" x2="22" y2="22" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <input type="text" class="table-search" id="tableSearch" placeholder="Search entries…" />
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="events-table" id="timelineTable">
+            <thead>
+              <tr>
+                <th style="width:10%">Year</th>
+                <th style="width:30%">Title</th>
+                <th style="width:34%">Description</th>
+                <th style="width:8%">Order</th>
+                <th style="width:8%">Status</th>
+                <th style="width:10%">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="timelineTableBody"></tbody>
+          </table>
+          <div class="table-empty" id="tableEmpty" style="display:none;">
+            <svg viewBox="0 0 48 48" fill="none" width="38" height="38">
+              <line x1="24" y1="6" x2="24" y2="42" stroke="rgba(107,45,139,0.25)" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="24" cy="14" r="4" stroke="rgba(107,45,139,0.25)" stroke-width="1.5"/>
+              <circle cx="24" cy="24" r="4" stroke="rgba(107,45,139,0.25)" stroke-width="1.5"/>
+              <circle cx="24" cy="34" r="4" stroke="rgba(107,45,139,0.25)" stroke-width="1.5"/>
+            </svg>
+            <span>No timeline entries yet</span>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Delete Modal -->
+  <div class="modal-backdrop" id="deleteModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-icon">
+        <svg viewBox="0 0 24 24" fill="none" width="26" height="26"><polyline points="3,6 5,6 21,6" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round"/><path d="M10 11v6M14 11v6" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </div>
+      <h3 class="modal-title">Delete Timeline Entry?</h3>
+      <p class="modal-desc">This will permanently remove <strong id="deleteEntryTitle"></strong>. This cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" id="cancelDelete">Cancel</button>
+        <button class="btn-modal-confirm" id="confirmDelete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="timeline.js"></script>
+</body>
+</html>

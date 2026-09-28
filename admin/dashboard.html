@@ -139,8 +139,8 @@
           </div>
           <div class="stat-card-info">
             <span class="stat-card-label">Total Members</span>
-            <span class="stat-card-value">342</span>
-            <span class="stat-card-delta stat-card-delta--up">↑ 12 this month</span>
+            <span class="stat-card-value" id="statMembers">—</span>
+            <span class="stat-card-delta stat-card-delta--up" id="statMembersDelta">Loading…</span>
           </div>
         </div>
 
@@ -150,8 +150,8 @@
           </div>
           <div class="stat-card-info">
             <span class="stat-card-label">Events</span>
-            <span class="stat-card-value">58</span>
-            <span class="stat-card-delta stat-card-delta--up">↑ 4 upcoming</span>
+            <span class="stat-card-value" id="statEvents">—</span>
+            <span class="stat-card-delta stat-card-delta--up" id="statEventsDelta">Loading…</span>
           </div>
         </div>
 
@@ -160,9 +160,9 @@
             <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><line x1="12" y1="7" x2="12" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="15.5" r="0.8" fill="currentColor"/></svg>
           </div>
           <div class="stat-card-info">
-            <span class="stat-card-label">Pending Approvals</span>
-            <span class="stat-card-value">7</span>
-            <span class="stat-card-delta stat-card-delta--warn">⚠ Needs review</span>
+            <span class="stat-card-label">Unpublished Content</span>
+            <span class="stat-card-value" id="statPending">—</span>
+            <span class="stat-card-delta stat-card-delta--warn" id="statPendingDelta">Loading…</span>
           </div>
         </div>
 
@@ -172,8 +172,8 @@
           </div>
           <div class="stat-card-info">
             <span class="stat-card-label">Podcast Episodes</span>
-            <span class="stat-card-value">24</span>
-            <span class="stat-card-delta stat-card-delta--up">↑ 2 new</span>
+            <span class="stat-card-value" id="statPodcasts">—</span>
+            <span class="stat-card-delta stat-card-delta--up" id="statPodcastsDelta">Loading…</span>
           </div>
         </div>
 
@@ -202,63 +202,11 @@
         <div class="panel activity-panel">
           <div class="panel-header">
             <span class="panel-title">Recent Activity</span>
-            <a href="#" class="panel-link">View all →</a>
           </div>
-          <ul class="activity-list">
+          <ul class="activity-list" id="activityList">
             <li class="activity-item">
-              <div class="activity-dot activity-dot--teal"></div>
               <div class="activity-body">
-                <span class="activity-text">New member <strong>Arun Kumar</strong> joined</span>
-                <span class="activity-time">2 min ago</span>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="activity-dot activity-dot--purple"></div>
-              <div class="activity-body">
-                <span class="activity-text">Event <strong>BioSignal Workshop</strong> published</span>
-                <span class="activity-time">18 min ago</span>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="activity-dot activity-dot--amber"></div>
-              <div class="activity-body">
-                <span class="activity-text">Blog post pending approval</span>
-                <span class="activity-time">1 hr ago</span>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="activity-dot activity-dot--teal"></div>
-              <div class="activity-body">
-                <span class="activity-text">Podcast <strong>EP 24</strong> uploaded</span>
-                <span class="activity-time">3 hr ago</span>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="activity-dot activity-dot--purple"></div>
-              <div class="activity-body">
-                <span class="activity-text">Achievement <strong>Best Chapter Award</strong> added</span>
-                <span class="activity-time">Yesterday</span>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="activity-dot activity-dot--amber"></div>
-              <div class="activity-body">
-                <span class="activity-text">Gallery upload — <strong>Hackathon 2024</strong></span>
-                <span class="activity-time">Yesterday</span>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="activity-dot activity-dot--teal"></div>
-              <div class="activity-body">
-                <span class="activity-text">New member <strong>Priya Nair</strong> joined</span>
-                <span class="activity-time">2 days ago</span>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="activity-dot activity-dot--purple"></div>
-              <div class="activity-body">
-                <span class="activity-text">Project <strong>NeuroSense</strong> updated</span>
-                <span class="activity-time">2 days ago</span>
+                <span class="activity-text" style="color:rgba(200,210,230,0.4);font-size:0.82rem;">Loading…</span>
               </div>
             </li>
           </ul>

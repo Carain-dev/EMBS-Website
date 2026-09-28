@@ -14,6 +14,7 @@ const podcastSchema = new mongoose.Schema(
     guestDesignation:  { type: String, default: '' },
     published:         { type: Boolean, default: false },
     publishedAt:       { type: Date, default: null },
+    showInUpdates:     { type: Boolean, default: false },
   },
   { timestamps: true }
 );

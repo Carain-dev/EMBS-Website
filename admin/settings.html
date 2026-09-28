@@ -236,6 +236,23 @@
               <label class="settings-label">Footer Text</label>
               <textarea class="settings-input settings-textarea" id="footerText" rows="3">IEEE EMBS Student Chapter at CET is dedicated to advancing biomedical engineering through events, research, and community outreach.</textarea>
             </div>
+            <!-- ── About Page: Chapter Information ── -->
+            <div class="settings-form-group settings-span-full">
+              <label class="settings-label">Chapter Description <span style="font-size:0.72rem;color:var(--text-muted);font-weight:400;">(About page intro paragraph)</span></label>
+              <textarea class="settings-input settings-textarea" id="chapterDescription" rows="4" placeholder="A brief description of the chapter shown on the About page…"></textarea>
+            </div>
+            <div class="settings-form-group">
+              <label class="settings-label">Our Vision <span style="font-size:0.72rem;color:var(--text-muted);font-weight:400;">(About page Vision card)</span></label>
+              <textarea class="settings-input settings-textarea" id="chapterVision" rows="3" placeholder="To be a leading student chapter…"></textarea>
+            </div>
+            <div class="settings-form-group">
+              <label class="settings-label">Our Mission <span style="font-size:0.72rem;color:var(--text-muted);font-weight:400;">(About page Mission card)</span></label>
+              <textarea class="settings-input settings-textarea" id="chapterMission" rows="3" placeholder="To foster interdisciplinary learning…"></textarea>
+            </div>
+            <div class="settings-form-group">
+              <label class="settings-label">Established Year <span style="font-size:0.72rem;color:var(--text-muted);font-weight:400;">(About page est. badge)</span></label>
+              <input type="text" class="settings-input" id="establishedYear" placeholder="e.g. 2018" maxlength="20" />
+            </div>
           </div>
           <div class="settings-card-footer">
             <button class="btn-save-settings" id="saveSiteBtn">
@@ -543,6 +560,26 @@
               </div>
             </div>
 
+            <!-- Podcast Cover upload -->
+            <div class="branding-upload-block">
+              <span class="settings-label">Default Podcast Cover</span>
+              <div class="branding-zone branding-zone--favicon" id="podcastCoverZone">
+                <input type="file" id="podcastCoverInput" accept="image/*" style="display:none;" />
+                <div class="branding-zone-inner" id="podcastCoverInner">
+                  <svg viewBox="0 0 24 24" fill="none" width="24" height="24"><circle cx="12" cy="12" r="9" stroke="rgba(0,169,157,0.5)" stroke-width="1.5"/><polygon points="10,8.5 17,12 10,15.5" fill="rgba(0,169,157,0.4)"/></svg>
+                  <span class="branding-zone-hint">Click to upload cover</span>
+                  <span class="branding-zone-sub">PNG or JPG &middot; 400&times;400 recommended</span>
+                </div>
+                <div class="branding-zone-preview branding-zone-preview--sq" id="podcastCoverPreview" style="display:none;">
+                  <img id="podcastCoverPreviewImg" src="" alt="Podcast Cover" />
+                  <button type="button" class="branding-remove" id="podcastCoverRemove">&#x2715;</button>
+                </div>
+              </div>
+              <span style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;display:block;">
+                Used on the Home page Podcast section when no episode thumbnail is available.
+              </span>
+            </div>
+
             <!-- Live preview -->
             <div class="branding-upload-block branding-upload-block--preview">
               <span class="settings-label">Preview</span>
@@ -565,6 +602,113 @@
             <button class="btn-save-settings" id="saveBrandingBtn">
               <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="1.6"/><polyline points="17,21 17,13 7,13 7,21" stroke="currentColor" stroke-width="1.6"/><polyline points="7,3 7,8 15,8" stroke="currentColor" stroke-width="1.6"/></svg>
               Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Page Hero Images Card ── -->
+      <div class="panel settings-card settings-card--wide">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <span class="panel-title">Page Hero Images</span>
+            <span class="panel-subtitle">Right-side images shown in the hero sections of the public pages</span>
+          </div>
+        </div>
+        <div class="settings-card-body">
+          <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1.5rem;">
+            Upload an image for each page. Delete removes the custom image and restores the default placeholder. Images are stored on Cloudinary.
+          </p>
+
+          <!-- Hero image grid: 5 cards, 2-up layout -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;">
+
+            <!-- Activities -->
+            <div class="branding-upload-block" style="min-width:0;">
+              <span class="settings-label">Activities Page</span>
+              <div class="branding-zone branding-zone--favicon" id="activitiesHeroZone">
+                <input type="file" id="activitiesHeroInput" accept="image/*" style="display:none;" />
+                <div class="branding-zone-inner" id="activitiesHeroInner">
+                  <svg viewBox="0 0 24 24" fill="none" width="24" height="24"><rect x="3" y="3" width="18" height="18" rx="3" stroke="rgba(107,45,139,0.5)" stroke-width="1.5"/><path d="M3 15l5-5 4 4 3-3 6 6" stroke="rgba(0,169,157,0.6)" stroke-width="1.4" stroke-linecap="round"/><circle cx="8.5" cy="8.5" r="1.5" fill="rgba(107,45,139,0.4)"/></svg>
+                  <span class="branding-zone-hint">Click to upload</span>
+                </div>
+                <div class="branding-zone-preview branding-zone-preview--sq" id="activitiesHeroPreview" style="display:none;">
+                  <img id="activitiesHeroPreviewImg" src="" alt="Activities hero" />
+                  <button type="button" class="branding-remove" id="activitiesHeroRemove">&#x2715;</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Blog -->
+            <div class="branding-upload-block" style="min-width:0;">
+              <span class="settings-label">Blog & Articles Page</span>
+              <div class="branding-zone branding-zone--favicon" id="blogHeroZone">
+                <input type="file" id="blogHeroInput" accept="image/*" style="display:none;" />
+                <div class="branding-zone-inner" id="blogHeroInner">
+                  <svg viewBox="0 0 24 24" fill="none" width="24" height="24"><rect x="3" y="3" width="18" height="18" rx="3" stroke="rgba(107,45,139,0.5)" stroke-width="1.5"/><path d="M3 15l5-5 4 4 3-3 6 6" stroke="rgba(0,169,157,0.6)" stroke-width="1.4" stroke-linecap="round"/><circle cx="8.5" cy="8.5" r="1.5" fill="rgba(107,45,139,0.4)"/></svg>
+                  <span class="branding-zone-hint">Click to upload</span>
+                </div>
+                <div class="branding-zone-preview branding-zone-preview--sq" id="blogHeroPreview" style="display:none;">
+                  <img id="blogHeroPreviewImg" src="" alt="Blog hero" />
+                  <button type="button" class="branding-remove" id="blogHeroRemove">&#x2715;</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Members -->
+            <div class="branding-upload-block" style="min-width:0;">
+              <span class="settings-label">Members Page (Team Photo)</span>
+              <div class="branding-zone branding-zone--favicon" id="membersHeroZone">
+                <input type="file" id="membersHeroInput" accept="image/*" style="display:none;" />
+                <div class="branding-zone-inner" id="membersHeroInner">
+                  <svg viewBox="0 0 24 24" fill="none" width="24" height="24"><rect x="3" y="3" width="18" height="18" rx="3" stroke="rgba(107,45,139,0.5)" stroke-width="1.5"/><path d="M3 15l5-5 4 4 3-3 6 6" stroke="rgba(0,169,157,0.6)" stroke-width="1.4" stroke-linecap="round"/><circle cx="8.5" cy="8.5" r="1.5" fill="rgba(107,45,139,0.4)"/></svg>
+                  <span class="branding-zone-hint">Click to upload</span>
+                </div>
+                <div class="branding-zone-preview branding-zone-preview--sq" id="membersHeroPreview" style="display:none;">
+                  <img id="membersHeroPreviewImg" src="" alt="Members team photo" />
+                  <button type="button" class="branding-remove" id="membersHeroRemove">&#x2715;</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- About -->
+            <div class="branding-upload-block" style="min-width:0;">
+              <span class="settings-label">About Page (Chapter / Lab Image)</span>
+              <div class="branding-zone branding-zone--favicon" id="aboutHeroZone">
+                <input type="file" id="aboutHeroInput" accept="image/*" style="display:none;" />
+                <div class="branding-zone-inner" id="aboutHeroInner">
+                  <svg viewBox="0 0 24 24" fill="none" width="24" height="24"><rect x="3" y="3" width="18" height="18" rx="3" stroke="rgba(107,45,139,0.5)" stroke-width="1.5"/><path d="M3 15l5-5 4 4 3-3 6 6" stroke="rgba(0,169,157,0.6)" stroke-width="1.4" stroke-linecap="round"/><circle cx="8.5" cy="8.5" r="1.5" fill="rgba(107,45,139,0.4)"/></svg>
+                  <span class="branding-zone-hint">Click to upload</span>
+                </div>
+                <div class="branding-zone-preview branding-zone-preview--sq" id="aboutHeroPreview" style="display:none;">
+                  <img id="aboutHeroPreviewImg" src="" alt="About chapter image" />
+                  <button type="button" class="branding-remove" id="aboutHeroRemove">&#x2715;</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Projects -->
+            <div class="branding-upload-block" style="min-width:0;">
+              <span class="settings-label">Projects & Research Page</span>
+              <div class="branding-zone branding-zone--favicon" id="projectsHeroZone">
+                <input type="file" id="projectsHeroInput" accept="image/*" style="display:none;" />
+                <div class="branding-zone-inner" id="projectsHeroInner">
+                  <svg viewBox="0 0 24 24" fill="none" width="24" height="24"><rect x="3" y="3" width="18" height="18" rx="3" stroke="rgba(107,45,139,0.5)" stroke-width="1.5"/><path d="M3 15l5-5 4 4 3-3 6 6" stroke="rgba(0,169,157,0.6)" stroke-width="1.4" stroke-linecap="round"/><circle cx="8.5" cy="8.5" r="1.5" fill="rgba(107,45,139,0.4)"/></svg>
+                  <span class="branding-zone-hint">Click to upload</span>
+                </div>
+                <div class="branding-zone-preview branding-zone-preview--sq" id="projectsHeroPreview" style="display:none;">
+                  <img id="projectsHeroPreviewImg" src="" alt="Projects hero" />
+                  <button type="button" class="branding-remove" id="projectsHeroRemove">&#x2715;</button>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /grid -->
+
+          <div class="settings-card-footer" style="margin-top:1.5rem;">
+            <button class="btn-save-settings" id="savePageHeroBtn">
+              <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="1.6"/><polyline points="17,21 17,13 7,13 7,21" stroke="currentColor" stroke-width="1.6"/><polyline points="7,3 7,8 15,8" stroke="currentColor" stroke-width="1.6"/></svg>
+              Save Page Images
             </button>
           </div>
         </div>

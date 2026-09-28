@@ -141,6 +141,7 @@ function collectForm(isPublished) {
   fd.append('duration',         dur);
   fd.append('description',      epDesc.value.trim());
   fd.append('published',        String(Boolean(isPublished)));
+  fd.append('showInUpdates',    String(Boolean(document.getElementById('podShowInUpdates') && document.getElementById('podShowInUpdates').checked)));
   if (coverInput.files[0]) fd.append('thumbnail', coverInput.files[0]);
   return fd;
 }
@@ -229,3 +230,28 @@ function showToast(msg, type = 'success') {
 
 loadEpisodes();
 
+
+/* ── Show in Updates toggle ── */
+(function () {
+  var cb = document.getElementById('podShowInUpdates');
+  var track = document.getElementById('podUpdatesTrack');
+  var thumb = document.getElementById('podUpdatesThumb');
+  function apply(v) {
+    if (track) track.style.background = v ? 'rgba(0,169,157,0.85)' : 'rgba(107,45,139,0.2)';
+    if (thumb) thumb.style.transform  = v ? 'translateX(18px)' : 'translateX(0)';
+  }
+  if (cb) { cb.addEventListener('change', () => apply(cb.checked)); apply(cb.checked); }
+
+  /* Restore on edit — hook into existing loadEdit */
+  var _origLoadEdit = typeof loadEdit === 'function' ? loadEdit : null;
+  if (_origLoadEdit) {
+    window.loadEdit = function (id) {
+      _origLoadEdit(id);
+      var ep = episodes ? episodes.find(function (e) { return e._id === id; }) : null;
+      if (ep && cb) { cb.checked = Boolean(ep.showInUpdates); apply(Boolean(ep.showInUpdates)); }
+    };
+  }
+  /* Reset */
+  var resetBtn = document.getElementById('resetFormBtn');
+  if (resetBtn) resetBtn.addEventListener('click', function () { if (cb) { cb.checked = false; apply(false); } });
+})();

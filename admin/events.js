@@ -13,6 +13,40 @@ const overlay = document.getElementById('sidebarOverlay');
 toggle.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('active'); });
 overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); });
 
+/* ── Featured toggle visual ── */
+const evFeaturedCheckbox = document.getElementById('evFeatured');
+const evFeaturedTrack    = document.getElementById('evFeaturedTrack');
+const evFeaturedThumb    = document.getElementById('evFeaturedThumb');
+
+function applyFeaturedVisual(checked) {
+  if (!evFeaturedTrack || !evFeaturedThumb) return;
+  evFeaturedTrack.style.background = checked
+    ? 'rgba(107,45,139,0.85)'
+    : 'rgba(107,45,139,0.2)';
+  evFeaturedThumb.style.transform = checked ? 'translateX(18px)' : 'translateX(0)';
+}
+
+if (evFeaturedCheckbox) {
+  evFeaturedCheckbox.addEventListener('change', () => applyFeaturedVisual(evFeaturedCheckbox.checked));
+  applyFeaturedVisual(evFeaturedCheckbox.checked);
+}
+
+/* ── Show in Updates toggle visual ── */
+const evUpdatesCheckbox = document.getElementById('evShowInUpdates');
+const evUpdatesTrack    = document.getElementById('evUpdatesTrack');
+const evUpdatesThumb    = document.getElementById('evUpdatesThumb');
+
+function applyEvUpdatesVisual(checked) {
+  if (!evUpdatesTrack || !evUpdatesThumb) return;
+  evUpdatesTrack.style.background = checked ? 'rgba(0,169,157,0.85)' : 'rgba(107,45,139,0.2)';
+  evUpdatesThumb.style.transform  = checked ? 'translateX(18px)' : 'translateX(0)';
+}
+
+if (evUpdatesCheckbox) {
+  evUpdatesCheckbox.addEventListener('change', () => applyEvUpdatesVisual(evUpdatesCheckbox.checked));
+  applyEvUpdatesVisual(evUpdatesCheckbox.checked);
+}
+
 let events = [];
 let editingId = null;
 let deleteTarget = null;
@@ -74,9 +108,12 @@ function renderTable() {
   tbody.innerHTML = filtered.map(ev => {
     const stateLabel = ev.published ? 'Published' : 'Draft';
     const stateClass = ev.published ? 'published' : 'draft';
+    const featuredBadge = ev.featured
+      ? `<span style="font-size:0.68rem;background:rgba(107,45,139,0.22);color:#c084fc;border-radius:4px;padding:2px 6px;margin-left:4px;white-space:nowrap;">⭐ Featured</span>`
+      : '';
     return `
     <tr data-id="${ev._id}">
-      <td><div class="td-title">${ev.title}</div><div class="td-speaker">${ev.speaker || ''}</div></td>
+      <td><div class="td-title">${ev.title}</div><div class="td-speaker">${ev.speaker || ''}${featuredBadge}</div></td>
       <td><span class="type-badge type-badge--${typeClass(ev.type)}">${ev.type || ''}</span></td>
       <td>${fmtDate(ev.date)}</td>
       <td><span class="mode-badge"><span class="mode-dot mode-dot--${modeClass(ev.mode)}"></span>${ev.mode || ''}</span></td>
@@ -156,6 +193,8 @@ function resetForm() {
   ['thumbInner','speakerInner'].forEach(id => document.getElementById(id).style.display = 'flex');
   document.getElementById('thumbImg').src = '';
   document.getElementById('speakerImg').src = '';
+  if (evFeaturedCheckbox) { evFeaturedCheckbox.checked = false; applyFeaturedVisual(false); }
+  if (evUpdatesCheckbox)  { evUpdatesCheckbox.checked  = false; applyEvUpdatesVisual(false); }
   editingId = null;
   document.getElementById('formPanelTitle').textContent = 'Add New Event';
   document.getElementById('publishBtn').textContent = 'Publish Event';
@@ -176,6 +215,14 @@ function editEvent(id) {
   document.getElementById('evRegLink').value = ev.registrationLink || '';
   document.getElementById('evDesc').value    = ev.description || '';
   activeTags = [...(ev.tags || [])]; renderTags();
+  if (evFeaturedCheckbox) {
+    evFeaturedCheckbox.checked = Boolean(ev.featured);
+    applyFeaturedVisual(Boolean(ev.featured));
+  }
+  if (evUpdatesCheckbox) {
+    evUpdatesCheckbox.checked = Boolean(ev.showInUpdates);
+    applyEvUpdatesVisual(Boolean(ev.showInUpdates));
+  }
   document.getElementById('formPanelTitle').textContent = 'Edit Event';
   document.getElementById('publishBtn').textContent = 'Update Event';
   formPanel.classList.remove('collapsed');
@@ -196,6 +243,8 @@ function getFormData(status, published) {
   fd.append('description',      document.getElementById('evDesc').value.trim());
   fd.append('status',           status);
   fd.append('published',        String(Boolean(published)));
+  fd.append('featured',         String(Boolean(evFeaturedCheckbox && evFeaturedCheckbox.checked)));
+  fd.append('showInUpdates',    String(Boolean(evUpdatesCheckbox && evUpdatesCheckbox.checked)));
   activeTags.forEach(t => fd.append('tags', t));
   const thumbFile   = document.getElementById('thumbInput').files[0];
   const speakerFile = document.getElementById('speakerInput').files[0];
@@ -246,6 +295,8 @@ async function saveEvent(status, published) {
         tags: [...activeTags],
         status,
         published: Boolean(published),
+        featured:  Boolean(evFeaturedCheckbox && evFeaturedCheckbox.checked),
+        showInUpdates: Boolean(evUpdatesCheckbox && evUpdatesCheckbox.checked),
       };
       res = await fetch(url, { method, headers: jsonH(), body: JSON.stringify(payload) });
     }

@@ -33,6 +33,7 @@ const projectSchema = new mongoose.Schema(
       enum: ['visible', 'hidden'],
       default: 'visible',
     },
+    showInUpdates: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

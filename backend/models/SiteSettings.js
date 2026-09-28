@@ -46,6 +46,20 @@ const siteSettingsSchema = new mongoose.Schema(
     footerText: { type: String, default: '' },
     logoUrl: { type: String, default: '' },
     faviconUrl: { type: String, default: '' },
+    websiteUrl: { type: String, default: '' },
+    /* ── About page chapter information ─────────────────── */
+    chapterDescription: { type: String, default: '' },
+    vision:             { type: String, default: '' },
+    mission:            { type: String, default: '' },
+    establishedYear:    { type: String, default: '' },
+    /* ── Media defaults ──────────────────────────────────── */
+    podcastCoverUrl:        { type: String, default: '' },
+    /* ── Page hero images ────────────────────────────────── */
+    activitiesHeroImageUrl: { type: String, default: '' },
+    blogHeroImageUrl:       { type: String, default: '' },
+    membersHeroImageUrl:    { type: String, default: '' },
+    aboutHeroImageUrl:      { type: String, default: '' },
+    projectsHeroImageUrl:   { type: String, default: '' },
     socialLinks: { type: socialLinksSchema, default: () => ({}) },
     registrationLinks: { type: registrationLinksSchema, default: () => ({}) },
     brochureLinks: { type: brochureLinksSchema, default: () => ({}) },

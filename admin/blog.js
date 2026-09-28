@@ -146,6 +146,7 @@ function collectForm(published) {
   fd.append('title',     title);
   fd.append('content',   content);
   fd.append('published', published);
+  fd.append('showInUpdates', String(Boolean(document.getElementById('blogShowInUpdates') && document.getElementById('blogShowInUpdates').checked)));
   const category = blogCategory ? blogCategory.value.trim() : '';
   const allTags = category ? [category, ...tags.filter(t => t !== category)] : [...tags];
   allTags.forEach(t => fd.append('tags', t));
@@ -227,3 +228,28 @@ function showToast(msg, type = 'success') {
 
 loadBlogs();
 
+
+/* ── Show in Updates toggle ── */
+(function () {
+  var cb    = document.getElementById('blogShowInUpdates');
+  var track = document.getElementById('blogUpdatesTrack');
+  var thumb = document.getElementById('blogUpdatesThumb');
+  function apply(v) {
+    if (track) track.style.background = v ? 'rgba(0,169,157,0.85)' : 'rgba(107,45,139,0.2)';
+    if (thumb) thumb.style.transform  = v ? 'translateX(18px)' : 'translateX(0)';
+  }
+  if (cb) { cb.addEventListener('change', () => apply(cb.checked)); apply(cb.checked); }
+
+  /* Restore on edit — patch the existing loadEdit function */
+  var _origEdit = typeof loadEdit === 'function' ? loadEdit : null;
+  if (_origEdit) {
+    window.loadEdit = function (id) {
+      _origEdit(id);
+      var b = posts ? posts.find(function (x) { return x._id === id; }) : null;
+      if (b && cb) { cb.checked = Boolean(b.showInUpdates); apply(Boolean(b.showInUpdates)); }
+    };
+  }
+  /* Reset */
+  var resetBtn = document.getElementById('resetFormBtn');
+  if (resetBtn) resetBtn.addEventListener('click', function () { if (cb) { cb.checked = false; apply(false); } });
+})();

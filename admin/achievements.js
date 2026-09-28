@@ -63,7 +63,7 @@ function renderTable() {
 
   tbody.innerHTML = filtered.map(a => `
     <tr data-id="${a._id}">
-      <td><div class="td-title">${a.title}</div><div class="td-sub">${a.description || ''}</div></td>
+      <td><div class="td-title">${a.title}${a.featured ? ' <span style="font-size:0.68rem;background:rgba(107,45,139,0.22);color:#c084fc;border-radius:4px;padding:2px 6px;margin-left:4px;white-space:nowrap;">⭐ Homepage</span>' : ''}</div><div class="td-sub">${a.description || ''}</div></td>
       <td>${a.date || ''}</td>
       <td><span class="pending-tag cat--${catClass(a.category)}">${a.category || ''}</span></td>
       <td><div class="action-btns">
@@ -140,6 +140,7 @@ document.getElementById('saveAchBtn').addEventListener('click', async () => {
   fd.append('date',        date);
   fd.append('description', document.getElementById('achDesc').value.trim());
   fd.append('featured', String(document.getElementById('achFeatured').checked));
+  fd.append('showInUpdates', String(Boolean(document.getElementById('achShowInUpdates') && document.getElementById('achShowInUpdates').checked)));
   if (achImageInput.files[0]) fd.append('image', achImageInput.files[0]);
 
   try {
@@ -204,3 +205,28 @@ function showToast(msg, type = 'success') {
 
 loadAchievements();
 
+
+/* ── Show in Updates toggle ── */
+(function () {
+  var cb    = document.getElementById('achShowInUpdates');
+  var track = document.getElementById('achUpdatesTrack');
+  var thumb = document.getElementById('achUpdatesThumb');
+  function apply(v) {
+    if (track) track.style.background = v ? 'rgba(0,169,157,0.85)' : 'rgba(107,45,139,0.2)';
+    if (thumb) thumb.style.transform  = v ? 'translateX(18px)' : 'translateX(0)';
+  }
+  if (cb) { cb.addEventListener('change', () => apply(cb.checked)); apply(cb.checked); }
+
+  /* Restore on edit — patch the existing editAch function */
+  var _origEdit = typeof editAch === 'function' ? editAch : null;
+  if (_origEdit) {
+    window.editAch = function (id) {
+      _origEdit(id);
+      var a = achievements ? achievements.find(function (x) { return x._id === id; }) : null;
+      if (a && cb) { cb.checked = Boolean(a.showInUpdates); apply(Boolean(a.showInUpdates)); }
+    };
+  }
+  /* Reset */
+  var resetBtn = document.getElementById('resetManualBtn');
+  if (resetBtn) resetBtn.addEventListener('click', function () { if (cb) { cb.checked = false; apply(false); } });
+})();

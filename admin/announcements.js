@@ -164,6 +164,7 @@ async function saveAnn() {
   fd.append('body',      fields.body);
   fd.append('pinned',    fields.pinned);
   fd.append('category',  fields.category);
+  fd.append('showInUpdates', String(Boolean(document.getElementById('annShowInUpdates') && document.getElementById('annShowInUpdates').checked)));
   if (fields.expiresAt) fd.append('expiresAt', fields.expiresAt);
   const file = attachInput.files[0];
   if (file) fd.append('attachment', file);
@@ -231,3 +232,28 @@ function showToast(msg, type) {
 
 loadAnnouncements();
 
+
+/* ── Show in Updates toggle ── */
+(function () {
+  var cb    = document.getElementById('annShowInUpdates');
+  var track = document.getElementById('annUpdatesTrack');
+  var thumb = document.getElementById('annUpdatesThumb');
+  function apply(v) {
+    if (track) track.style.background = v ? 'rgba(0,169,157,0.85)' : 'rgba(107,45,139,0.2)';
+    if (thumb) thumb.style.transform  = v ? 'translateX(18px)' : 'translateX(0)';
+  }
+  if (cb) { cb.addEventListener('change', () => apply(cb.checked)); apply(cb.checked); }
+
+  /* Restore on edit — patch the existing editAnn function */
+  var _origEdit = typeof editAnn === 'function' ? editAnn : null;
+  if (_origEdit) {
+    window.editAnn = function (id) {
+      _origEdit(id);
+      var a = announcements ? announcements.find(function (x) { return x._id === id; }) : null;
+      if (a && cb) { cb.checked = Boolean(a.showInUpdates); apply(Boolean(a.showInUpdates)); }
+    };
+  }
+  /* Reset */
+  var resetBtn = document.getElementById('resetFormBtn');
+  if (resetBtn) resetBtn.addEventListener('click', function () { if (cb) { cb.checked = false; apply(false); } });
+})();

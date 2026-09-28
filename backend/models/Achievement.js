@@ -7,7 +7,8 @@ const achievementSchema = new mongoose.Schema(
     date: { type: String, default: '' },
     image: { type: String, default: '' },
     category: { type: String, default: '' },
-    featured: { type: Boolean, default: false },
+    featured:      { type: Boolean, default: false },
+    showInUpdates: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

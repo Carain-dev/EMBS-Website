@@ -1,0 +1,525 @@
+/*
+ * responsive.css — Additive responsive patch for IEEE EMBS website.
+ *
+ * This file ONLY adds missing responsive behaviour.
+ * It does NOT override the existing visual design.
+ * Load it AFTER all other page stylesheets.
+ *
+ * Breakpoints used:
+ *   ≤ 1024px  tablet / small laptop
+ *   ≤ 820px   small tablet / large phone landscape
+ *   ≤ 600px   large phone portrait
+ *   ≤ 480px   standard phone portrait
+ *   ≤ 375px   small phone (iPhone SE, etc.)
+ *   ≤ 320px   very small phone
+ *
+ * Coverage:
+ *   – blog.html hero image & grid
+ *   – activities.html hero image
+ *   – projects.html hero image
+ *   – members.html hero & team sections
+ *   – about.html timeline & org-chart
+ *   – contact.css missing small-screen breakpoints
+ *   – project.css single-project missing breakpoints
+ *   – announcements.css missing small-screen breakpoints
+ *   – achievements.css missing small-screen breakpoints
+ *   – gallery.html inline styles — missing 820px / 480px breakpoints
+ *   – podcast featured card small-screen
+ *   – homepage podcast strip 280px column
+ *   – footer stacking on tablet
+ *   – join actions buttons
+ *   – stat card overflow on very small screens
+ *   – general img / video overflow safety
+ *   – back-to-top button position safety
+ */
+
+/* ============================================================
+   GLOBAL SAFETY — images & embeds never overflow their column
+   ============================================================ */
+img, video, iframe, embed, object {
+  max-width: 100%;
+}
+
+/* Prevent any single element from pushing the page wider than the viewport.
+   This is the safe version — it does not hide real overflow, but prevents
+   unexpectedly wide replaced content from triggering a scroll. */
+img { height: auto; }
+
+/* ============================================================
+   BLOG PAGE — blog.css gap fixes
+   ============================================================ */
+
+/* blog-hero-inner uses flex with gap: 5rem. On medium screens the gap is
+   large and the image height is fixed. Fluid gap + aspect-ratio image. */
+@media (max-width: 1024px) {
+  .blog-hero-inner { gap: 3rem; }
+  .blog-hero-img   { height: 340px; width: 100%; object-fit: cover; }
+  .blog-grid       { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 820px) {
+  .blog-hero-inner {
+    flex-direction: column;
+    gap: 2.5rem;
+    padding: calc(68px + 44px + 3rem) 1.5rem 4rem;
+  }
+  .blog-hero-left  { text-align: left; }
+  .blog-hero-right { width: 100%; }
+  .blog-hero-img   { height: 280px; border-radius: 16px; }
+}
+
+@media (max-width: 600px) {
+  .blog-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .blog-hero-inner { padding: calc(60px + 44px + 2rem) 1rem 3rem; }
+  .blog-hero-img   { height: 220px; }
+  .blog-card-footer { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .blog-btn        { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 375px) {
+  .blog-hero-img { height: 190px; }
+}
+
+/* ============================================================
+   ACTIVITIES PAGE — activities.css gap: hero image fluid height
+   ============================================================ */
+
+/* The existing breakpoints already handle column collapse well.
+   The hero image has a fixed px height that creates awkward proportions
+   on mid-width screens. Let it use aspect-ratio where possible. */
+@media (max-width: 820px) {
+  .act-hero-inner {
+    flex-direction: column;
+    gap: 2.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .act-hero-right { width: 100%; }
+  .act-hero-img   { width: 100%; height: 280px; object-fit: cover; border-radius: 16px; }
+}
+
+@media (max-width: 480px) {
+  .act-hero-img { height: 220px; }
+  .act-cta-buttons { flex-direction: column; }
+  .act-cta-btn-primary,
+  .act-cta-btn-secondary { width: 100%; justify-content: center; text-align: center; }
+}
+
+@media (max-width: 375px) {
+  .act-hero-img    { height: 180px; }
+  .act-stats-grid  { grid-template-columns: 1fr 1fr; }
+}
+
+/* ============================================================
+   PROJECTS PAGE — projects.css gap: hero image & grid
+   ============================================================ */
+
+@media (max-width: 820px) {
+  .proj-hero-inner {
+    flex-direction: column;
+    gap: 2.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .proj-hero-right { width: 100%; }
+  .proj-hero-img   { width: 100%; height: 280px; object-fit: cover; border-radius: 16px; }
+}
+
+@media (max-width: 480px) {
+  .proj-hero-img { height: 220px; }
+}
+
+@media (max-width: 375px) {
+  .proj-hero-img { height: 180px; }
+}
+
+/* ============================================================
+   MEMBERS PAGE — members.css gap: small-screen refinements
+   ============================================================ */
+
+/* mhero-right image: fluid on small screens */
+@media (max-width: 768px) {
+  .mhero-inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    text-align: left;
+  }
+  .mhero-right { width: 100%; }
+  .mhero-img-wrap { max-width: 100%; }
+  .mhero-img { width: 100%; height: auto; aspect-ratio: 4/3; object-fit: cover; }
+}
+
+@media (max-width: 480px) {
+  #members-hero { padding: calc(60px + 44px + 3rem) 1rem 3rem; }
+  .mhero-img    { aspect-ratio: 16/9; }
+  /* Faculty advisor cards */
+  .fac-adv-grid { gap: 1rem; }
+  .fac-adv-card { padding: 1.25rem; }
+}
+
+@media (max-width: 375px) {
+  .cteam-grid  { grid-template-columns: 1fr; }
+  .smem-card   { flex-direction: row; align-items: center; gap: 0.75rem; }
+}
+
+/* ============================================================
+   ABOUT PAGE — about.css gap: timeline & org-chart small screens
+   ============================================================ */
+
+/* The org-level--row stacks at 360px but not at 480px.
+   On 375–430px phones the two side-by-side org cards (min-width:130px)
+   can be cramped. Give them a bit more breathing room. */
+@media (max-width: 480px) {
+  .org-level--row { gap: 0.5rem; }
+  .org-card       { min-width: 100px; padding: 0.6rem 0.8rem; }
+  .timeline-layout { gap: 1.5rem; }
+  .about-embs     { padding: calc(60px + 44px + 3rem) 1rem 3rem; }
+}
+
+@media (max-width: 375px) {
+  .org-level--row  { flex-direction: column; align-items: center; }
+  .org-card        { min-width: 120px; width: 100%; max-width: 200px; }
+  .focus-grid      { grid-template-columns: 1fr; }
+  .timeline-entry  { grid-template-columns: 44px 12px 1fr; gap: 0 0.75rem; }
+  .timeline-left span { font-size: 0.82rem; }
+}
+
+/* ============================================================
+   CONTACT PAGE — contact.css missing small-screen breakpoints
+   ============================================================ */
+
+@media (max-width: 480px) {
+  .contact-hero  { padding: calc(60px + 44px + 2.5rem) 1rem 3rem; }
+  .contact-layout { padding: 3rem 1rem 4rem; }
+  .contact-layout-inner { gap: 2rem; }
+  .contact-form  { gap: 1rem; }
+  .contact-input,
+  .contact-textarea { width: 100%; box-sizing: border-box; }
+  .contact-submit { width: 100%; justify-content: center; }
+  .contact-info-item { gap: 0.75rem; }
+  .contact-faq   { padding: 3rem 1rem; }
+  .back-to-top   { width: 44px; height: 44px; } /* fix 40px → 44px min touch target */
+}
+
+@media (max-width: 375px) {
+  .contact-hero-heading { font-size: clamp(2rem, 9vw, 2.4rem); }
+  .contact-socials { flex-wrap: wrap; gap: 0.5rem; }
+}
+
+/* ============================================================
+   PROJECT DETAIL PAGE — project.css missing breakpoints
+   The hardcoded 112px padding-top is the key issue on this page
+   when the viewport is narrowed and nav height drops to 60px.
+   ============================================================ */
+
+@media (max-width: 480px) {
+  #project-main { padding-top: calc(60px + 44px); } /* override 112px */
+  .pd-shell     { padding: 1.5rem 1rem 3rem; }
+  .pd-facts     { grid-template-columns: 1fr 1fr; }
+  .pd-actions   { flex-direction: column; }
+  .pd-actions .pd-btn { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 375px) {
+  .pd-facts { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   ANNOUNCEMENTS PAGE — announcements.css missing small-screen
+   ============================================================ */
+
+@media (max-width: 480px) {
+  .ann-hero       { padding: calc(60px + 44px + 2.5rem) 1rem 3rem; }
+  .ann-cards-grid { padding: 2rem 1rem; }
+  .ann-card       { padding: 1.25rem; }
+  .ann-featured   { padding: 2rem 1rem; }
+  .ann-featured-card { padding: 1.5rem; }
+  .ann-newsletter-form { width: 100%; }
+}
+
+@media (max-width: 375px) {
+  .ann-hero-title { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+  .ann-chip       { font-size: 0.72rem; padding: 0.35rem 0.8rem; }
+}
+
+/* ============================================================
+   ACHIEVEMENTS PAGE — achievements.css missing small-screen
+   ============================================================ */
+
+@media (max-width: 480px) {
+  .ach-hero       { padding: calc(60px + 44px + 2.5rem) 1rem 3rem; }
+  .ach-cards-grid { padding: 2rem 1rem; }
+  .ach-stats-section { padding: 3rem 1rem; }
+  .ach-stats-inner   { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .ach-submit        { padding: 3rem 1rem; }
+  .ach-submit-form   { flex-direction: column; width: 100%; }
+  .ach-submit-input,
+  .ach-submit-btn    { width: 100%; }
+}
+
+@media (max-width: 375px) {
+  .ach-stats-inner { grid-template-columns: 1fr 1fr; }
+  .ach-hero-title  { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+}
+
+/* ============================================================
+   GALLERY PAGE (inline styles in gallery.html)
+   Add missing 820px and 480px breakpoints.
+   ============================================================ */
+
+/* Gallery featured section needs tighter padding at medium sizes */
+@media (max-width: 820px) {
+  #gallery-featured {
+    padding: calc(68px + 44px + 3rem) 1.5rem 3.5rem;
+  }
+  .gallery-featured-inner { max-width: 100%; }
+  .gallery-card-stats      { gap: 1.5rem; flex-wrap: wrap; }
+  .gallery-card-info       { padding: 1.75rem; }
+}
+
+@media (max-width: 480px) {
+  #gallery-featured {
+    padding: calc(60px + 44px + 2.5rem) 1rem 3rem;
+  }
+  .gallery-card-info       { padding: 1.25rem; }
+  .gallery-card-stats      { gap: 1rem; }
+  .gallery-card-actions    { flex-direction: column; }
+  .gallery-btn             { width: 100%; justify-content: center; }
+  .gallery-tl-item         { gap: 0 0.75rem; }
+}
+
+@media (max-width: 375px) {
+  .gallery-featured-title { font-size: clamp(1.6rem, 8vw, 2.2rem); }
+  .gallery-grid-wrap,
+  .gallery-videos-wrap    { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   PODCAST FEATURED CARD — pod-feat-card small screens
+   ============================================================ */
+
+@media (max-width: 480px) {
+  .pod-feat-card-body  { padding: 1.25rem; }
+  .pod-feat-ep-title   { font-size: clamp(1.1rem, 5vw, 1.4rem); }
+  .pod-feat-actions    { flex-direction: column; }
+  .pod-feat-btn        { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 375px) {
+  .pod-feat-guest      { gap: 0.75rem; }
+  .pod-feat-pills      { gap: 0.4rem; }
+  .pod-feat-pill       { font-size: 0.68rem; padding: 0.25rem 0.6rem; }
+}
+
+/* ============================================================
+   HOMEPAGE — podcast strip 280px fixed column
+   The 280px grid track becomes cramped on tablet-portrait.
+   ============================================================ */
+
+@media (max-width: 680px) {
+  .podcast-top {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .podcast-cover {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto;
+  }
+}
+
+/* ============================================================
+   HOMEPAGE — hero stats overflow on very small screens
+   ============================================================ */
+
+@media (max-width: 375px) {
+  .hero-stats   { gap: 0.5rem; }
+  .stat-number  { font-size: clamp(1.4rem, 6vw, 1.8rem); }
+  .stat-label   { font-size: 0.68rem; }
+  .stat-divider { display: none; }
+}
+
+/* ============================================================
+   JOIN EMBS — join actions buttons stack on small phones
+   ============================================================ */
+
+@media (max-width: 480px) {
+  .join-actions {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .join-btn {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+/* ============================================================
+   FOOTER — additional stacking at mid sizes
+   The footer-grid goes 2-col at 960px and 1-col at 520px,
+   but between 520–680px the 2-col can be cramped.
+   ============================================================ */
+
+@media (max-width: 680px) {
+  .footer-grid    { grid-template-columns: 1fr; gap: 1.75rem; }
+  .footer-main    { padding: 3rem 1.5rem 2.5rem; }
+  .footer-desc    { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .footer-main     { padding: 2.5rem 1rem 2rem; }
+  .footer-newsletter-form { flex-wrap: wrap; border-radius: 12px; }
+  .footer-email-input { min-width: 0; flex: 1 1 160px; border-radius: 8px 8px 0 0; }
+  .footer-email-btn   { border-radius: 0 0 8px 8px; width: 100%; justify-content: center; }
+}
+
+/* ============================================================
+   EVENTS PAGE — ev-card image area on landscape phones
+   ============================================================ */
+
+@media (max-width: 480px) {
+  .events-hero { padding: calc(60px + 44px + 2.5rem) 1rem 3rem; }
+  .ev-filter-chips { gap: 0.4rem; }
+  .ev-chip        { font-size: 0.72rem; padding: 0.35rem 0.8rem; }
+}
+
+/* ============================================================
+   ANNOUNCEMENTS BAR — prevent text overflow on very small screens
+   ============================================================ */
+
+@media (max-width: 375px) {
+  .announce-label { display: none; } /* hide "Updates" tag on tiny screens */
+  .announce-track-wrap { padding: 0 0.75rem; }
+}
+
+/* ============================================================
+   MEMBERS PAGE — filter controls wrap on small screens
+   ============================================================ */
+
+@media (max-width: 480px) {
+  .smem-filters { flex-direction: column; gap: 0.75rem; }
+  .smem-search-wrap { min-width: 0; width: 100%; }
+  .smem-filter-row  { flex-wrap: wrap; gap: 0.5rem; }
+}
+
+/* ============================================================
+   HERO BACKGROUND DECORATION — hide large decorative images
+   on very small viewports to prevent paint overhead
+   ============================================================ */
+
+@media (max-width: 375px) {
+  .about-dna-bg  { display: none; }
+  .deco-cross    { display: none; }
+}
+
+/* ============================================================
+   EVENTS / PROJECTS / BLOG HERO — shared inner flex gap
+   ============================================================ */
+
+@media (max-width: 480px) {
+  /* Any page hero section that uses the shared 2-col hero pattern */
+  .events-hero-inner,
+  .proj-hero-inner,
+  .blog-hero-inner,
+  .act-hero-inner {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* ============================================================
+   BACK TO TOP — keep away from bottom navigation on iOS
+   ============================================================ */
+
+@media (max-width: 600px) {
+  .back-to-top {
+    bottom: 1.25rem;
+    right: 1rem;
+  }
+}
+
+/* ============================================================
+   SAFE AREA INSETS — for devices with notches / Dynamic Island
+   ============================================================ */
+
+@supports (padding: env(safe-area-inset-bottom)) {
+  .footer-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+  @media (max-width: 600px) {
+    .back-to-top {
+      bottom: max(1.25rem, calc(env(safe-area-inset-bottom) + 0.75rem));
+    }
+  }
+}
+
+/* ============================================================
+   LANDSCAPE ORIENTATION — phones in landscape need tighter tops
+   ============================================================ */
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero,
+  #members-hero,
+  .contact-hero,
+  .events-hero,
+  .blog-hero,
+  .act-hero,
+  #gallery-featured {
+    min-height: auto;
+  }
+
+  .hero-container {
+    padding-top: calc(60px + 44px + 1rem);
+    padding-bottom: 2rem;
+  }
+
+  .pod-hero {
+    padding-top: calc(60px + 44px + 1rem);
+    padding-bottom: 2.5rem;
+  }
+
+  .pod-hero-inner { gap: 2rem; }
+  .pod-hero-right { flex: 0 0 180px; height: 180px; }
+  .pod-hero-ring--outer { width: 180px; height: 180px; }
+  .pod-hero-ring--inner { width: 130px; height: 130px; }
+}
+
+/* ============================================================
+   POST PAGE (post.html / blog post detail)
+   ============================================================ */
+
+@media (max-width: 480px) {
+  .post-hero   { padding: calc(60px + 44px + 2rem) 1rem 2.5rem; }
+  .post-body   { padding: 0 1rem; }
+  .post-body h2 { font-size: clamp(1.3rem, 5vw, 1.7rem); }
+  .post-body h3 { font-size: clamp(1.1rem, 4.5vw, 1.4rem); }
+  .post-body pre { overflow-x: auto; }
+}
+
+/* ============================================================
+   404 PAGE
+   ============================================================ */
+
+@media (max-width: 480px) {
+  .error-title { font-size: clamp(4rem, 20vw, 8rem); }
+  .error-actions { flex-direction: column; align-items: center; }
+  .error-btn  { width: 100%; max-width: 260px; justify-content: center; }
+}
+
+/* ============================================================
+   GENERAL UTILITY — tables inside content should scroll rather
+   than break page layout
+   ============================================================ */
+
+.post-body table,
+.pd-shell table {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+}

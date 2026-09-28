@@ -8,8 +8,9 @@ const blogSchema = new mongoose.Schema(
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     thumbnail: { type: String, default: '' },
     tags: [{ type: String }],
-    published: { type: Boolean, default: false },
-    publishedAt: { type: Date },
+    published:    { type: Boolean, default: false },
+    publishedAt:  { type: Date },
+    showInUpdates: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

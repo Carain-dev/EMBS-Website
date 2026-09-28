@@ -5,7 +5,7 @@
 
 #project-main {
   /* Clears the fixed navbar (68px) plus the announcement bar (44px). */
-  padding-top: 112px;
+  padding-top: calc(68px + 44px);
   min-height: 70vh;
 }
 

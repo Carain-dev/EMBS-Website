@@ -30,7 +30,11 @@ const normalizeGalleryPayload = (payload = {}) => {
 
 exports.getAll = asyncHandler(async (req, res) => {
   const eventFilter = req.query.event ? { event: req.query.event } : {};
-  const filter = isAdminRequest(req) ? eventFilter : { ...eventFilter, published: true };
+  /* ?type=gallery|video narrows to a specific content type */
+  const typeFilter  = req.query.type   ? { type: req.query.type }  : {};
+  const filter = isAdminRequest(req)
+    ? { ...eventFilter, ...typeFilter }
+    : { ...eventFilter, ...typeFilter, published: true };
   const { rows, meta } = await paginate(Gallery, filter, { publishedAt: -1, order: 1, createdAt: -1 }, req.query, { path: 'event', select: 'title' });
   sendResponse(res, 200, rows, 'Success', meta);
 });
@@ -49,8 +53,13 @@ exports.create = asyncHandler(async (req, res) => {
   const payload = normalizeGalleryPayload(req.body);
   const { title } = payload;
   if (!title) return sendError(res, 400, 'Title is required');
-  if (!req.file && !payload.imageUrl)
+
+  /* For image-type items an image file or imageUrl is required.
+     Video items only need a videoUrl, not an image upload. */
+  const isVideo = payload.type === 'video';
+  if (!isVideo && !req.file && !payload.imageUrl)
     return sendError(res, 400, 'An image is required');
+
   if (req.file) payload.imageUrl = req.file.path;
   const item = await Gallery.create(payload);
   sendResponse(res, 201, item, 'Gallery item created');
