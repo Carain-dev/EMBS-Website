@@ -197,34 +197,34 @@
               <label class="form-label">Position <span class="form-required">*</span></label>
               <select class="form-input form-select" id="memPosition">
                 <option value="" disabled selected>Select position</option>
-                <optgroup label="Org Chart — Leadership">
-                  <option>Faculty Advisor</option>
-                  <option>Chapter Chair</option>
-                  <option>Vice Chair</option>
+                <optgroup label="Leadership">
+                  <option>Chairperson</option>
                   <option>Secretary</option>
+                  <option>Joint Secretary</option>
                   <option>Treasurer</option>
                   <option>Joint Treasurer</option>
+                  <option>Proposal Lead</option>
+                  <option>Public Relations Officer</option>
+                  <option>ExCom Lead</option>
                 </optgroup>
-                <optgroup label="Executive">
-                  <option>Chairperson</option>
-                  <option>Vice Chairperson</option>
-                  <option>Technical Lead</option>
-                  <option>Events Lead</option>
+                <optgroup label="Leads">
+                  <option>Event Coordinator Lead</option>
+                  <option>Tech Lead</option>
                   <option>Design Lead</option>
-                  <option>Content Lead</option>
-                  <option>Social Media Lead</option>
-                  <option>Research Lead</option>
+                  <option>Designer Lead</option>
                 </optgroup>
-                <optgroup label="Core">
-                  <option>Core Member</option>
-                  <option>Technical Member</option>
-                  <option>Events Member</option>
-                  <option>Design Member</option>
-                  <option>Content Member</option>
+                <optgroup label="Officers &amp; Coordinators">
+                  <option>Community Service Officer</option>
+                  <option>Outreach Officer</option>
+                  <option>Member Service Coordinator</option>
+                  <option>International Relations Officer</option>
+                  <option>Social Media In-Charge</option>
+                  <option>Documentation Designer</option>
                 </optgroup>
-                <optgroup label="General">
-                  <option>Volunteer</option>
-                  <option>Associate Member</option>
+                <optgroup label="Members">
+                  <option>Technical</option>
+                  <option>ExCom Member</option>
+                  <option>Member</option>
                 </optgroup>
               </select>
             </div>
@@ -516,6 +516,173 @@
         </div>
       </div>
 
+      <!-- ═══════════════════════════════════════════════════════════
+           MEMBERS PAGE — FACULTY ADVISORS
+           Stored as Member records with isFacultyAdvisor:true.
+           Appears in the Faculty Advisors section on members.html.
+           ═══════════════════════════════════════════════════════════ -->
+
+      <!-- Faculty Advisor Add/Edit Form Panel -->
+      <div class="panel form-panel collapsed" id="fadFormPanel" style="margin-top:2rem;">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <span class="panel-title" id="fadFormTitle">Add Faculty Advisor</span>
+            <span class="panel-subtitle">This person will appear in the Faculty Advisors section on the public Members page</span>
+          </div>
+          <button class="form-collapse-btn" id="collapseFadFormBtn" aria-label="Collapse">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M18 15l-6-6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <form class="event-form" id="fadForm" onsubmit="return false;">
+
+          <!-- Row 1: Photo + Name + Role -->
+          <div class="form-row">
+            <div class="form-group mem-photo-group">
+              <label class="form-label">Photo</label>
+              <div class="upload-zone mem-photo-zone" id="fadPhotoZone">
+                <input type="file" class="upload-input" id="fadPhotoInput" accept="image/*" />
+                <div class="upload-inner" id="fadPhotoInner">
+                  <svg viewBox="0 0 48 48" fill="none" width="28" height="28"><circle cx="24" cy="18" r="8" stroke="rgba(107,45,139,0.5)" stroke-width="1.5"/><path d="M8 42c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="rgba(0,169,157,0.5)" stroke-width="1.5" stroke-linecap="round"/></svg>
+                  <span class="upload-hint">Upload photo</span>
+                </div>
+                <div class="upload-preview upload-preview--round" id="fadPhotoPreview" style="display:none;">
+                  <img id="fadPhotoImg" src="" alt="Faculty photo" />
+                  <button type="button" class="upload-remove" id="fadPhotoRemove">x</button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group form-group--wide">
+              <label class="form-label">Full Name <span class="form-required">*</span></label>
+              <input type="text" class="form-input" id="fadName" placeholder="e.g. Dr. Allwyn Gnanadas" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Faculty Role <span class="form-required">*</span></label>
+              <select class="form-input form-select" id="fadRole">
+                <option value="" disabled selected>Select role</option>
+                <option value="Faculty Advisor">Faculty Advisor</option>
+                <option value="Co-Advisor">Co-Advisor</option>
+                <option value="Faculty Coordinator">Faculty Coordinator</option>
+                <option value="Faculty Member">Faculty Member</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row 2: Designation + Department + Email -->
+          <div class="form-row">
+            <div class="form-group form-group--wide">
+              <label class="form-label">Designation <span class="form-required">*</span></label>
+              <input type="text" class="form-input" id="fadDesignation" placeholder="e.g. Associate Professor, Biomedical Engineering Dept." />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Department</label>
+              <select class="form-input form-select" id="fadDept">
+                <option value="">Select department</option>
+                <option>Biomedical Engineering</option>
+                <option>Electronics &amp; Communication</option>
+                <option>Computer Science</option>
+                <option>Electrical Engineering</option>
+                <option>Mechanical Engineering</option>
+                <option>Information Technology</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-input" id="fadEmail" placeholder="e.g. advisor@kpriet.ac.in" />
+            </div>
+          </div>
+
+          <!-- Row 3: Bio -->
+          <div class="form-row">
+            <div class="form-group form-group--full">
+              <label class="form-label">Research Area / Bio <span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">(optional)</span></label>
+              <textarea class="form-input form-textarea" id="fadBio" rows="2" placeholder="e.g. Biomedical Signal Processing, Neural Engineering, Wearable Health Monitoring Systems"></textarea>
+            </div>
+          </div>
+
+          <!-- Row 4: Display Order + Published -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="fadOrder">Display Order</label>
+              <input type="number" class="form-input" id="fadOrder" min="0" step="1" value="0"
+                     style="max-width:120px;" title="Lower numbers appear first." />
+              <span style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;display:block;">Lower = appears first on Members page.</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Published</label>
+              <div style="display:flex;align-items:center;gap:10px;margin-top:6px;">
+                <label style="position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;">
+                  <input type="checkbox" id="fadActive" checked style="opacity:0;width:0;height:0;position:absolute;" />
+                  <span id="fadActiveTrack" style="
+                    position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;
+                    background:rgba(0,169,157,0.85);border-radius:22px;transition:background 0.2s;
+                  "></span>
+                  <span id="fadActiveThumb" style="
+                    position:absolute;height:16px;width:16px;left:3px;top:3px;
+                    background:#fff;border-radius:50%;transition:transform 0.2s;
+                    pointer-events:none;transform:translateX(18px);
+                  "></span>
+                </label>
+                <span style="font-size:0.82rem;color:var(--text-muted);">
+                  Show on <strong style="color:var(--text-primary)">Members page</strong>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="form-actions">
+            <button type="button" class="btn-reset" id="resetFadFormBtn">Clear</button>
+            <div class="form-actions-right">
+              <button type="button" class="btn-publish" id="saveFadBtn">
+                <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="1.6"/><polyline points="17,21 17,13 7,13 7,21" stroke="currentColor" stroke-width="1.6"/><polyline points="7,3 7,8 15,8" stroke="currentColor" stroke-width="1.6"/></svg>
+                <span id="saveFadBtnLabel">Save Faculty Advisor</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Faculty Advisors Table Panel -->
+      <div class="panel table-panel" style="margin-top:1rem;">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <span class="panel-title">
+              <svg viewBox="0 0 20 20" fill="none" width="16" height="16" style="vertical-align:middle;margin-right:6px;">
+                <circle cx="10" cy="7" r="4" stroke="rgba(107,45,139,0.7)" stroke-width="1.5"/>
+                <path d="M3 18c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="rgba(107,45,139,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              Members Page — Faculty Advisors
+            </span>
+            <span class="panel-subtitle" id="fadTableCount">Loading…</span>
+          </div>
+          <button class="btn-primary-action" id="addFadBtn">
+            <svg viewBox="0 0 24 24" fill="none" width="15" height="15"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Add Faculty Advisor
+          </button>
+        </div>
+        <div class="table-wrap">
+          <table class="events-table" id="fadTable">
+            <thead>
+              <tr>
+                <th style="width:7%"></th>
+                <th style="width:22%">Name</th>
+                <th style="width:14%">Role</th>
+                <th style="width:28%">Designation</th>
+                <th style="width:10%">Order</th>
+                <th style="width:10%">Status</th>
+                <th style="width:9%">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="fadTableBody"></tbody>
+          </table>
+          <div class="table-empty" id="fadTableEmpty" style="display:none;">
+            <svg viewBox="0 0 48 48" fill="none" width="40" height="40"><circle cx="24" cy="18" r="10" stroke="rgba(107,45,139,0.25)" stroke-width="1.5"/><path d="M8 42c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="rgba(107,45,139,0.2)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>No faculty advisors added yet</span>
+          </div>
+        </div>
+      </div>
+
     </main>
   </div>
 
@@ -553,6 +720,22 @@
     </div>
   </div>
 
+  <!-- Faculty Advisor Delete Modal -->
+  <div class="modal-backdrop" id="fadDeleteModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-icon">
+        <svg viewBox="0 0 24 24" fill="none" width="28" height="28"><polyline points="3,6 5,6 21,6" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round"/><path d="M10 11v6M14 11v6" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </div>
+      <h3 class="modal-title">Remove Faculty Advisor?</h3>
+      <p class="modal-desc">This will permanently remove <strong id="fadDeleteName"></strong> from the Members page. This cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" id="cancelFadDelete">Cancel</button>
+        <button class="btn-modal-confirm" id="confirmFadDelete">Remove</button>
+      </div>
+    </div>
+  </div>
+
   <script src="members.js"></script>
+  <script src="topbar.js"></script>
 </body>
 </html>

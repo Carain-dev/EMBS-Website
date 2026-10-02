@@ -54,6 +54,9 @@ const siteSettingsSchema = new mongoose.Schema(
     establishedYear:    { type: String, default: '' },
     /* ── Media defaults ──────────────────────────────────── */
     podcastCoverUrl:        { type: String, default: '' },
+    /* ── Gallery Featured Collection text ───────────────── */
+    galleryFeaturedHeading: { type: String, default: '' },
+    galleryFeaturedDesc:    { type: String, default: '' },
     /* ── Page hero images ────────────────────────────────── */
     activitiesHeroImageUrl: { type: String, default: '' },
     blogHeroImageUrl:       { type: String, default: '' },

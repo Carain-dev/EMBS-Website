@@ -62,12 +62,46 @@
     const grid = document.querySelector('.ach-cards-grid');
     if (!grid) return;
 
+    /* Show loading dash in stat elements while fetch is in progress */
+    ['achStatTotal', 'achStatPublications', 'achStatCompetitions', 'achStatAwards'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = '\u2014'; /* em dash */
+    });
+
     try {
       const res = await fetch(`${API_BASE}/achievements`);
       const json = await res.json();
-      const items = (json.data || json).filter(item => item && item.featured !== false);
 
-      if (!Array.isArray(items) || !items.length) {
+      /* Public endpoint returns only featured:true achievements */
+      const items = Array.isArray(json.data) ? json.data : (Array.isArray(json) ? json : []);
+
+      /* ── Populate stats from real data ── */
+      function setStatNum(id, n) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = String(n);
+      }
+
+      const total        = items.length;
+      const publications = items.filter(function (a) {
+        const cat = (a.category || '').toLowerCase().replace(/\s+/g, '-');
+        return cat === 'publication' || cat === 'publications';
+      }).length;
+      const competitions = items.filter(function (a) {
+        const cat = (a.category || '').toLowerCase().replace(/\s+/g, '-');
+        return cat === 'competition' || cat === 'competition-wins' || cat === 'competition-win';
+      }).length;
+      const awards = items.filter(function (a) {
+        const cat = (a.category || '').toLowerCase().replace(/\s+/g, '-');
+        return cat === 'award' || cat === 'student-awards' || cat === 'student-award';
+      }).length;
+
+      setStatNum('achStatTotal',        total);
+      setStatNum('achStatPublications', publications);
+      setStatNum('achStatCompetitions', competitions);
+      setStatNum('achStatAwards',       awards);
+
+      /* ── Render achievement cards ── */
+      if (!items.length) {
         grid.innerHTML = `<p class="embs-empty">No achievements yet.</p>`;
         return;
       }
@@ -75,7 +109,13 @@
       grid.innerHTML = '';
       const cards = items.map(item => { const c = buildCard(item); grid.appendChild(c); return c; });
       initFilters(cards);
-    } catch {
+    } catch (err) {
+      /* On error: show safe unavailable state in stats, error message in grid */
+      ['achStatTotal', 'achStatPublications', 'achStatCompetitions', 'achStatAwards'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = '\u2014';
+      });
+      console.warn('achievements-public: failed to load —', err.message);
       grid.innerHTML = `<p class="embs-empty">Failed to load achievements.</p>`;
     }
   }

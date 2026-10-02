@@ -1,11 +1,11 @@
-/* ============================================
-   podcast.css — EMBS Podcast Page
+﻿/* ============================================
+   podcast.css â€” EMBS Podcast Page
    Extends navbar.css. No duplication.
    ============================================ */
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    HERO
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .pod-hero {
   background:
     radial-gradient(ellipse 65% 55% at 10% 50%, rgba(107, 45, 139, 0.22) 0%, transparent 65%),
@@ -48,7 +48,7 @@
   z-index: 1;
 }
 
-/* ── Left column ── */
+/* â”€â”€ Left column â”€â”€ */
 .pod-hero-left {
   flex: 1;
   min-width: 0;
@@ -210,7 +210,7 @@
   flex-shrink: 0;
 }
 
-/* ── Right column: illustration ── */
+/* â”€â”€ Right column: illustration â”€â”€ */
 .pod-hero-right {
   flex: 0 0 420px;
   position: relative;
@@ -257,7 +257,7 @@
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  /* ── Replace this block with <img src="your-illustration.png"> ── */
+  /* â”€â”€ Replace this block with <img src="your-illustration.png"> â”€â”€ */
 }
 
 /* Microphone SVG */
@@ -360,9 +360,9 @@
   70%       { transform: translateY(-8px) translateX(5px); }
 }
 
-/* ══════════════════════════════════════════
-   RESPONSIVE — HERO
-══════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   RESPONSIVE â€” HERO
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @media (max-width: 1024px) {
   .pod-hero-right { flex: 0 0 360px; height: 360px; }
   .pod-hero-ring--outer { width: 360px; height: 360px; }
@@ -405,9 +405,9 @@
   .pod-hero { padding: calc(60px + 44px + 2rem) 0.9rem 3rem; }
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    FEATURED EPISODE
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .pod-featured {
   background:
     radial-gradient(ellipse 70% 50% at 80% 30%, rgba(107, 45, 139, 0.12) 0%, transparent 65%),
@@ -454,7 +454,7 @@
   max-width: 520px;
 }
 
-/* ── Glass card ── */
+/* â”€â”€ Glass card â”€â”€ */
 .pod-feat-card {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(107, 45, 139, 0.25);
@@ -492,7 +492,7 @@
   padding: 2.5rem;
 }
 
-/* ── Left: thumbnail column ── */
+/* â”€â”€ Left: thumbnail column â”€â”€ */
 .pod-feat-thumb-col {
   flex: 0 0 300px;
 }
@@ -570,7 +570,7 @@
   color: rgba(255, 255, 255, 0.75);
 }
 
-/* ── Right: content column ── */
+/* â”€â”€ Right: content column â”€â”€ */
 .pod-feat-content-col {
   flex: 1;
   min-width: 0;
@@ -707,7 +707,7 @@
 }
 
 
-/* ── Waveform progress bar ── */
+/* â”€â”€ Waveform progress bar â”€â”€ */
 .pod-feat-waveform {
   padding: 1.5rem 2.5rem 1.75rem;
   border-top: 1px solid rgba(107, 45, 139, 0.15);
@@ -771,9 +771,9 @@
   color: #00A99D;
 }
 
-/* ══════════════════════════════════════════
-   RESPONSIVE — FEATURED EPISODE
-══════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   RESPONSIVE â€” FEATURED EPISODE
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @media (max-width: 1024px) {
   .pod-feat-thumb-col { flex: 0 0 260px; }
   .pod-feat-card-body { gap: 2.25rem; padding: 2rem; }
@@ -810,9 +810,9 @@
   .pod-feat-card-body { padding: 1rem; }
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    LATEST EPISODES
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .pod-latest {
   background:
     radial-gradient(ellipse 60% 50% at 15% 40%, rgba(107, 45, 139, 0.1) 0%, transparent 65%),
@@ -859,7 +859,7 @@
   max-width: 520px;
 }
 
-/* ── Episode grid ── */
+/* â”€â”€ Episode grid â”€â”€ */
 .pod-ep-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -867,7 +867,7 @@
   align-items: stretch;
 }
 
-/* ── Episode card ── */
+/* â”€â”€ Episode card â”€â”€ */
 .pod-ep-card {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(107, 45, 139, 0.2);
@@ -907,7 +907,7 @@
   transform: scale(1.05);
 }
 
-/* Episode number — top left */
+/* Episode number â€” top left */
 .pod-ep-num {
   position: absolute;
   top: 0.75rem;
@@ -924,7 +924,7 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-/* Category badge — top right */
+/* Category badge â€” top right */
 .pod-ep-badge {
   position: absolute;
   top: 0.75rem;
@@ -1068,9 +1068,9 @@
   transform: translateY(-1px);
 }
 
-/* ══════════════════════════════════════════
-   RESPONSIVE — LATEST EPISODES
-══════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   RESPONSIVE â€” LATEST EPISODES
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @media (max-width: 1024px) {
   .pod-ep-grid { grid-template-columns: repeat(2, 1fr); }
 }
@@ -1090,9 +1090,9 @@
   .pod-ep-btn--spotify { justify-content: center; }
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    MEET OUR GUESTS
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .pod-guests {
   background:
     radial-gradient(ellipse 65% 50% at 85% 20%, rgba(107, 45, 139, 0.12) 0%, transparent 65%),
@@ -1139,7 +1139,7 @@
   max-width: 520px;
 }
 
-/* ── Guests grid ── */
+/* â”€â”€ Guests grid â”€â”€ */
 .pod-guests-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1147,7 +1147,7 @@
   align-items: stretch;
 }
 
-/* ── Guest card ── */
+/* â”€â”€ Guest card â”€â”€ */
 .pod-guest-card {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(107, 45, 139, 0.2);
@@ -1262,9 +1262,9 @@
   margin-top: 0.5rem;
 }
 
-/* ══════════════════════════════════════════
-   RESPONSIVE — MEET OUR GUESTS
-══════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   RESPONSIVE â€” MEET OUR GUESTS
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @media (max-width: 1024px) {
   .pod-guests-grid { grid-template-columns: repeat(2, 1fr); }
 }
@@ -1279,9 +1279,9 @@
   .pod-guest-avatar-wrap { width: 90px; height: 90px; }
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    POPULAR TOPICS
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .pod-topics {
   background:
     radial-gradient(ellipse 70% 50% at 50% 50%, rgba(107, 45, 139, 0.1) 0%, transparent 70%),
@@ -1327,7 +1327,7 @@
   line-height: 1.7;
 }
 
-/* ── Chips container ── */
+/* â”€â”€ Chips container â”€â”€ */
 .pod-topics-chips {
   display: flex;
   flex-wrap: wrap;
@@ -1335,7 +1335,7 @@
   justify-content: center;
 }
 
-/* ── Individual chip ── */
+/* â”€â”€ Individual chip â”€â”€ */
 .pod-topic-chip {
   display: inline-flex;
   align-items: center;
@@ -1377,9 +1377,9 @@
   color: #00c4b7;
 }
 
-/* ══════════════════════════════════════════
-   RESPONSIVE — POPULAR TOPICS
-══════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   RESPONSIVE â€” POPULAR TOPICS
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @media (max-width: 820px) {
   .pod-topics { padding: 4.5rem 1.5rem 5rem; }
 }
@@ -1389,9 +1389,9 @@
   .pod-topic-chip { font-size: 0.8rem; padding: 0.55rem 1rem; }
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    SUBSCRIBE
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .pod-subscribe {
   background:
     radial-gradient(ellipse 80% 60% at 50% 50%, rgba(107, 45, 139, 0.16) 0%, transparent 70%),
@@ -1436,7 +1436,7 @@
   max-width: 460px;
 }
 
-/* ── Email form ── */
+/* â”€â”€ Email form â”€â”€ */
 .pod-subscribe-form {
   width: 100%;
   display: flex;
@@ -1526,7 +1526,7 @@
   box-shadow: 0 8px 28px rgba(107, 45, 139, 0.5);
 }
 
-/* ── Divider ── */
+/* â”€â”€ Divider â”€â”€ */
 .pod-subscribe-divider {
   width: 100%;
   display: flex;
@@ -1548,7 +1548,7 @@
   letter-spacing: 0.04em;
 }
 
-/* ── Spotify follow button ── */
+/* â”€â”€ Spotify follow button â”€â”€ */
 .pod-subscribe-spotify {
   display: inline-flex;
   align-items: center;
@@ -1572,7 +1572,7 @@
   box-shadow: 0 6px 20px rgba(29, 185, 84, 0.2);
 }
 
-/* ── Release note ── */
+/* â”€â”€ Release note â”€â”€ */
 .pod-subscribe-note {
   display: inline-flex;
   align-items: center;
@@ -1588,9 +1588,9 @@
   flex-shrink: 0;
 }
 
-/* ══════════════════════════════════════════
-   RESPONSIVE — SUBSCRIBE
-══════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   RESPONSIVE â€” SUBSCRIBE
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @media (max-width: 820px) {
   .pod-subscribe { padding: 4.5rem 1.5rem 5rem; }
 }
@@ -1600,9 +1600,9 @@
   .pod-subscribe-spotify { width: 100%; justify-content: center; }
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    BECOME A GUEST
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .pod-become {
   background: linear-gradient(135deg, #07091a 0%, #110828 40%, #071418 100%);
   padding: 6rem 2rem;
@@ -1643,7 +1643,7 @@
   z-index: 1;
 }
 
-/* ── Illustration column ── */
+/* â”€â”€ Illustration column â”€â”€ */
 .pod-become-illus {
   flex: 0 0 260px;
   position: relative;
@@ -1685,7 +1685,7 @@
   100% { opacity: 0;   transform: scale(1.15); }
 }
 
-/* ── Text content column ── */
+/* â”€â”€ Text content column â”€â”€ */
 .pod-become-content {
   flex: 1;
   min-width: 0;
@@ -1798,9 +1798,9 @@
   box-shadow: 0 6px 20px rgba(107, 45, 139, 0.2);
 }
 
-/* ══════════════════════════════════════════
-   RESPONSIVE — BECOME A GUEST
-══════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   RESPONSIVE â€” BECOME A GUEST
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @media (max-width: 900px) {
   .pod-become-inner {
     flex-direction: column;
@@ -1824,3 +1824,276 @@
   .pod-become-actions { flex-direction: column; width: 100%; }
   .pod-become-btn     { width: 100%; justify-content: center; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   SPOTIFY EMBED PLAYER
+   Slides up from the bottom. Contains the Spotify iframe.
+   ═══════════════════════════════════════════════════════════════ */
+
+.pod-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(13, 16, 48, 0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(107, 45, 139, 0.3);
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.45);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.75rem 1.25rem 0.85rem;
+}
+
+.pod-player.pod-player--visible {
+  transform: translateY(0);
+}
+
+.pod-player-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: nowrap;
+}
+
+/* ── Episode label ── */
+.pod-player-info {
+  flex: 0 0 auto;
+  min-width: 0;
+  max-width: 180px;
+}
+
+.pod-player-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.pod-player-epnum {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #00A99D;
+  white-space: nowrap;
+}
+
+.pod-player-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: rgba(220, 230, 255, 0.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 170px;
+}
+
+/* ── Spotify embed iframe ── */
+.pod-player-embed-wrap {
+  flex: 1;
+  min-width: 0;
+  /* Spotify compact embed is 152px tall; we clip to 80px for a bar feel */
+  height: 80px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.pod-player-embed-wrap iframe {
+  width: 100%;
+  height: 152px;          /* Spotify's minimum — we clip the bottom visually */
+  border: none;
+  border-radius: 10px;
+  display: block;
+  margin-top: -36px;      /* shift up to hide the Spotify footer bar */
+  pointer-events: all;
+}
+
+/* ── Actions: Spotify link + close ── */
+.pod-player-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.pod-player-spotify-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1DB954;
+  text-decoration: none;
+  padding: 0.38rem 0.85rem;
+  border: 1.5px solid rgba(29, 185, 84, 0.3);
+  border-radius: 999px;
+  background: rgba(29, 185, 84, 0.07);
+  transition: background 0.18s, border-color 0.18s;
+  white-space: nowrap;
+}
+
+.pod-player-spotify-btn:hover {
+  background: rgba(29, 185, 84, 0.16);
+  border-color: rgba(29, 185, 84, 0.55);
+}
+
+.pod-player-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(180, 195, 230, 0.5);
+  padding: 0.3rem;
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  transition: color 0.18s, background 0.18s;
+}
+
+.pod-player-close:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ── No-Spotify fallback ── */
+.pod-player-no-audio {
+  text-align: center;
+  font-size: 0.8rem;
+  font-family: 'DM Sans', sans-serif;
+  color: rgba(180, 195, 230, 0.65);
+  padding: 0.4rem 0 0;
+  margin: 0;
+}
+
+.pod-player-no-audio a {
+  color: #1DB954;
+  text-decoration: underline;
+  margin-left: 0.35rem;
+}
+
+/* Push page content above player when open */
+body.pod-player-open main {
+  padding-bottom: 110px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .pod-player-info { display: none; }
+  .pod-player-embed-wrap { height: 80px; }
+}
+
+@media (max-width: 480px) {
+  .pod-player-inner { gap: 0.6rem; }
+  .pod-player-spotify-btn { font-size: 0.68rem; padding: 0.3rem 0.65rem; }
+  .pod-player-embed-wrap { height: 72px; }
+  .pod-player-embed-wrap iframe { margin-top: -44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pod-player { transition: none; }
+}
+
+/* ── Topic chip — button reset + active state ── */
+.pod-topic-chip {
+  cursor: pointer;
+  background: none;
+  border: none;
+  font: inherit;
+  text-align: left;
+}
+
+.pod-topic-chip[aria-pressed="true"] {
+  background: linear-gradient(135deg, rgba(107,45,139,0.25), rgba(0,169,157,0.2));
+  border-color: rgba(107,45,139,0.55);
+  color: #ffffff;
+}
+
+/* ── Topic results panel ── */
+.pod-topic-results {
+  margin-top: 2.5rem;
+}
+
+.pod-topic-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.pod-topic-results-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  color: rgba(200,215,255,0.75);
+}
+
+.pod-topic-results-label strong {
+  color: #00A99D;
+  font-weight: 700;
+}
+
+.pod-topic-results-clear {
+  background: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  color: rgba(200,215,255,0.6);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.28rem 0.75rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.18s, color 0.18s;
+}
+
+.pod-topic-results-clear:hover {
+  border-color: rgba(107,45,139,0.5);
+  color: #ffffff;
+}
+
+/* Reuse pod-ep-grid layout for topic results */
+.pod-topic-ep-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.pod-topic-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2.5rem 1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: rgba(200,215,255,0.4);
+}
+
+/* Tag chip in admin form */
+.tag-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(107,45,139,0.18);
+  color: #c084fc;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  margin: 0.2rem 0.2rem 0.2rem 0;
+}
+
+.tag-remove {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.7;
+}
+.tag-remove:hover { opacity: 1; }

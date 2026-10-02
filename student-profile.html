@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Profile — IEEE EMBS</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="navbar.css" />
+  <script src="config.js"></script>
+  <link rel="stylesheet" href="members.css" />
+  <link rel="stylesheet" href="responsive.css" />
+  <style>
+    /* ── Page wrapper ── */
+    .sprof-page {
+      min-height: 100vh;
+      background: #f7f8fc;
+      padding: calc(68px + 44px + 3rem) 1.5rem 5rem;
+    }
+
+    .sprof-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* ── Back link ── */
+    .sprof-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #6B2D8B;
+      text-decoration: none;
+      margin-bottom: 2rem;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .sprof-back:hover { opacity: 1; }
+
+    /* ── Loading skeleton ── */
+    .sprof-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 5rem 2rem;
+      color: #9a9fb8;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+    }
+    .sprof-spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(107,45,139,0.15);
+      border-top-color: #6B2D8B;
+      border-radius: 50%;
+      animation: sprof-spin 0.8s linear infinite;
+    }
+    @keyframes sprof-spin { to { transform: rotate(360deg); } }
+
+    /* ── Error / not found states ── */
+    .sprof-error {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+    .sprof-error svg { opacity: 0.3; }
+    .sprof-error-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0d1030;
+    }
+    .sprof-error-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      color: #9a9fb8;
+    }
+    .sprof-error-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #6B2D8B;
+      text-decoration: none;
+      padding: 0.45rem 1rem;
+      border: 1.5px solid rgba(107,45,139,0.3);
+      border-radius: 999px;
+      transition: background 0.2s;
+    }
+    .sprof-error-link:hover { background: rgba(107,45,139,0.06); }
+
+    /* ── Profile card ── */
+    .sprof-card {
+      display: none;
+      background: #ffffff;
+      border-radius: 24px;
+      border: 1px solid rgba(107,45,139,0.1);
+      box-shadow: 0 8px 40px rgba(107,45,139,0.08);
+      overflow: hidden;
+    }
+
+    /* Top accent bar */
+    .sprof-card-accent {
+      height: 5px;
+      background: linear-gradient(90deg, #6B2D8B, #00A99D);
+    }
+
+    .sprof-card-body {
+      padding: 2.5rem;
+    }
+
+    /* Avatar + name row */
+    .sprof-header {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .sprof-avatar-wrap {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+    }
+
+    .sprof-avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      border: 3px solid rgba(107,45,139,0.15);
+    }
+    .sprof-avatar-img[src=""] { display: none; }
+
+    .sprof-avatar-placeholder {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6B2D8B, #00A99D);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .sprof-name-block {}
+
+    .sprof-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0d1030;
+      margin-bottom: 0.3rem;
+      line-height: 1.2;
+    }
+
+    .sprof-role-tag {
+      display: inline-block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(107,45,139,0.1);
+      color: #6B2D8B;
+      border: 1px solid rgba(107,45,139,0.2);
+    }
+
+    /* Detail rows */
+    .sprof-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 2rem;
+    }
+
+    .sprof-detail-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      color: #4a5070;
+    }
+
+    .sprof-detail-label {
+      font-weight: 600;
+      color: #0d1030;
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+
+    /* Action buttons */
+    .sprof-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .sprof-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.55rem 1.2rem;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .sprof-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .sprof-btn--linkedin {
+      background: linear-gradient(90deg, #6B2D8B, #00A99D);
+      color: #ffffff;
+      box-shadow: 0 3px 12px rgba(107,45,139,0.22);
+    }
+
+    .sprof-btn--email {
+      background: rgba(107,45,139,0.07);
+      color: #6B2D8B;
+      border: 1.5px solid rgba(107,45,139,0.22);
+    }
+
+    @media (max-width: 480px) {
+      .sprof-page { padding: calc(60px + 44px + 2rem) 1rem 4rem; }
+      .sprof-header { flex-direction: column; align-items: center; text-align: center; }
+      .sprof-card-body { padding: 1.75rem 1.25rem; }
+      .sprof-detail-row { flex-direction: column; gap: 0.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <div class="logo-wrap">
+        <img src="logo-cropped.png" alt="IEEE EMBS Logo" class="logo-img" />
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">IEEE EMBS</span>
+        <span class="brand-sub">Student Chapter</span>
+      </div>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li class="nav-item-dropdown">
+        <a href="about.html" class="nav-link">About</a>
+        <button class="nav-dropdown-arrow" aria-label="Toggle About menu">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <ul class="nav-dropdown">
+          <li><a href="about.html#about-embs"      class="nav-dropdown-item">About EMBS</a></li>
+          <li><a href="about.html#vision-mission"  class="nav-dropdown-item">Vision &amp; Mission</a></li>
+          <li><a href="about.html#chapter-history" class="nav-dropdown-item">Chapter History</a></li>
+          <li><a href="about.html#core-team"       class="nav-dropdown-item">Core Team</a></li>
+          <li><a href="about.html#join-embs"       class="nav-dropdown-item">Join EMBS</a></li>
+        </ul>
+      </li>
+      <li class="nav-item-dropdown">
+        <a href="activities.html" class="nav-link">Activities</a>
+        <button class="nav-dropdown-arrow" aria-label="Toggle Activities menu">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <ul class="nav-dropdown">
+          <li><a href="events.html"   class="nav-dropdown-item">Events</a></li>
+          <li><a href="projects.html" class="nav-dropdown-item">Projects &amp; Research</a></li>
+          <li><a href="blog.html"     class="nav-dropdown-item">Blog &amp; Articles</a></li>
+          <li><a href="podcast.html"  class="nav-dropdown-item">EMBS Podcast</a></li>
+          <li><a href="gallery.html"  class="nav-dropdown-item">Gallery</a></li>
+        </ul>
+      </li>
+      <li class="nav-item-dropdown">
+        <a href="javascript:void(0)" class="nav-link">Community</a>
+        <button class="nav-dropdown-arrow" aria-label="Toggle Community menu">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <ul class="nav-dropdown">
+          <li><a href="members.html"       class="nav-dropdown-item">Members</a></li>
+          <li><a href="achievements.html"  class="nav-dropdown-item">Achievements</a></li>
+          <li><a href="announcements.html" class="nav-dropdown-item">Announcements</a></li>
+        </ul>
+      </li>
+      <li><a href="contact.html" class="nav-link">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── Announce bar ── -->
+<div class="announce-bar">
+  <div class="announce-label">Updates</div>
+  <div class="announce-track-wrap"><div class="announce-track"></div></div>
+</div>
+
+<main class="sprof-page" id="main-content" tabindex="-1">
+  <div class="sprof-inner">
+
+    <a href="members.html#student-members" class="sprof-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to Members
+    </a>
+
+    <!-- Loading state -->
+    <div class="sprof-loading" id="sprofLoading">
+      <div class="sprof-spinner"></div>
+      <span>Loading profile…</span>
+    </div>
+
+    <!-- Error / not found state -->
+    <div class="sprof-error" id="sprofError">
+      <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+        <circle cx="28" cy="28" r="22" stroke="#6B2D8B" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <circle cx="28" cy="22" r="7" stroke="#6B2D8B" stroke-width="1.4"/>
+        <path d="M14 44c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="#6B2D8B" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <p class="sprof-error-title" id="sprofErrorTitle">Student not found</p>
+      <p class="sprof-error-sub" id="sprofErrorSub">This profile may have been removed or the link is invalid.</p>
+      <a href="members.html#student-members" class="sprof-error-link">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Return to Members
+      </a>
+    </div>
+
+    <!-- Profile card — shown when member loaded successfully -->
+    <article class="sprof-card" id="sprofCard" aria-label="Student profile">
+      <div class="sprof-card-accent"></div>
+      <div class="sprof-card-body">
+        <div class="sprof-header">
+          <div class="sprof-avatar-wrap">
+            <img id="sprofPhoto" src="" alt="" class="sprof-avatar-img" />
+            <div class="sprof-avatar-placeholder" id="sprofInitials" aria-hidden="true"></div>
+          </div>
+          <div class="sprof-name-block">
+            <h1 class="sprof-name" id="sprofName"></h1>
+            <span class="sprof-role-tag" id="sprofRole"></span>
+          </div>
+        </div>
+
+        <div class="sprof-details" id="sprofDetails">
+          <!-- Rows injected by JS -->
+        </div>
+
+        <div class="sprof-actions" id="sprofActions">
+          <!-- Buttons injected by JS -->
+        </div>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+<script src="navbar.js"></script>
+<script src="announceBar.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var API_BASE = window.EMBS_API_BASE;
+
+  var loadingEl = document.getElementById('sprofLoading');
+  var errorEl   = document.getElementById('sprofError');
+  var cardEl    = document.getElementById('sprofCard');
+
+  function show(el) { el.style.display = 'flex'; }
+  function hide(el) { el.style.display = 'none';  }
+
+  function initials(name) {
+    return String(name || '').split(/\s+/).filter(Boolean)
+      .slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase() || '?';
+  }
+
+  function setError(title, sub) {
+    hide(loadingEl);
+    hide(cardEl);
+    document.getElementById('sprofErrorTitle').textContent = title || 'Student not found';
+    document.getElementById('sprofErrorSub').textContent   = sub   || 'This profile may have been removed or the link is invalid.';
+    show(errorEl);
+    document.title = title + ' — IEEE EMBS';
+  }
+
+  function renderProfile(member) {
+    hide(loadingEl);
+    hide(errorEl);
+
+    var name  = (member.name  || '').trim();
+    var role  = (member.role  || '').trim();
+    var batch = (member.batch || '').trim();
+    var email = (member.email || '').trim();
+    var li    = (member.linkedin || '').trim();
+    var photo = (member.photo || '').trim();
+
+    /* Avatar */
+    var photoEl    = document.getElementById('sprofPhoto');
+    var initialsEl = document.getElementById('sprofInitials');
+    if (photo) {
+      photoEl.src = photo;
+      photoEl.alt = name;
+    }
+    initialsEl.textContent = initials(name);
+
+    /* Name + role tag */
+    document.getElementById('sprofName').textContent = name;
+    document.getElementById('sprofRole').textContent = role;
+    document.title = name + ' — IEEE EMBS';
+
+    /* Detail rows — only show fields that have values */
+    var details = document.getElementById('sprofDetails');
+    details.innerHTML = '';
+
+    function addRow(label, value) {
+      if (!value) return;
+      var row = document.createElement('div');
+      row.className = 'sprof-detail-row';
+      row.innerHTML =
+        '<span class="sprof-detail-label">' + label + '</span>' +
+        '<span>' + value + '</span>';
+      details.appendChild(row);
+    }
+
+    addRow('Role',  role);
+    addRow('Batch', batch);
+    if (email) addRow('Email', '<a href="mailto:' + email + '" style="color:#6B2D8B;">' + email + '</a>');
+
+    /* Action buttons */
+    var LI_SVG    = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" stroke-width="1.5"/><line x1="7" y1="10" x2="7" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="7" r="1" fill="currentColor"/><path d="M11 17v-4a2 2 0 0 1 4 0v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="11" y1="10" x2="11" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+    var EMAIL_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+
+    var actions = document.getElementById('sprofActions');
+    actions.innerHTML = '';
+
+    if (li) {
+      var liBtn = document.createElement('a');
+      liBtn.href = li; liBtn.target = '_blank'; liBtn.rel = 'noopener';
+      liBtn.className = 'sprof-btn sprof-btn--linkedin';
+      liBtn.innerHTML = LI_SVG + ' LinkedIn';
+      actions.appendChild(liBtn);
+    }
+    if (email) {
+      var emBtn = document.createElement('a');
+      emBtn.href = 'mailto:' + email;
+      emBtn.className = 'sprof-btn sprof-btn--email';
+      emBtn.innerHTML = EMAIL_SVG + ' Email';
+      actions.appendChild(emBtn);
+    }
+
+    show(cardEl);
+  }
+
+  async function loadProfile() {
+    /* Read ?id= from URL */
+    var params = new URLSearchParams(window.location.search);
+    var id     = (params.get('id') || '').trim();
+
+    if (!id) {
+      setError('No student ID provided', 'Please return to the Members page and click a student profile.');
+      return;
+    }
+
+    /* Basic ObjectId format check (24 hex chars) */
+    if (!/^[a-f\d]{24}$/i.test(id)) {
+      setError('Invalid profile link', 'The student ID in this URL is not valid.');
+      return;
+    }
+
+    try {
+      var res  = await fetch(API_BASE + '/members/' + id);
+      var json = await res.json();
+
+      if (!res.ok || !json.data) {
+        setError('Student not found', 'This profile may have been removed or the link is invalid.');
+        return;
+      }
+
+      var member = json.data;
+
+      /* Do not show inactive members */
+      if (member.active === false) {
+        setError('Profile unavailable', 'This student\'s profile is currently not public.');
+        return;
+      }
+
+      renderProfile(member);
+    } catch (err) {
+      console.error('Failed to load profile:', err);
+      setError('Could not load profile', 'A network error occurred. Please try again.');
+    }
+  }
+
+  loadProfile();
+})();
+</script>
+
+</body>
+</html>

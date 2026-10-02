@@ -32,7 +32,7 @@
 
     const div = document.createElement('div');
     div.className = 'ev-card';
-    div.setAttribute('data-category', (ev.type || '').toLowerCase());
+    div.setAttribute('data-category', (ev.type || '').toLowerCase().replace(/\s+/g, '-'));
     div.setAttribute('data-search', `${ev.title} ${ev.speaker} ${ev.venue} ${(ev.tags||[]).join(' ')}`.toLowerCase());
     div.innerHTML = `
       <div class="ev-card-top" style="background:linear-gradient(135deg,#1a0533,#0a2a2a)">

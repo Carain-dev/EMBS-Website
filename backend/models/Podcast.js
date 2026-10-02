@@ -15,6 +15,7 @@ const podcastSchema = new mongoose.Schema(
     published:         { type: Boolean, default: false },
     publishedAt:       { type: Date, default: null },
     showInUpdates:     { type: Boolean, default: false },
+    tags:              { type: [String], default: [] },
   },
   { timestamps: true }
 );

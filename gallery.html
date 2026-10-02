@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -656,42 +656,21 @@
 
 <section id="gallery-featured">
   <div class="gallery-featured-inner">
-    <span class="gallery-featured-label">FEATURED COLLECTION</span>
-    <h2 class="gallery-featured-title">IEEE EMBS Annual Highlights</h2>
-    <p class="gallery-featured-desc">A curated showcase of our chapter's key events, workshops, and milestones throughout the year, celebrating innovation and collaboration in biomedical engineering.</p>
+    <!-- Heading/description loaded dynamically from Admin CMS via gallery-public.js -->
+    <span class="gallery-featured-label" id="galleryFeaturedLabel">FEATURED COLLECTION</span>
+    <h2 class="gallery-featured-title" id="galleryFeaturedHeading">IEEE EMBS Chapter Gallery</h2>
+    <p class="gallery-featured-desc" id="galleryFeaturedDesc">A curated showcase of events, workshops, and chapter activities.</p>
     <div class="gallery-large-card">
-      <label class="gallery-image-upload-wrapper">
-        <input type="file" accept="image/*" class="gallery-image-input" style="display: none;" onchange="const file = this.files[0]; if (file) { const reader = new FileReader(); reader.onload = (e) => { this.nextElementSibling.src = e.target.result; this.nextElementSibling.style.display = 'block'; this.nextElementSibling.nextElementSibling.style.display = 'none'; }; reader.readAsDataURL(file); }" />
-        <img src="" alt="Album Preview" class="gallery-preview-img" style="display: none;" />
+      <!-- Read-only display — no public upload. Populated by gallery-public.js. -->
+      <div class="gallery-image-display-wrapper">
+        <img src="" alt="Featured gallery image" class="gallery-preview-img" style="display: none;" />
         <div class="gallery-placeholder-view">
           <svg class="gallery-placeholder-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M20.5 14.5l-4-4a1.5 1.5 0 0 0-2.1 0l-5.4 5.4a1.5 1.5 0 0 1-2.1 0l-1.4-1.4a1.5 1.5 0 0 0-2.1 0L3 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <span class="gallery-placeholder-text">Click to edit or upload image</span>
-        </div>
-      </label>
-      <div class="gallery-card-info">
-        <h3 class="gallery-card-title" contenteditable="true">Annual General Meeting &amp; Award Ceremony</h3>
-        <div class="gallery-card-meta">
-          <span class="gallery-card-date" contenteditable="true">July 10, 2026</span>
-          <span class="gallery-card-separator">&bull;</span>
-          <span class="gallery-card-location" contenteditable="true">KPR Institute of Engineering and Technology</span>
-        </div>
-        <div class="gallery-card-stats">
-          <div class="gallery-stat-item">
-            <span class="gallery-stat-number" contenteditable="true">120</span>
-            <span class="gallery-stat-label">Images</span>
-          </div>
-          <div class="gallery-stat-item">
-            <span class="gallery-stat-number" contenteditable="true">15</span>
-            <span class="gallery-stat-label">Videos</span>
-          </div>
-          <div class="gallery-stat-item">
-            <span class="gallery-stat-number" contenteditable="true">250+</span>
-            <span class="gallery-stat-label">Participants</span>
-          </div>
+          <span class="gallery-placeholder-text">Gallery images appear here</span>
         </div>
       </div>
     </div>
@@ -714,48 +693,6 @@
     <h2 class="gallery-section-title">Watch &amp; Relive</h2>
     <div class="gallery-videos-wrap" id="highlightedVideosGrid">
       <!-- Populated dynamically by gallery-public.js -->
-    </div>
-  </div>
-</section>
-
-<section id="gallery-timeline">
-  <div class="gallery-timeline-inner">
-    <span class="gallery-section-label">Our Journey</span>
-    <h2 class="gallery-section-title">Chapter Milestones</h2>
-    <div class="gallery-timeline-wrap">
-
-      <div class="gallery-tl-item">
-        <div class="gallery-tl-year">2025</div>
-        <div class="gallery-tl-dot"></div>
-        <div class="gallery-tl-content">
-          <p class="gallery-tl-desc" contenteditable="true">Launched the EMBS Innovation Lab, hosted the first inter-college AI in Healthcare Hackathon, and crossed 400 active members.</p>
-        </div>
-      </div>
-
-      <div class="gallery-tl-item">
-        <div class="gallery-tl-year">2024</div>
-        <div class="gallery-tl-dot"></div>
-        <div class="gallery-tl-content">
-          <p class="gallery-tl-desc" contenteditable="true">Received IEEE Regional Best Chapter Award, launched the EMBS Podcast, and published three student research papers in biomedical journals.</p>
-        </div>
-      </div>
-
-      <div class="gallery-tl-item">
-        <div class="gallery-tl-year">2023</div>
-        <div class="gallery-tl-dot"></div>
-        <div class="gallery-tl-content">
-          <p class="gallery-tl-desc" contenteditable="true">Organized the MedTech Symposium with 300+ attendees, established industry partnerships, and introduced the annual project showcase.</p>
-        </div>
-      </div>
-
-      <div class="gallery-tl-item">
-        <div class="gallery-tl-year">2022</div>
-        <div class="gallery-tl-dot"></div>
-        <div class="gallery-tl-content">
-          <p class="gallery-tl-desc" contenteditable="true">Expanded chapter activities with weekly workshops on signal processing, wearable technology, and embedded systems for healthcare.</p>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>

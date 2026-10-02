@@ -162,37 +162,25 @@
       epContainer.innerHTML = episodes.map(buildEpCard).join('');
 
       // Update cover image:
-      // Priority 1 — latest episode's own thumbnail
-      // Priority 2 — Admin-configured Default Podcast Cover from SiteSettings
-      // Priority 3 — existing placeholder (unchanged)
+      // ALWAYS use the Admin-configured General Podcast Cover from SiteSettings.
+      // Episode thumbnails are per-episode and must NOT appear on the homepage cover.
+      // Only show the placeholder if no general cover has been set.
       if (coverImg) {
-        const epThumb = episodes[0].thumbnail;
-
-        if (epThumb) {
-          coverImg.src = epThumb;
-          coverImg.style.display = 'block';
-          const placeholder = coverImg.nextElementSibling;
-          if (placeholder && placeholder.classList.contains('podcast-cover-placeholder')) {
-            placeholder.style.display = 'none';
-          }
-        } else {
-          // No episode thumbnail — try Admin default cover from SiteSettings
-          try {
-            const settingsRes  = await fetch(`${API_BASE}/site-settings/public`);
-            const settingsJson = await settingsRes.json();
-            const defaultCover = settingsJson && settingsJson.data && settingsJson.data.podcastCoverUrl;
-            if (defaultCover) {
-              coverImg.src = defaultCover;
-              coverImg.style.display = 'block';
-              const placeholder = coverImg.nextElementSibling;
-              if (placeholder && placeholder.classList.contains('podcast-cover-placeholder')) {
-                placeholder.style.display = 'none';
-              }
+        try {
+          const settingsRes  = await fetch(`${API_BASE}/site-settings/public`);
+          const settingsJson = await settingsRes.json();
+          const generalCover = settingsJson && settingsJson.data && settingsJson.data.podcastCoverUrl;
+          if (generalCover) {
+            coverImg.src = generalCover;
+            coverImg.style.display = 'block';
+            const placeholder = coverImg.nextElementSibling;
+            if (placeholder && placeholder.classList.contains('podcast-cover-placeholder')) {
+              placeholder.style.display = 'none';
             }
-            // else: no default cover set — leave placeholder visible (existing behaviour)
-          } catch {
-            // SiteSettings fetch failed — leave placeholder visible
           }
+          // else: no general cover set — leave placeholder visible (correct behaviour)
+        } catch {
+          // SiteSettings fetch failed — leave placeholder visible
         }
       }
 

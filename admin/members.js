@@ -1,11 +1,11 @@
-if (localStorage.getItem('embs_admin_auth') !== 'true') window.location.href = 'index.html';
+﻿if (localStorage.getItem('embs_admin_auth') !== 'true') window.location.href = 'index.html';
 'use strict';
 
 const API = window.EMBS_API_BASE;
 const TOKEN = () => localStorage.getItem('embs_admin_token');
 const authH = () => ({ 'Authorization': `Bearer ${TOKEN()}` });
 
-/* ── Sidebar Toggle ── */
+/* â”€â”€ Sidebar Toggle â”€â”€ */
 const sidebar = document.getElementById('sidebar');
 const toggle  = document.getElementById('sidebarToggle');
 const overlay = document.getElementById('sidebarOverlay');
@@ -16,7 +16,7 @@ let members = [];
 let editingId = null;
 let deleteTarget = null;
 
-/* ── Load ── */
+/* â”€â”€ Load â”€â”€ */
 async function loadMembers() {
   try {
     const res = await fetch(`${API}/members?all=true`, { headers: authH() });
@@ -26,7 +26,7 @@ async function loadMembers() {
   } catch { showToast('Failed to load members.', 'error'); }
 }
 
-/* ── Stats ── */
+/* â”€â”€ Stats â”€â”€ */
 function updateStats() {
   document.getElementById('statTotal').textContent    = members.length;
   document.getElementById('statActive').textContent   = members.filter(m => m.active !== false).length;
@@ -35,13 +35,21 @@ function updateStats() {
   document.getElementById('statVolunteer').textContent= members.filter(m => !isExec(m.role) && !isCore(m.role)).length;
 }
 
-const EXEC = ['Chairperson','Vice Chairperson','Secretary','Treasurer','Technical Lead','Events Lead','Design Lead','Content Lead','Social Media Lead','Research Lead'];
-const CORE = ['Core Member','Technical Member','Events Member','Design Member','Content Member'];
+const EXEC = [
+  'Chairperson','Secretary','Joint Secretary','Treasurer','Joint Treasurer',
+  'Proposal Lead','Public Relations Officer','ExCom Lead',
+  'Event Coordinator Lead','Tech Lead','Design Lead','Designer Lead'
+];
+const CORE = [
+  'Community Service Officer','Outreach Officer','Member Service Coordinator',
+  'International Relations Officer','Social Media In-Charge','Documentation Designer',
+  'Technical','ExCom Member'
+];
 function isExec(role) { return EXEC.includes(role); }
 function isCore(role) { return CORE.includes(role); }
 function roleOf(role) { return isExec(role) ? 'executive' : isCore(role) ? 'core' : 'volunteer'; }
 
-/* ── Avatar ── */
+/* â”€â”€ Avatar â”€â”€ */
 const COLORS = [['#6B2D8B','#00A99D'],['#1a6b8b','#00A99D'],['#8b2d6b','#a99d00'],['#2d6b1a','#00A99D']];
 function avatarHTML(m) {
   if (m.photo) return `<img class="mem-avatar" src="${m.photo}" alt="${m.name}" />`;
@@ -50,7 +58,7 @@ function avatarHTML(m) {
   return `<div class="mem-avatar-placeholder" style="background:linear-gradient(135deg,${c[0]},${c[1]})">${initials}</div>`;
 }
 
-/* ── Render Table ── */
+/* â”€â”€ Render Table â”€â”€ */
 function renderTable() {
   const q      = document.getElementById('tableSearch').value.toLowerCase();
   const tbody  = document.getElementById('membersTableBody');
@@ -93,7 +101,7 @@ function renderTable() {
   }).join('');
 }
 
-/* ── Photo Upload ── */
+/* â”€â”€ Photo Upload â”€â”€ */
 const photoInput   = document.getElementById('photoInput');
 const photoInner   = document.getElementById('photoInner');
 const photoPreview = document.getElementById('photoPreview');
@@ -110,7 +118,7 @@ photoRemove.addEventListener('click', e => {
   photoPreview.style.display = 'none'; photoInner.style.display = 'flex';
 });
 
-/* ── Org Chart toggle visual (inline toggle, no settings.css dependency) ── */
+/* â”€â”€ Org Chart toggle visual (inline toggle, no settings.css dependency) â”€â”€ */
 const orgChartCheckbox = document.getElementById('memInOrgChart');
 const orgChartTrack    = document.getElementById('memInOrgChartTrack');
 const orgChartThumb    = document.getElementById('memInOrgChartThumb');
@@ -128,7 +136,7 @@ if (orgChartCheckbox) {
   applyOrgToggleVisual(orgChartCheckbox.checked);
 }
 
-/* ── Form Panel ── */
+/* â”€â”€ Form Panel â”€â”€ */
 const formPanel = document.getElementById('memberFormPanel');
 document.getElementById('collapseFormBtn').addEventListener('click', () => formPanel.classList.toggle('collapsed'));
 document.getElementById('toggleFormBtn').addEventListener('click', () => {
@@ -150,7 +158,7 @@ function resetForm() {
 }
 document.getElementById('resetFormBtn').addEventListener('click', resetForm);
 
-/* ── Save Member ── */
+/* â”€â”€ Save Member â”€â”€ */
 document.getElementById('saveMemberBtn').addEventListener('click', async () => {
   const name = document.getElementById('memName').value.trim();
   const role = document.getElementById('memPosition').value;
@@ -179,7 +187,7 @@ document.getElementById('saveMemberBtn').addEventListener('click', async () => {
   } catch (err) { showToast(err.message || 'Failed to save.', 'error'); }
 });
 
-/* ── Edit ── */
+/* â”€â”€ Edit â”€â”€ */
 function editMember(id) {
   const m = members.find(m => m._id === id); if (!m) return;
   editingId = id;
@@ -203,7 +211,7 @@ function editMember(id) {
   formPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/* ── Delete ── */
+/* â”€â”€ Delete â”€â”€ */
 function openDeleteModal(id) {
   deleteTarget = id;
   const m = members.find(m => m._id === id);
@@ -229,10 +237,10 @@ document.getElementById('deleteModal').addEventListener('click', e => {
   }
 });
 
-/* ── Search ── */
+/* â”€â”€ Search â”€â”€ */
 document.getElementById('tableSearch').addEventListener('input', renderTable);
 
-/* ── Toast ── */
+/* â”€â”€ Toast â”€â”€ */
 function showToast(msg, type) {
   const toast = document.getElementById('toast');
   toast.textContent = msg; toast.className = `toast toast--${type || 'success'} show`;
@@ -243,11 +251,11 @@ loadMembers();
 
 
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   HOME PAGE — FACULTY COORDINATORS
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   HOME PAGE â€” FACULTY COORDINATORS
    Independent management section appended below the Members table.
    Uses the same /api/members endpoint with isFacultyCoordinator:true.
-   ═══════════════════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 'use strict';
 
@@ -255,7 +263,7 @@ let facCoordinators = [];
 let facEditingId    = null;
 let facDeleteTarget = null;
 
-/* ── Photo upload for faculty coordinator form ── */
+/* â”€â”€ Photo upload for faculty coordinator form â”€â”€ */
 const facPhotoInput   = document.getElementById('facPhotoInput');
 const facPhotoInner   = document.getElementById('facPhotoInner');
 const facPhotoPreview = document.getElementById('facPhotoPreview');
@@ -282,7 +290,7 @@ if (facPhotoRemove) {
   });
 }
 
-/* ── Published toggle visual ── */
+/* â”€â”€ Published toggle visual â”€â”€ */
 const facActiveCheckbox = document.getElementById('facActive');
 const facActiveTrack    = document.getElementById('facActiveTrack');
 const facActiveThumb    = document.getElementById('facActiveThumb');
@@ -297,7 +305,7 @@ if (facActiveCheckbox) {
   applyFacActiveVisual(true);
 }
 
-/* ── Load ── */
+/* â”€â”€ Load â”€â”€ */
 async function loadFacultyCoordinators() {
   try {
     const res  = await fetch(`${API}/members?all=true`, { headers: authH() });
@@ -310,7 +318,7 @@ async function loadFacultyCoordinators() {
   }
 }
 
-/* ── Render faculty table ── */
+/* â”€â”€ Render faculty table â”€â”€ */
 function renderFacTable() {
   const tbody = document.getElementById('facTableBody');
   const empty = document.getElementById('facTableEmpty');
@@ -349,7 +357,7 @@ function renderFacTable() {
     }).join('');
 }
 
-/* ── Form panel toggle ── */
+/* â”€â”€ Form panel toggle â”€â”€ */
 const facFormPanel = document.getElementById('facFormPanel');
 document.getElementById('addFacBtn').addEventListener('click', () => {
   resetFacForm();
@@ -360,7 +368,7 @@ document.getElementById('collapseFacFormBtn').addEventListener('click', () => {
   facFormPanel.classList.toggle('collapsed');
 });
 
-/* ── Reset form ── */
+/* â”€â”€ Reset form â”€â”€ */
 function resetFacForm() {
   document.getElementById('facForm').reset();
   facPhotoInput.value = ''; facPhotoImg.src = '';
@@ -373,7 +381,7 @@ function resetFacForm() {
 }
 document.getElementById('resetFacFormBtn').addEventListener('click', resetFacForm);
 
-/* ── Save ── */
+/* â”€â”€ Save â”€â”€ */
 document.getElementById('saveFacBtn').addEventListener('click', async () => {
   const name        = document.getElementById('facName').value.trim();
   const designation = document.getElementById('facDesignation').value.trim();
@@ -404,7 +412,7 @@ document.getElementById('saveFacBtn').addEventListener('click', async () => {
   }
 });
 
-/* ── Edit ── */
+/* â”€â”€ Edit â”€â”€ */
 function editFacultyCoordinator(id) {
   const c = facCoordinators.find(x => x._id === id); if (!c) return;
   facEditingId = id;
@@ -430,7 +438,7 @@ function editFacultyCoordinator(id) {
   facFormPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/* ── Delete ── */
+/* â”€â”€ Delete â”€â”€ */
 function openFacDeleteModal(id) {
   facDeleteTarget = id;
   const c = facCoordinators.find(x => x._id === id);
@@ -461,5 +469,267 @@ document.getElementById('confirmFacDelete').addEventListener('click', async () =
   }
 });
 
-/* ── Init ── */
+/* â”€â”€ Init â”€â”€ */
 loadFacultyCoordinators();
+
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   MEMBERS PAGE â€” FACULTY ADVISORS
+   Independent management section below Faculty Coordinators.
+   Uses the same /api/members endpoint with isFacultyAdvisor:true.
+   Fields saved: name, role (faculty role label), batch (stores designation),
+   email, bio, order, active, isFacultyAdvisor:true, photo.
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MEMBERS PAGE — FACULTY ADVISORS
+   Uses the same /api/members endpoint with isFacultyAdvisor:true.
+   Field mapping (no new schema fields):
+     role     → faculty role label  ("Faculty Advisor", "Co-Advisor", …)
+     batch    → designation text    (shown on the public card)
+     linkedin → department name     (faculty cards show dept, not a LinkedIn link)
+     email    → contact email
+     bio      → research area / bio text
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+let fadAdvisors     = [];
+let fadEditingId    = null;
+let fadDeleteTarget = null;
+
+/* ── Photo upload ── */
+const fadPhotoInput   = document.getElementById('fadPhotoInput');
+const fadPhotoInner   = document.getElementById('fadPhotoInner');
+const fadPhotoPreview = document.getElementById('fadPhotoPreview');
+const fadPhotoImg     = document.getElementById('fadPhotoImg');
+const fadPhotoRemove  = document.getElementById('fadPhotoRemove');
+
+if (fadPhotoInput) {
+  fadPhotoInput.addEventListener('change', function () {
+    var file = fadPhotoInput.files[0]; if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      fadPhotoImg.src = e.target.result;
+      fadPhotoInner.style.display   = 'none';
+      fadPhotoPreview.style.display = 'flex';
+    };
+    reader.readAsDataURL(file);
+  });
+}
+if (fadPhotoRemove) {
+  fadPhotoRemove.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (fadPhotoInput) fadPhotoInput.value = '';
+    fadPhotoImg.src = '';
+    fadPhotoPreview.style.display = 'none';
+    fadPhotoInner.style.display   = 'flex';
+  });
+}
+
+/* ── Published toggle visual ── */
+var fadActiveCheckbox = document.getElementById('fadActive');
+var fadActiveTrack    = document.getElementById('fadActiveTrack');
+var fadActiveThumb    = document.getElementById('fadActiveThumb');
+
+function applyFadActiveVisual(checked) {
+  if (fadActiveTrack) fadActiveTrack.style.background = checked ? 'rgba(0,169,157,0.85)' : 'rgba(107,45,139,0.2)';
+  if (fadActiveThumb) fadActiveThumb.style.transform  = checked ? 'translateX(18px)' : 'translateX(0)';
+}
+if (fadActiveCheckbox) {
+  fadActiveCheckbox.addEventListener('change', function () { applyFadActiveVisual(fadActiveCheckbox.checked); });
+  applyFadActiveVisual(true);
+}
+
+/* ── Load ── */
+async function loadFacultyAdvisors() {
+  try {
+    var res  = await fetch(API + '/members?all=true', { headers: authH() });
+    var data = await res.json();
+    fadAdvisors = (data.data || []).filter(function (m) { return m.isFacultyAdvisor === true; });
+    renderFadTable();
+  } catch (e) {
+    showToast('Failed to load faculty advisors.', 'error');
+  }
+}
+
+/* ── Render table ── */
+function renderFadTable() {
+  var tbody = document.getElementById('fadTableBody');
+  var empty = document.getElementById('fadTableEmpty');
+  var count = document.getElementById('fadTableCount');
+  if (!tbody) return;
+
+  count.textContent = fadAdvisors.length + ' advisor' + (fadAdvisors.length !== 1 ? 's' : '');
+
+  if (!fadAdvisors.length) {
+    tbody.innerHTML = '';
+    empty.style.display = 'flex';
+    return;
+  }
+  empty.style.display = 'none';
+
+  var sorted = fadAdvisors.slice().sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
+
+  tbody.innerHTML = sorted.map(function (a) {
+    var avatar = a.photo
+      ? '<img src="' + a.photo + '" alt="' + a.name + '" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(107,45,139,0.3);" />'
+      : '<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6B2D8B,#00A99D);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#fff;">' + (a.name || '?').split(' ').map(function (w) { return w[0]; }).slice(0, 2).join('').toUpperCase() + '</div>';
+    var status = a.active !== false ? 'active' : 'inactive';
+    return '<tr>' +
+      '<td>' + avatar + '</td>' +
+      '<td style="font-size:0.85rem;font-weight:500;">' + (a.name || '') + '</td>' +
+      '<td style="font-size:0.82rem;color:var(--text-muted);">' + (a.role || '') + '</td>' +
+      '<td style="font-size:0.78rem;color:var(--text-muted);">' + (a.batch || '') + '</td>' +
+      '<td style="font-size:0.8rem;color:var(--text-muted);">' + (a.order || 0) + '</td>' +
+      '<td><span class="status-badge status-badge--' + status + '">' + (status === 'active' ? 'Published' : 'Unpublished') + '</span></td>' +
+      '<td><div class="action-btns">' +
+        '<button class="action-btn action-btn--edit" onclick="editFacultyAdvisor(\'' + a._id + '\')">' +
+          '<svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Edit' +
+        '</button>' +
+        '<button class="action-btn action-btn--delete" onclick="openFadDeleteModal(\'' + a._id + '\')">' +
+          '<svg viewBox="0 0 24 24" fill="none" width="12" height="12"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Delete' +
+        '</button>' +
+      '</div></td>' +
+    '</tr>';
+  }).join('');
+}
+
+/* ── Form panel toggle ── */
+var fadFormPanel = document.getElementById('fadFormPanel');
+
+document.getElementById('addFadBtn').addEventListener('click', function () {
+  resetFadForm();
+  fadFormPanel.classList.remove('collapsed');
+  fadFormPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+document.getElementById('collapseFadFormBtn').addEventListener('click', function () {
+  fadFormPanel.classList.toggle('collapsed');
+});
+
+/* ── Reset ── */
+function resetFadForm() {
+  document.getElementById('fadForm').reset();
+  if (fadPhotoInput)  fadPhotoInput.value = '';
+  if (fadPhotoImg)    fadPhotoImg.src = '';
+  if (fadPhotoPreview) fadPhotoPreview.style.display = 'none';
+  if (fadPhotoInner)  fadPhotoInner.style.display = 'flex';
+  document.getElementById('fadOrder').value = '0';
+  if (fadActiveCheckbox) { fadActiveCheckbox.checked = true; applyFadActiveVisual(true); }
+  fadEditingId = null;
+  document.getElementById('fadFormTitle').textContent    = 'Add Faculty Advisor';
+  document.getElementById('saveFadBtnLabel').textContent = 'Save Faculty Advisor';
+}
+document.getElementById('resetFadFormBtn').addEventListener('click', resetFadForm);
+
+/* ── Save ── */
+document.getElementById('saveFadBtn').addEventListener('click', async function () {
+  var name        = document.getElementById('fadName').value.trim();
+  var role        = document.getElementById('fadRole').value;
+  var designation = document.getElementById('fadDesignation').value.trim();
+  if (!name)        { showToast('Name is required.', 'error'); return; }
+  if (!role)        { showToast('Please select a faculty role.', 'error'); return; }
+  if (!designation) { showToast('Designation is required.', 'error'); return; }
+
+  var dept  = document.getElementById('fadDept').value  || '';
+  var email = document.getElementById('fadEmail').value.trim();
+  var bio   = document.getElementById('fadBio').value.trim();
+
+  var fd = new FormData();
+  fd.append('name',             name);
+  fd.append('role',             role);
+  fd.append('batch',            designation);
+  fd.append('linkedin',         dept);
+  fd.append('email',            email);
+  fd.append('bio',              bio);
+  fd.append('order',            document.getElementById('fadOrder').value || '0');
+  fd.append('active',           String(fadActiveCheckbox ? fadActiveCheckbox.checked : true));
+  fd.append('isFacultyAdvisor', 'true');
+  if (fadPhotoInput && fadPhotoInput.files[0]) fd.append('photo', fadPhotoInput.files[0]);
+
+  var url    = fadEditingId ? (API + '/members/' + fadEditingId) : (API + '/members');
+  var method = fadEditingId ? 'PATCH' : 'POST';
+
+  try {
+    var res  = await fetch(url, { method: method, headers: authH(), body: fd });
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    showToast(fadEditingId ? '"' + name + '" updated.' : '"' + name + '" added.', 'success');
+    resetFadForm();
+    fadFormPanel.classList.add('collapsed');
+    await loadFacultyAdvisors();
+  } catch (err) {
+    showToast(err.message || 'Failed to save faculty advisor.', 'error');
+  }
+});
+
+/* ── Edit ── */
+function editFacultyAdvisor(id) {
+  var a = fadAdvisors.find(function (x) { return x._id === id; });
+  if (!a) return;
+  fadEditingId = id;
+
+  document.getElementById('fadName').value        = a.name  || '';
+  document.getElementById('fadRole').value        = a.role  || '';
+  document.getElementById('fadDesignation').value = a.batch || '';
+  document.getElementById('fadEmail').value       = a.email || '';
+  document.getElementById('fadBio').value         = a.bio   || '';
+
+  var deptSel = document.getElementById('fadDept');
+  if (deptSel) deptSel.value = a.linkedin || '';
+
+  document.getElementById('fadOrder').value = a.order != null ? String(a.order) : '0';
+
+  if (fadActiveCheckbox) {
+    fadActiveCheckbox.checked = a.active !== false;
+    applyFadActiveVisual(a.active !== false);
+  }
+
+  if (a.photo) {
+    if (fadPhotoImg)     fadPhotoImg.src = a.photo;
+    if (fadPhotoInner)   fadPhotoInner.style.display   = 'none';
+    if (fadPhotoPreview) fadPhotoPreview.style.display = 'flex';
+  } else {
+    if (fadPhotoImg)     fadPhotoImg.src = '';
+    if (fadPhotoInner)   fadPhotoInner.style.display   = 'flex';
+    if (fadPhotoPreview) fadPhotoPreview.style.display = 'none';
+  }
+
+  document.getElementById('fadFormTitle').textContent    = 'Edit Faculty Advisor';
+  document.getElementById('saveFadBtnLabel').textContent = 'Update Faculty Advisor';
+  fadFormPanel.classList.remove('collapsed');
+  fadFormPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ── Delete modal ── */
+function openFadDeleteModal(id) {
+  fadDeleteTarget = id;
+  var a = fadAdvisors.find(function (x) { return x._id === id; });
+  document.getElementById('fadDeleteName').textContent = a ? a.name : 'this faculty advisor';
+  document.getElementById('fadDeleteModal').style.display = 'flex';
+}
+document.getElementById('cancelFadDelete').addEventListener('click', function () {
+  document.getElementById('fadDeleteModal').style.display = 'none';
+  fadDeleteTarget = null;
+});
+document.getElementById('fadDeleteModal').addEventListener('click', function (e) {
+  if (e.target === document.getElementById('fadDeleteModal')) {
+    document.getElementById('fadDeleteModal').style.display = 'none';
+    fadDeleteTarget = null;
+  }
+});
+document.getElementById('confirmFadDelete').addEventListener('click', async function () {
+  if (!fadDeleteTarget) return;
+  try {
+    var res = await fetch(API + '/members/' + fadDeleteTarget, { method: 'DELETE', headers: authH() });
+    if (!res.ok) throw new Error();
+    showToast('Faculty advisor removed.', 'delete');
+    document.getElementById('fadDeleteModal').style.display = 'none';
+    fadDeleteTarget = null;
+    await loadFacultyAdvisors();
+  } catch (e) {
+    showToast('Failed to delete faculty advisor.', 'error');
+  }
+});
+
+loadFacultyAdvisors();

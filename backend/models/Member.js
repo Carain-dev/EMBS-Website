@@ -20,6 +20,13 @@ const memberSchema = new mongoose.Schema(
        Home page Faculty Coordinators section.
        Completely independent of inOrgChart and active. */
     isFacultyCoordinator: { type: Boolean, default: false },
+    /* isFacultyAdvisor: true → this member appears in the
+       Faculty Advisors section on the public Members page.
+       Stores Faculty Advisor, Co-Advisor, and any additional
+       faculty members.  Independent of all other flags. */
+    isFacultyAdvisor: { type: Boolean, default: false },
+    /* bio: optional short bio shown on faculty advisor cards */
+    bio: { type: String, default: '' },
   },
   { timestamps: true }
 );
@@ -29,5 +36,6 @@ const memberSchema = new mongoose.Schema(
 memberSchema.index({ active: 1, order: 1 });
 memberSchema.index({ inOrgChart: 1, order: 1 });
 memberSchema.index({ isFacultyCoordinator: 1, active: 1, order: 1 });
+memberSchema.index({ isFacultyAdvisor: 1, active: 1, order: 1 });
 
 module.exports = mongoose.model('Member', memberSchema);

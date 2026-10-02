@@ -129,16 +129,16 @@
       </div>
 
       <!-- ══════════════════════════════════
-           SECTION 1 — Pending Approvals
+           SECTION 1 — Non-featured Achievements
            ══════════════════════════════════ -->
       <div class="panel" id="pendingPanel">
         <div class="panel-header">
           <div class="panel-header-left">
             <span class="panel-title">
-              Pending Student Achievement Approvals
-              <span class="pending-count-badge" id="pendingCountBadge">5</span>
+              Awaiting Homepage Feature
+              <span class="pending-count-badge" id="pendingCountBadge">0</span>
             </span>
-            <span class="panel-subtitle">Review and approve or reject student-submitted achievements</span>
+            <span class="panel-subtitle">Achievements saved but not yet marked to appear on the homepage</span>
           </div>
         </div>
 
@@ -147,9 +147,9 @@
           <!-- rendered by JS -->
         </div>
 
-        <div class="pending-empty" id="pendingEmpty" style="display:none;">
+        <div class="pending-empty" id="pendingEmpty" style="display:flex;">
           <svg viewBox="0 0 48 48" fill="none" width="38" height="38"><polygon points="24,6 28,18 40,18 30,26 34,38 24,30 14,38 18,26 8,18 20,18" stroke="rgba(0,169,157,0.3)" stroke-width="1.5" stroke-linejoin="round"/></svg>
-          <span>All caught up — no pending approvals</span>
+          <span>All achievements are featured on the homepage</span>
         </div>
       </div>
 
@@ -271,6 +271,7 @@
           <!-- Form Actions -->
           <div class="form-actions">
             <button type="button" class="btn-reset" id="resetManualBtn">Clear</button>
+            <button type="button" class="btn-publish" id="saveAchBtn">
               <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><polyline points="20,6 9,17 4,12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               <span id="saveAchBtnLabel">Save Achievement</span>
             </button>
@@ -350,5 +351,6 @@
   <div class="toast" id="toast"></div>
 
   <script src="achievements.js"></script>
+  <script src="topbar.js"></script>
 </body>
 </html>

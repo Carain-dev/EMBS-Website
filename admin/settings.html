@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -258,6 +258,32 @@
             <button class="btn-save-settings" id="saveSiteBtn">
               <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="1.6"/><polyline points="17,21 17,13 7,13 7,21" stroke="currentColor" stroke-width="1.6"/><polyline points="7,3 7,8 15,8" stroke="currentColor" stroke-width="1.6"/></svg>
               Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Gallery Content Card ── -->
+      <div class="settings-section" id="galleryContentSection">
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <span class="settings-card-title">Gallery Page Content</span>
+            <span class="settings-card-desc">Text displayed in the Featured Collection section on the public Gallery page.</span>
+          </div>
+          <div class="settings-form settings-form--two-col">
+            <div class="settings-form-group settings-span-full">
+              <label class="settings-label">Featured Collection Heading</label>
+              <input type="text" class="settings-input" id="galleryFeaturedHeading" placeholder="e.g. IEEE EMBS Annual Highlights" maxlength="120" />
+            </div>
+            <div class="settings-form-group settings-span-full">
+              <label class="settings-label">Featured Collection Description</label>
+              <textarea class="settings-input settings-textarea" id="galleryFeaturedDesc" rows="3" placeholder="A brief description shown below the heading on the Gallery page…"></textarea>
+            </div>
+          </div>
+          <div class="settings-card-footer">
+            <button class="btn-save-settings" id="saveGalleryContentBtn">
+              <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="1.6"/><polyline points="17,21 17,13 7,13 7,21" stroke="currentColor" stroke-width="1.6"/><polyline points="7,3 7,8 15,8" stroke="currentColor" stroke-width="1.6"/></svg>
+              Save Gallery Text
             </button>
           </div>
         </div>
@@ -872,5 +898,6 @@
   </div>
 
   <script src="settings.js"></script>
+  <script src="topbar.js"></script>
 </body>
 </html>

@@ -619,7 +619,7 @@
 }
 
 .fac-adv-inner {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -658,8 +658,8 @@
 }
 
 .fac-adv-grid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
 }
 
@@ -669,9 +669,11 @@
   border: 1px solid rgba(107, 45, 139, 0.1);
   box-shadow: 0 4px 24px rgba(107, 45, 139, 0.07);
   display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-  padding: 2rem 2.5rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+  padding: 2rem 1.75rem;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   position: relative;
   overflow: hidden;
@@ -680,11 +682,11 @@
 .fac-adv-card::before {
   content: '';
   position: absolute;
-  left: 0;
   top: 0;
-  bottom: 0;
-  width: 4px;
-  background: linear-gradient(180deg, #6B2D8B, #00A99D);
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #6B2D8B, #00A99D);
 }
 
 .fac-adv-card:hover {
@@ -728,6 +730,7 @@
 .fac-adv-card-body {
   flex: 1;
   min-width: 0;
+  width: 100%;
 }
 
 .fac-adv-role-tag {
@@ -942,8 +945,7 @@
 @media (max-width: 768px) {
   #student-members, #faculty-advisors { padding: 4rem 1.5rem; }
   #become-member { padding: 5rem 1.5rem; }
-  .fac-adv-card { flex-direction: column; align-items: center; text-align: center; padding: 2rem 1.5rem; }
-  .fac-adv-card::before { width: 100%; height: 4px; top: 0; bottom: auto; left: 0; right: 0; }
+  .fac-adv-card { padding: 1.75rem 1.25rem; }
   .fac-adv-research-label { text-align: center; }
   .fac-adv-actions { justify-content: center; }
   .smem-controls { flex-direction: column; align-items: stretch; }
@@ -964,3 +966,334 @@
 
 /* This page's grid sits on a white section, so the empty state needs dark text. */
 .embs-empty { color: #4a4062; }
+
+/* ── Faculty Advisors dynamic states ── */
+.fac-adv-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2.5rem 0;
+  color: var(--text-muted, rgba(180,190,210,0.55));
+  font-size: 0.88rem;
+  grid-column: 1 / -1;   /* span all grid columns */
+}
+
+@keyframes fac-spin {
+  to { transform: rotate(360deg); }
+}
+.fac-adv-spinner {
+  animation: fac-spin 1s linear infinite;
+  flex-shrink: 0;
+}
+
+.fac-adv-empty {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 3rem 1rem;
+  color: var(--text-muted, rgba(180,190,210,0.5));
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.fac-adv-dept {
+  font-size: 0.8rem;
+  color: var(--text-muted, rgba(180,190,210,0.55));
+  margin: 0.1rem 0 0.4rem;
+}
+
+/* ── Student member View Profile button ── */
+.smem-connect-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6B2D8B;
+  text-decoration: none;
+  margin-top: 0.6rem;
+  padding: 0.3rem 0.75rem 0.3rem 0.6rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(107, 45, 139, 0.22);
+  background: rgba(107, 45, 139, 0.05);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.smem-connect-btn:hover {
+  background: rgba(107, 45, 139, 0.12);
+  border-color: rgba(107, 45, 139, 0.4);
+  transform: translateX(2px);
+}
+
+@media (max-width: 480px) {
+  .smem-connect-btn { align-self: center; }
+}
+
+
+/* ============================================================
+   VISUAL ENHANCEMENT — members-visual.css (appended)
+   Pure CSS additions. Zero functionality changes.
+   Colour palette: purple #6B2D8B, teal #00A99D, dark #0d1030
+   ============================================================ */
+
+/* ── 1. HERO — richer background + decorative ECG waveform ── */
+#members-hero {
+  background:
+    radial-gradient(ellipse 80% 70% at 5%  20%, rgba(107,45,139,0.07) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 55% at 95% 80%, rgba(0,169,157,0.06)  0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 50%  5%, rgba(107,45,139,0.04) 0%, transparent 60%),
+    #ffffff;
+}
+
+/* ECG / pulse waveform decoration — bottom of hero, purely decorative */
+#members-hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 56px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='56' viewBox='0 0 1200 56' preserveAspectRatio='none'%3E%3Cpolyline points='0,28 120,28 140,28 155,10 165,46 175,4 185,52 195,28 215,28 260,28 280,20 300,36 320,28 400,28 420,28 435,12 445,44 455,6 465,50 475,28 495,28 540,28 600,28 660,28 700,28 720,20 740,36 760,28 840,28 860,28 875,14 885,42 895,8 905,48 915,28 935,28 1080,28 1200,28' fill='none' stroke='rgba(107,45,139,0.08)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    no-repeat center bottom;
+  background-size: 100% 56px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hero image placeholder — add a faint ECG pattern inside */
+.mhero-img-placeholder {
+  background:
+    radial-gradient(ellipse 70% 60% at 30% 40%, rgba(107,45,139,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 70% 60%, rgba(0,169,157,0.06) 0%, transparent 70%),
+    linear-gradient(135deg, rgba(107,45,139,0.05), rgba(0,169,157,0.05));
+}
+
+/* Small decorative stat-strip below hero text */
+.mhero-stat-strip {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(107,45,139,0.1);
+  flex-wrap: wrap;
+}
+
+.mhero-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.mhero-stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #6B2D8B, #00A99D);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.mhero-stat-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9a9fb8;
+}
+
+/* Floating decorative blobs — very subtle, behind content */
+.mhero-blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(60px);
+}
+
+.mhero-blob--1 {
+  width: 300px;
+  height: 300px;
+  top: 10%;
+  left: -80px;
+  background: rgba(107,45,139,0.06);
+}
+
+.mhero-blob--2 {
+  width: 250px;
+  height: 250px;
+  bottom: 5%;
+  right: -60px;
+  background: rgba(0,169,157,0.05);
+}
+
+/* ── 2. SECTION DIVIDERS — thin gradient rules between sections ── */
+.mem-section-divider {
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(107,45,139,0.12) 25%,
+    rgba(0,169,157,0.12) 75%,
+    transparent 100%);
+  border: none;
+  margin: 0;
+}
+
+/* ── 3. FACULTY ADVISORS — distinctive background ── */
+#faculty-advisors {
+  background:
+    radial-gradient(ellipse 70% 80% at 100% 50%, rgba(0,169,157,0.05) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 60% at   0% 50%, rgba(107,45,139,0.04) 0%, transparent 65%),
+    linear-gradient(180deg, #f0f2f9 0%, #f8f9fc 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Faint molecular/node pattern — top-right corner decoration */
+#faculty-advisors::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 320px;
+  height: 320px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Ccircle cx='80'  cy='80'  r='5' fill='none' stroke='rgba(107,45,139,0.12)' stroke-width='1.5'/%3E%3Ccircle cx='200' cy='80'  r='5' fill='none' stroke='rgba(0,169,157,0.12)' stroke-width='1.5'/%3E%3Ccircle cx='140' cy='160' r='5' fill='none' stroke='rgba(107,45,139,0.1)'  stroke-width='1.5'/%3E%3Ccircle cx='260' cy='160' r='5' fill='none' stroke='rgba(0,169,157,0.1)'  stroke-width='1.5'/%3E%3Ccircle cx='80'  cy='240' r='5' fill='none' stroke='rgba(107,45,139,0.08)' stroke-width='1.5'/%3E%3Ccircle cx='200' cy='240' r='5' fill='none' stroke='rgba(0,169,157,0.08)' stroke-width='1.5'/%3E%3Cline x1='80'  y1='80'  x2='200' y2='80'  stroke='rgba(107,45,139,0.07)' stroke-width='1'/%3E%3Cline x1='80'  y1='80'  x2='140' y2='160' stroke='rgba(107,45,139,0.07)' stroke-width='1'/%3E%3Cline x1='200' y1='80'  x2='140' y2='160' stroke='rgba(0,169,157,0.07)' stroke-width='1'/%3E%3Cline x1='200' y1='80'  x2='260' y2='160' stroke='rgba(0,169,157,0.07)' stroke-width='1'/%3E%3Cline x1='140' y1='160' x2='80'  y2='240' stroke='rgba(107,45,139,0.06)' stroke-width='1'/%3E%3Cline x1='140' y1='160' x2='200' y2='240' stroke='rgba(0,169,157,0.06)' stroke-width='1'/%3E%3Cline x1='260' y1='160' x2='200' y2='240' stroke='rgba(0,169,157,0.06)' stroke-width='1'/%3E%3C/svg%3E")
+    no-repeat center;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* ── 4. CORE TEAM — differentiate from faculty-advisors ── */
+#core-team {
+  background:
+    radial-gradient(ellipse 60% 70% at 0%   0%, rgba(107,45,139,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 100% 100%, rgba(0,169,157,0.04) 0%, transparent 60%),
+    #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Very faint circuit-grid pattern in the background */
+#core-team::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(107,45,139,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(107,45,139,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+.cteam-inner { position: relative; z-index: 1; }
+
+/* ── 5. STUDENT MEMBERS (Community Directory) ── */
+#student-members {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,169,157,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 0% 100%, rgba(107,45,139,0.04) 0%, transparent 55%),
+    #f8f9fc;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle dot-grid network pattern — technology/community theme */
+#student-members::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(107,45,139,0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 30%, transparent 75%);
+}
+
+.smem-inner { position: relative; z-index: 1; }
+
+/* Upgrade the search input background to match new section bg */
+.smem-search {
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(4px);
+}
+
+.smem-select {
+  background-color: rgba(255,255,255,0.9);
+  backdrop-filter: blur(4px);
+}
+
+/* Slightly richer card style within the new bg */
+.smem-card {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(2px);
+}
+
+/* ── 6. SECTION LABEL ACCENT LINE — left-border decoration ── */
+.mem-section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #00A99D;
+  padding-left: 0.85rem;
+  border-left: 3px solid currentColor;
+  margin-bottom: 0.75rem;
+}
+
+/* ── 7. FADE-IN ON SCROLL — gentle entrance animation ── */
+.mem-fade-in {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.mem-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children inside fade containers */
+.mem-fade-in:nth-child(2) { transition-delay: 0.08s; }
+.mem-fade-in:nth-child(3) { transition-delay: 0.16s; }
+.mem-fade-in:nth-child(4) { transition-delay: 0.24s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mem-fade-in,
+  .mem-fade-in.visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ── 8. HERO STAT STRIP — responsive ── */
+@media (max-width: 768px) {
+  .mhero-stat-strip { gap: 1.5rem; margin-top: 1.5rem; padding-top: 1.5rem; }
+  .mhero-stat-num   { font-size: 1.2rem; }
+  .mhero-blob { display: none; } /* hide blobs on small screens */
+}
+
+@media (max-width: 480px) {
+  .mhero-stat-strip  { gap: 1.25rem; flex-wrap: wrap; }
+  #members-hero::after { display: none; } /* hide ECG line on very small screens */
+}
+
+/* ── 9. OVERFLOW GUARD — prevent any decoration causing scroll ── */
+#members-hero,
+#faculty-advisors,
+#core-team,
+#student-members {
+  overflow: hidden;
+}

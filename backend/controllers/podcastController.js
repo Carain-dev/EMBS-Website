@@ -1,8 +1,9 @@
-const asyncHandler = require('express-async-handler');
-const mongoose     = require('mongoose');
-const Podcast      = require('../models/Podcast');
-const { paginate } = require('../utils/paginate');
+const asyncHandler      = require('express-async-handler');
+const mongoose          = require('mongoose');
+const Podcast           = require('../models/Podcast');
+const { paginate }      = require('../utils/paginate');
 const { sendResponse, sendError } = require('../utils/sendResponse');
+const notifySubscribers = require('../utils/notifySubscribers');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 const normalizeBoolean = (value) => value === true || value === 'true' || value === 1 || value === '1' || value === 'yes' || value === 'on';
@@ -58,15 +59,28 @@ exports.create = asyncHandler(async (req, res) => {
   if (req.file) payload.thumbnail = req.file.path;
   const episode = await Podcast.create(payload);
   sendResponse(res, 201, episode, 'Episode created');
+
+  /* Fire-and-forget: notify subscribers only when created as published */
+  if (episode.published) notifySubscribers('podcast', episode.toObject ? episode.toObject() : episode);
 });
 
 exports.update = asyncHandler(async (req, res) => {
   if (!isValidId(req.params.id)) return sendError(res, 400, 'Invalid episode ID');
   const payload = normalizePodcastPayload(req.body);
   if (req.file) payload.thumbnail = req.file.path;
+
+  /* Read previous published state before overwriting */
+  const prev = await Podcast.findById(req.params.id).select('published').lean();
+  const wasPublished = prev ? prev.published : false;
+
   const episode = await Podcast.findByIdAndUpdate(req.params.id, payload, { new: true, runValidators: true });
   if (!episode) return sendError(res, 404, 'Episode not found');
   sendResponse(res, 200, episode, 'Episode updated');
+
+  /* Notify only on draft → published transition */
+  if (!wasPublished && episode.published) {
+    notifySubscribers('podcast', episode.toObject ? episode.toObject() : episode);
+  }
 });
 
 exports.remove = asyncHandler(async (req, res) => {

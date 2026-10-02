@@ -1,7 +1,8 @@
-const asyncHandler   = require('express-async-handler');
-const mongoose       = require('mongoose');
-const Announcement   = require('../models/Announcement');
+const asyncHandler      = require('express-async-handler');
+const mongoose          = require('mongoose');
+const Announcement      = require('../models/Announcement');
 const { sendResponse, sendError } = require('../utils/sendResponse');
+const notifySubscribers = require('../utils/notifySubscribers');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
@@ -26,6 +27,10 @@ exports.create = asyncHandler(async (req, res) => {
   if (req.file) req.body.attachmentUrl = req.file.path;
   const item = await Announcement.create(req.body);
   sendResponse(res, 201, item, 'Announcement created');
+
+  /* Announcements have no draft/published toggle — every new announcement
+     is immediately public, so notify subscribers on every create. */
+  notifySubscribers('announcement', item.toObject ? item.toObject() : item);
 });
 
 exports.update = asyncHandler(async (req, res) => {

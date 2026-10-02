@@ -20,7 +20,7 @@ let activeFilter = 'all';
 /* ── Load ── */
 async function loadAchievements() {
   try {
-    const res = await fetch(`${API}/achievements`);
+    const res = await fetch(`${API}/achievements?all=true`, { headers: authH() });
     const data = await res.json();
     achievements = data.data || [];
     renderTable(); renderSummary();
@@ -29,11 +29,60 @@ async function loadAchievements() {
 
 /* ── Summary ── */
 function renderSummary() {
+  const featured    = achievements.filter(a => a.featured);
+  const nonFeatured = achievements.filter(a => !a.featured);
+
   document.getElementById('achSummary').innerHTML = `
     <span class="ach-summary-chip ach-summary-chip--total"><span class="chip-dot chip-dot--purple"></span>${achievements.length} Total</span>
-    <span class="ach-summary-chip ach-summary-chip--approved"><span class="chip-dot chip-dot--teal"></span>${achievements.length} Approved</span>`;
+    <span class="ach-summary-chip ach-summary-chip--approved"><span class="chip-dot chip-dot--teal"></span>${featured.length} Featured</span>`;
+
   const badge = document.getElementById('pendingCountBadge');
-  if (badge) badge.textContent = 0;
+  if (badge) badge.textContent = nonFeatured.length;
+
+  const grid  = document.getElementById('pendingGrid');
+  const empty = document.getElementById('pendingEmpty');
+  if (!grid) return;
+
+  if (!nonFeatured.length) {
+    grid.innerHTML = '';
+    if (empty) empty.style.display = 'flex';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  grid.innerHTML = nonFeatured.map(a => `
+    <div class="pending-card">
+      <div class="pending-card-header">
+        <span class="pending-tag cat--${catClass(a.category)}">${a.category || 'Other'}</span>
+        <span class="pending-card-date">${a.date || ''}</span>
+      </div>
+      <div class="pending-card-title">${a.title}</div>
+      <div class="pending-card-desc">${a.description || ''}</div>
+      <div class="pending-card-actions">
+        <button class="action-btn action-btn--edit" onclick="featureAch('${a._id}')">
+          <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><polygon points="12,3 15,9 21,9 16.5,13.5 18.5,20 12,16 5.5,20 7.5,13.5 3,9 9,9" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          Feature on Homepage
+        </button>
+        <button class="action-btn action-btn--edit" onclick="editAch('${a._id}')">
+          <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Edit
+        </button>
+      </div>
+    </div>`).join('');
+}
+
+/* ── Feature (one-click promote to homepage) ── */
+async function featureAch(id) {
+  try {
+    const res  = await fetch(`${API}/achievements/${id}`, {
+      method: 'PATCH',
+      headers: { ...authH(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ featured: true })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    showToast('Achievement featured on homepage.', 'success');
+    await loadAchievements();
+  } catch (err) { showToast(err.message || 'Failed to feature achievement.', 'error'); }
 }
 
 function catClass(cat) {

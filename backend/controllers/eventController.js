@@ -1,6 +1,7 @@
-const Event = require('../models/Event');
-const { paginate } = require('../utils/paginate');
-const mongoose = require('mongoose');
+const Event           = require('../models/Event');
+const { paginate }    = require('../utils/paginate');
+const mongoose        = require('mongoose');
+const notifySubscribers = require('../utils/notifySubscribers');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 const normalizeBoolean = (value) => value === true || value === 'true' || value === 1 || value === '1';
@@ -45,6 +46,9 @@ exports.createEvent = async (req, res, next) => {
 
     const event = await Event.create(payload);
     res.status(201).json({ success: true, data: event });
+
+    /* Fire-and-forget: notify subscribers only when created as published */
+    if (event.published) notifySubscribers('event', event.toObject ? event.toObject() : event);
   } catch (err) { next(err); }
 };
 
@@ -61,9 +65,19 @@ exports.updateEvent = async (req, res, next) => {
     if (req.files?.thumbnail)    payload.thumbnail    = req.files.thumbnail[0].path;
     if (req.files?.speakerPhoto) payload.speakerPhoto = req.files.speakerPhoto[0].path;
 
+    /* Read the previous published state BEFORE the update */
+    const prev  = await Event.findById(req.params.id).select('published').lean();
+    const wasPublished = prev ? prev.published : false;
+
     const event = await Event.findByIdAndUpdate(req.params.id, payload, { new: true, runValidators: true });
     if (!event) return res.status(404).json({ success: false, message: 'Event not found' });
     res.status(200).json({ success: true, data: event });
+
+    /* Notify only on draft → published transition, not on re-saves of published items */
+    const nowPublished = event.published;
+    if (!wasPublished && nowPublished) {
+      notifySubscribers('event', event.toObject ? event.toObject() : event);
+    }
   } catch (err) { next(err); }
 };
 

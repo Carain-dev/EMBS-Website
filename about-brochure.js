@@ -34,6 +34,27 @@
 
       if (brochure) {
         btn.href          = brochure.fileUrl;
+
+        /* Build a meaningful download filename.
+           Priority: originalFilename (the real uploaded name) →
+                     title (admin-set) →
+                     hard fallback. */
+        var rawName = brochure.originalFilename || brochure.title || '';
+        /* Strip any path prefix Cloudinary might have injected */
+        rawName = rawName.replace(/.*\//, '').trim();
+        /* Ensure the filename ends with .pdf (or preserves a real extension) */
+        var downloadName;
+        if (rawName && /\.[a-zA-Z0-9]+$/.test(rawName)) {
+          /* Already has an extension */
+          downloadName = rawName;
+        } else if (rawName) {
+          /* Has a name but no extension — append .pdf */
+          downloadName = rawName + '.pdf';
+        } else {
+          downloadName = 'IEEE_EMBS_KPRIET_Brochure.pdf';
+        }
+        btn.setAttribute('download', downloadName);
+
         btn.style.display = '';          /* visible */
         if (soon) soon.style.display = 'none';
       } else {

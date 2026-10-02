@@ -177,21 +177,27 @@
   ═══════════════════════════════════════════════════════════════════════ */
 
   var CORE_ROLE_PATTERNS = [
-    /faculty advisor|advisor/i,
+    /^faculty advisor$|^faculty in-?charge$|^faculty co-?ordinator$/i,
     /chapter chair|chairperson|president/i,
     /vice chair|vice chairperson|vice president/i,
-    /secretary/i,
-    /treasurer|joint treasurer/i,
+    /^secretary$/i,
+    /^treasurer$|^joint treasurer$/i,
     /technical lead/i,
-    /events lead/i,
-    /design lead/i,
+    /events lead|event coordinator lead/i,
+    /design lead|designer lead/i,
     /content lead/i,
-    /social media lead/i,
+    /social media lead|social media in-?charge/i,
     /research lead/i,
+    /^proposal lead$|^public relations officer$|^excom lead$/i,
+    /^community service officer$|^outreach officer$/i,
+    /^member service coordinator$|^international relations officer$/i,
+    /^documentation designer$|^excom member$|^technical$/i,
   ];
 
   function isCore(member) {
-    var role = safeText(member && member.role, '').toLowerCase();
+    /* Faculty advisor/coordinator flags take priority — never treat these as core */
+    if (member && (member.isFacultyAdvisor || member.isFacultyCoordinator)) return false;
+    var role = safeText(member && member.role, '').toLowerCase().trim();
     return CORE_ROLE_PATTERNS.some(function (p) { return p.test(role); });
   }
 
@@ -224,10 +230,18 @@
   function buildMemberCard(member) {
     var article = document.createElement('article');
     article.className = 'smem-card';
+    var id    = member && member._id ? String(member._id) : '';
     var name  = safeText(member && member.name, 'Member');
     var role  = safeText(member && member.role, 'Member');
     var batch = safeText(member && member.batch, '');
+
+    /* data-search covers every visible text field */
     article.setAttribute('data-search', (name + ' ' + role + ' ' + batch).toLowerCase());
+    /* store id for profile link */
+    article.setAttribute('data-id', id);
+
+    var PROFILE_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
     article.innerHTML =
       '<div class="smem-avatar-wrap">' +
         (member && member.photo ? '<img src="' + member.photo + '" alt="' + name + '" class="smem-avatar-img" />' : '') +
@@ -237,25 +251,65 @@
         '<h3 class="smem-name">' + name + '</h3>' +
         '<p class="smem-dept">' + role + '</p>' +
         (batch ? '<p class="smem-meta"><span class="smem-year">' + batch + '</span></p>' : '') +
+        (id
+          ? '<a href="student-profile.html?id=' + id + '" class="smem-connect-btn" aria-label="View profile of ' + name + '">' + PROFILE_SVG + ' View Profile</a>'
+          : '') +
       '</div>';
     return article;
   }
 
   function initSearch(cards) {
     var searchInput = document.getElementById('memberSearch');
+    var deptSel     = document.getElementById('deptFilter');
+    var yearSel     = document.getElementById('yearFilter');
     var emptyState  = document.getElementById('memberEmpty');
     if (!searchInput) return;
 
-    searchInput.addEventListener('input', function () {
-      var q       = this.value.trim().toLowerCase();
+    function applyFilters() {
+      var q    = searchInput.value.trim().toLowerCase();
+      var dept = deptSel ? deptSel.value : 'all';
+      var year = yearSel ? yearSel.value : 'all';
       var visible = 0;
+
       cards.forEach(function (card) {
-        var match = !q || (card.getAttribute('data-search') || '').includes(q);
-        card.classList.toggle('hidden', !match);
-        if (match) visible++;
+        /* data-search = name + role + batch (all lowercased) */
+        var searchText = (card.getAttribute('data-search') || '');
+        /* data-batch   = batch field lowercased (set in init after build) */
+        var batchText  = (card.getAttribute('data-batch')  || '').toLowerCase();
+        /* data-dept    = department name lowercased (set in init after build) */
+        var deptText   = (card.getAttribute('data-dept')   || '').toLowerCase();
+
+        /* ── Text search: name, role, batch, department ── */
+        var matchSearch = !q
+          || searchText.includes(q)
+          || deptText.includes(q);
+
+        /* ── Department filter ──
+           Option values are full department name strings (e.g. "Biomedical Engineering").
+           We normalise both sides to lowercase for comparison. */
+        var matchDept = (dept === 'all')
+          || deptText.includes(dept.toLowerCase())
+          || searchText.includes(dept.toLowerCase());
+
+        /* ── Year/batch filter ──
+           Option values: "1st Year", "2nd Year", "3rd Year", "4th Year", "Alumni"
+           batchText is already lowercase so compare case-insensitively. */
+        var matchYear = (year === 'all')
+          || batchText.includes(year.toLowerCase());
+
+        var show = matchSearch && matchDept && matchYear;
+        card.classList.toggle('hidden', !show);
+        if (show) visible++;
       });
-      if (emptyState) emptyState.classList.toggle('visible', visible === 0);
-    });
+
+      if (emptyState) {
+        emptyState.classList.toggle('visible', visible === 0);
+      }
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+    if (deptSel) deptSel.addEventListener('change', applyFilters);
+    if (yearSel) yearSel.addEventListener('change', applyFilters);
   }
 
   /* Back-to-top button */
@@ -272,6 +326,93 @@
   /* ═══════════════════════════════════════════════════════════════════════
      INIT
   ═══════════════════════════════════════════════════════════════════════ */
+
+  /* ── Faculty Advisor card builder ── */
+  var EMAIL_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+
+  /* Role → badge colour class: "Faculty Advisor" gets the purple default,
+     "Co-Advisor" and others get teal.  Matches the existing CSS. */
+  function fadRoleTagClass(role) {
+    if (!role) return 'fac-adv-role-tag';
+    var r = role.toLowerCase();
+    if (r === 'faculty advisor') return 'fac-adv-role-tag';
+    return 'fac-adv-role-tag fac-adv-role-tag--teal';
+  }
+
+  function buildFacAdvCard(member) {
+    var name   = safeText(member.name,    'Faculty Member');
+    var role   = safeText(member.role,    'Faculty Advisor');
+    var desig  = safeText(member.batch,   '');   /* batch stores designation */
+    var dept   = safeText(member.linkedin,'');   /* linkedin stores department */
+    var bio    = safeText(member.bio,     '');
+    var email  = safeText(member.email,   '');
+    var inits  = initials(name);
+
+    var photoHTML = member.photo
+      ? '<img src="' + member.photo + '" alt="' + name + '" class="fac-adv-avatar-img" />'
+      : '';
+
+    var deptLine  = dept  ? '<p class="fac-adv-dept">' + dept  + '</p>' : '';
+    var bioBlock  = bio   ? '<p class="fac-adv-research"><span class="fac-adv-research-label">Research Area</span>' + bio + '</p>' : '';
+    var emailBtn  = email ? '<div class="fac-adv-actions"><a href="mailto:' + email + '" class="fac-adv-btn fac-adv-btn--email">' + EMAIL_SVG + ' Email</a></div>' : '';
+
+    var article = document.createElement('article');
+    article.className = 'fac-adv-card';
+    article.innerHTML =
+      '<div class="fac-adv-card-left">' +
+        '<div class="fac-adv-avatar-wrap">' +
+          photoHTML +
+          '<div class="fac-adv-avatar-placeholder" aria-hidden="true">' + inits + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="fac-adv-card-body">' +
+        '<span class="' + fadRoleTagClass(role) + '">' + role + '</span>' +
+        '<h3 class="fac-adv-name">' + name + '</h3>' +
+        (desig ? '<p class="fac-adv-designation">' + desig + '</p>' : '') +
+        deptLine +
+        bioBlock +
+        emailBtn +
+      '</div>';
+    return article;
+  }
+
+  /* ── Load + render Faculty Advisors section ── */
+  async function loadFacultyAdvisors() {
+    var grid    = document.getElementById('facAdvGrid');
+    var loading = document.getElementById('facAdvLoading');
+    var empty   = document.getElementById('facAdvEmpty');
+    if (!grid) return;   /* not on members.html — skip silently */
+
+    try {
+      var res  = await fetch(API_BASE + '/members?advisor=true');
+      var json = await res.json();
+      var advisors = Array.isArray(json && json.data) ? json.data
+                   : Array.isArray(json) ? json : [];
+
+      /* Remove loading spinner */
+      if (loading) loading.style.display = 'none';
+
+      if (!advisors.length) {
+        grid.innerHTML = '';
+        if (empty) empty.style.display = 'flex';
+        return;
+      }
+
+      if (empty) empty.style.display = 'none';
+
+      /* Sort by display order then render */
+      advisors.sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
+      grid.innerHTML = '';
+      advisors.forEach(function (m) {
+        grid.appendChild(buildFacAdvCard(m));
+      });
+    } catch (err) {
+      /* Network failure — hide spinner, show empty state rather than broken UI */
+      console.warn('Faculty advisors: could not load —', err.message);
+      if (loading) loading.style.display = 'none';
+      if (empty)   empty.style.display   = 'flex';
+    }
+  }
 
   async function init() {
     var coreGrid        = document.querySelector('.cteam-grid');
@@ -311,21 +452,37 @@
         }
 
         if (memberGrid) {
-          var studentMembers = activeMembers.filter(function (m) { return !isCore(m); });
+          /* Exclude core roles AND faculty advisors from the student directory */
+          var studentMembers = activeMembers.filter(function (m) {
+            return !isCore(m) && !m.isFacultyAdvisor && !m.isFacultyCoordinator;
+          });
           memberGrid.innerHTML = '';
           if (studentMembers.length) {
             var cards = studentMembers.map(function (m) {
               var card = buildMemberCard(m);
+              /* data-batch: batch field (year label) for year filter */
+              card.setAttribute('data-batch', (m.batch || '').toLowerCase());
+              /* data-dept: Member schema has no dept field for students.
+                 We store empty string — dept filter will only fire on 'all'.
+                 If a future schema adds department, update this line. */
+              card.setAttribute('data-dept', '');
               memberGrid.appendChild(card);
               return card;
             });
             initSearch(cards);
+          } else {
+            /* No students — show empty state immediately */
+            var emptyState = document.getElementById('memberEmpty');
+            if (emptyState) emptyState.classList.add('visible');
           }
         }
       } catch (err) {
         console.error('Members directory: could not load members —', err.message);
       }
     }
+
+    /* ── Faculty Advisors section (?advisor=true, members.html only) ── */
+    await loadFacultyAdvisors();
   }
 
   init();

@@ -21,6 +21,10 @@ exports.getAll = asyncHandler(async (req, res) => {
     /* Public home-page Faculty Coordinators section:
        only members flagged as faculty coordinators AND active */
     filter = { isFacultyCoordinator: true, active: true };
+  } else if (req.query.advisor === 'true') {
+    /* Public Members page Faculty Advisors section:
+       only members flagged as faculty advisors AND active, ordered by display order */
+    filter = { isFacultyAdvisor: true, active: true };
   } else {
     filter = { active: true };
   }

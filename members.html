@@ -1,26 +1,26 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Members – IEEE EMBS</title>
+  <title>Members ΓÇô IEEE EMBS</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="manifest" href="site.webmanifest" />
   <meta name="description" content="Meet the core team and student members of the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
-  <meta name="author" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
+  <meta name="author" content="IEEE EMBS Student Chapter ΓÇô KPR Institute of Engineering and Technology" />
   <meta name="theme-color" content="#0a0e1a" />
 
   <!-- Open Graph / link previews. Set og:url and og:image to the full
        https://<your-domain>/... form once the site has its final URL. -->
-  <meta property="og:site_name" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
-  <meta property="og:title" content="Members – IEEE EMBS KPRIET" />
+  <meta property="og:site_name" content="IEEE EMBS Student Chapter ΓÇô KPR Institute of Engineering and Technology" />
+  <meta property="og:title" content="Members ΓÇô IEEE EMBS KPRIET" />
   <meta property="og:description" content="Meet the core team and student members of the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="logo-cropped.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Members – IEEE EMBS KPRIET" />
+  <meta name="twitter:title" content="Members ΓÇô IEEE EMBS KPRIET" />
   <meta name="twitter:description" content="Meet the core team and student members of the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -102,16 +102,20 @@
 <main id="main-content" tabindex="-1">
 
 <section id="members-hero">
+  <!-- Decorative blobs -->
+  <div class="mhero-blob mhero-blob--1" aria-hidden="true"></div>
+  <div class="mhero-blob mhero-blob--2" aria-hidden="true"></div>
   <div class="mhero-inner">
-
-    <!-- Left: Text -->
     <div class="mhero-left">
       <span class="mhero-label">Our Team</span>
       <h1 class="mhero-title">Meet the IEEE EMBS Community</h1>
-      <p class="mhero-desc">A passionate community of biomedical engineering students, researchers, and faculty united by a shared mission — to advance healthcare through technology, innovation, and interdisciplinary collaboration at KPR Institute of Engineering and Technology.</p>
+      <p class="mhero-desc">A passionate community of biomedical engineering students, researchers, and faculty united by a shared mission &mdash; to advance healthcare through technology, innovation, and interdisciplinary collaboration at KPR Institute of Engineering and Technology.</p>
+      <div class="mhero-stat-strip" aria-label="Chapter at a glance">
+        <div class="mhero-stat"><span class="mhero-stat-num" id="heroStatMembers">&mdash;</span><span class="mhero-stat-label">Members</span></div>
+        <div class="mhero-stat"><span class="mhero-stat-num" id="heroStatCore">&mdash;</span><span class="mhero-stat-label">Core Team</span></div>
+        <div class="mhero-stat"><span class="mhero-stat-num" id="heroStatFaculty">&mdash;</span><span class="mhero-stat-label">Faculty Advisors</span></div>
+      </div>
     </div>
-
-    <!-- Right: Hero image -->
     <div class="mhero-right">
       <div class="mhero-img-wrap">
         <img src="" alt="IEEE EMBS Community" class="mhero-img" />
@@ -121,13 +125,39 @@
         </div>
       </div>
     </div>
-
   </div>
 </section>
 
+<hr class="mem-section-divider" aria-hidden="true" />
+
+<section id="faculty-advisors">
+  <div class="fac-adv-inner">
+    <div class="fac-adv-header mem-fade-in">
+      <span class="fac-adv-label">Mentors &amp; Guides</span>
+      <h2 class="fac-adv-title">Faculty Advisors</h2>
+      <p class="fac-adv-sub">Experienced faculty members who guide and mentor the IEEE EMBS chapter in research, innovation, and professional development.</p>
+    </div>
+
+    <!-- Populated by members-public.js via GET /api/members?advisor=true -->
+    <div class="fac-adv-grid" id="facAdvGrid">
+      <div class="fac-adv-loading" id="facAdvLoading" aria-live="polite">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="fac-adv-spinner" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="rgba(107,45,139,0.25)" stroke-width="2"/><path d="M12 3a9 9 0 0 1 9 9" stroke="rgba(107,45,139,0.7)" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>Loading faculty advisors&hellip;</span>
+      </div>
+    </div>
+
+    <div class="fac-adv-empty" id="facAdvEmpty" style="display:none;" aria-live="polite">
+      <svg width="44" height="44" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="22" stroke="rgba(107,45,139,0.2)" stroke-width="1.5" stroke-dasharray="4 3"/><circle cx="28" cy="22" r="7" stroke="rgba(107,45,139,0.35)" stroke-width="1.4"/><path d="M14 44c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="rgba(107,45,139,0.3)" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <p>Faculty advisor information will be added soon.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="mem-section-divider" aria-hidden="true" />
+
 <section id="core-team">
   <div class="cteam-inner">
-    <div class="cteam-header">
+    <div class="cteam-header mem-fade-in">
       <span class="cteam-label">Leadership</span>
       <h2 class="cteam-title">Core Team</h2>
       <p class="cteam-sub">The dedicated leaders driving IEEE EMBS forward through research, events, and community building.</p>
@@ -226,118 +256,7 @@
   </div>
 </section>
 
-<section id="student-members">
-  <div class="smem-inner">
-    <div class="smem-header">
-      <span class="smem-label">Community Directory</span>
-      <h2 class="smem-title">Student Members</h2>
-      <p class="smem-sub">Browse and connect with IEEE EMBS student members across departments and years.</p>
-    </div>
-
-    <!-- Controls -->
-    <div class="smem-controls">
-      <div class="smem-search-wrap">
-        <span class="smem-search-icon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        </span>
-        <input type="search" id="memberSearch" class="smem-search" placeholder="Search members..." aria-label="Search members" autocomplete="off" />
-      </div>
-      <div class="smem-filters">
-        <select id="deptFilter" class="smem-select" aria-label="Filter by department">
-          <option value="all">All Departments</option>
-          <option value="bme">Biomedical Engineering</option>
-          <option value="ece">Electronics &amp; Communication</option>
-          <option value="cse">Computer Science</option>
-          <option value="eee">Electrical Engineering</option>
-          <option value="mech">Mechanical Engineering</option>
-        </select>
-        <select id="yearFilter" class="smem-select" aria-label="Filter by year">
-          <option value="all">All Years</option>
-          <option value="1">1st Year</option>
-          <option value="2">2nd Year</option>
-          <option value="3">3rd Year</option>
-          <option value="4">4th Year</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Member Grid — populated by members-public.js via GET /api/members -->
-    <div class="smem-grid" id="memberGrid">
-      <!-- Fake placeholder cards removed. Real members load dynamically. -->
-    </div>
-
-    <!-- Empty state -->
-    <div id="memberEmpty" class="smem-empty" role="status">
-      <svg width="48" height="48" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="22" stroke="#6B2D8B" stroke-width="1.5" stroke-dasharray="4 3"/><path d="M20 28h16M28 20v16" stroke="#6B2D8B" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <p class="smem-empty-text">No members found</p>
-      <p class="smem-empty-sub">Try a different search or filter.</p>
-    </div>
-
-  </div>
-</section>
-
-<section id="faculty-advisors">
-  <div class="fac-adv-inner">
-    <div class="fac-adv-header">
-      <span class="fac-adv-label">Mentors &amp; Guides</span>
-      <h2 class="fac-adv-title">Faculty Advisors</h2>
-      <p class="fac-adv-sub">Experienced faculty members who guide and mentor the IEEE EMBS chapter in research, innovation, and professional development.</p>
-    </div>
-    <div class="fac-adv-grid">
-
-      <!-- Faculty Card 1 -->
-      <article class="fac-adv-card">
-        <div class="fac-adv-card-left">
-          <div class="fac-adv-avatar-wrap">
-            <img src="" alt="Dr. Allwyn Gnanadas" class="fac-adv-avatar-img" />
-            <div class="fac-adv-avatar-placeholder" aria-hidden="true">AG</div>
-          </div>
-        </div>
-        <div class="fac-adv-card-body">
-          <span class="fac-adv-role-tag">Faculty Advisor</span>
-          <h3 class="fac-adv-name">Dr. Allwyn Gnanadas</h3>
-          <p class="fac-adv-designation">Associate Professor, Biomedical Engineering Dept.</p>
-          <p class="fac-adv-research">
-            <span class="fac-adv-research-label">Research Area</span>
-            Biomedical Signal Processing, Neural Engineering, Wearable Health Monitoring Systems
-          </p>
-          <div class="fac-adv-actions">
-            <a href="mailto:allwyn@kpriet.ac.in" class="fac-adv-btn fac-adv-btn--email">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-              Email
-            </a>
-          </div>
-        </div>
-      </article>
-
-      <!-- Faculty Card 2 -->
-      <article class="fac-adv-card">
-        <div class="fac-adv-card-left">
-          <div class="fac-adv-avatar-wrap">
-            <img src="" alt="Faculty Advisor" class="fac-adv-avatar-img" />
-            <div class="fac-adv-avatar-placeholder" aria-hidden="true">FA</div>
-          </div>
-        </div>
-        <div class="fac-adv-card-body">
-          <span class="fac-adv-role-tag fac-adv-role-tag--teal">Co-Advisor</span>
-          <h3 class="fac-adv-name">To Be Added</h3>
-          <p class="fac-adv-designation">Assistant Professor, Electronics &amp; Communication Dept.</p>
-          <p class="fac-adv-research">
-            <span class="fac-adv-research-label">Research Area</span>
-            Medical Imaging, Embedded Systems for Healthcare, IoT-based Patient Monitoring
-          </p>
-          <div class="fac-adv-actions">
-            <a href="mailto:advisor@kpriet.ac.in" class="fac-adv-btn fac-adv-btn--email">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-              Email
-            </a>
-          </div>
-        </div>
-      </article>
-
-    </div>
-  </div>
-</section>
+<hr class="mem-section-divider" aria-hidden="true" />
 
 <section id="become-member">
   <div class="join-mem-inner">
@@ -365,13 +284,12 @@
       </ul>
       <div class="join-mem-actions">
         <a href="https://www.ieee.org/membership/join/index.html" target="_blank" rel="noopener" class="join-mem-btn join-mem-btn--primary">Join IEEE EMBS</a>
-        <a href="contact.html" class="join-mem-btn join-mem-btn--ghost">Download Brochure</a>
+        <a href="#" id="brochureBtn" target="_blank" rel="noopener" class="join-mem-btn join-mem-btn--ghost" style="display:none;">Download Brochure</a>
+        <span id="brochureSoon" class="join-mem-btn join-mem-btn--ghost" style="display:none;">Brochure Coming Soon</span>
       </div>
     </div>
   </div>
 </section>
-
-</main>
 
 <footer class="footer">
   <div class="footer-main">
@@ -444,7 +362,44 @@
 <script src="newsletter.js" defer></script>
 <script src="members-public.js" defer></script>
 <script src="page-hero-image.js" defer></script>
+<script src="about-brochure.js" defer></script>
+
+<script>
+/* Members page visual enhancements: stat strip + scroll fade-in */
+(function () {
+  'use strict';
+  var API = window.EMBS_API_BASE;
+  function loadHeroStats() {
+    var elM = document.getElementById("heroStatMembers");
+    var elC = document.getElementById("heroStatCore");
+    var elF = document.getElementById("heroStatFaculty");
+    if (!elM) return;
+    var CORE_RE = /chapter chair|chairperson|president|vice chair|secretary|^treasurer$|joint treasurer|technical lead|events lead|design lead|content lead|social media lead|research lead|proposal lead|excom lead/i;
+    Promise.all([
+      fetch(API + "/members").then(function(r){return r.json();}),
+      fetch(API + "/members?advisor=true").then(function(r){return r.json();})
+    ]).then(function(res) {
+      var all = res[0].data || [];
+      var fac = res[1].data || [];
+      var core = all.filter(function(m){ return CORE_RE.test(m.role||""); });
+      if (elM) elM.textContent = all.length + "+";
+      if (elC) elC.textContent = core.length || "—";
+      if (elF) elF.textContent = fac.length  || "—";
+    }).catch(function(){});
+  }
+  function initFadeIn() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.IntersectionObserver) return;
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".mem-fade-in").forEach(function(el){ obs.observe(el); });
+  }
+  loadHeroStats();
+  initFadeIn();
+})();
+</script>
 </body>
 </html>
-
-

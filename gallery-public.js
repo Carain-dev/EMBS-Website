@@ -40,6 +40,30 @@
     + 'text-align:center;padding:2.5rem 0;width:100%;grid-column:1/-1;';
 
   /* ════════════════════════════════════════════════════════
+     0. FEATURED COLLECTION TEXT  (heading + description from CMS)
+     ════════════════════════════════════════════════════════ */
+  async function loadFeaturedText() {
+    try {
+      var res  = await fetch(API_BASE + '/site-settings/public');
+      var json = await res.json();
+      var data = json && json.data ? json.data : {};
+
+      var headingEl = document.getElementById('galleryFeaturedHeading');
+      var descEl    = document.getElementById('galleryFeaturedDesc');
+
+      if (headingEl && data.galleryFeaturedHeading) {
+        headingEl.textContent = data.galleryFeaturedHeading;
+      }
+      if (descEl && data.galleryFeaturedDesc) {
+        descEl.textContent = data.galleryFeaturedDesc;
+      }
+    } catch (err) {
+      /* Silently leave the fallback text already in the HTML */
+      console.warn('gallery-public: failed to load featured text —', err.message);
+    }
+  }
+
+  /* ════════════════════════════════════════════════════════
      1. FEATURED PREVIEW CARD  (existing behaviour preserved)
      ════════════════════════════════════════════════════════ */
   async function loadFeaturedPreview() {
@@ -217,6 +241,7 @@
      ════════════════════════════════════════════════════════ */
   async function init() {
     await Promise.all([
+      loadFeaturedText(),
       loadFeaturedPreview(),
       loadEventGallery(),
       loadHighlightedVideos(),

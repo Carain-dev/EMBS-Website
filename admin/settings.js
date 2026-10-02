@@ -106,6 +106,10 @@ async function loadSiteSettings() {
     setVal('chapterMission',     data.mission);
     setVal('establishedYear',    data.establishedYear);
 
+    /* Gallery page Featured Collection text */
+    setVal('galleryFeaturedHeading', data.galleryFeaturedHeading);
+    setVal('galleryFeaturedDesc',    data.galleryFeaturedDesc);
+
     /* Social links */
     const s = data.socialLinks || {};
     setVal('fbUrl',      s.facebook);
@@ -194,6 +198,8 @@ async function saveSiteSettings() {
       vision:             val('chapterVision'),
       mission:            val('chapterMission'),
       establishedYear:    val('establishedYear'),
+      galleryFeaturedHeading: val('galleryFeaturedHeading') || '',
+      galleryFeaturedDesc:    val('galleryFeaturedDesc')    || '',
       socialLinks: {
         facebook:  val('fbUrl')      || prevSoc.facebook  || '',
         instagram: val('igUrl')      || prevSoc.instagram || '',
@@ -244,6 +250,30 @@ async function saveSiteSettings() {
 
 /* Single listener — replaces the two conflicting ones that existed before */
 document.getElementById('saveSiteBtn').addEventListener('click', saveSiteSettings);
+
+/* Gallery content save button */
+(function () {
+  var btn = document.getElementById('saveGalleryContentBtn');
+  if (!btn) return;
+  btn.addEventListener('click', async function () {
+    btn.disabled = true; btn.textContent = 'Saving…';
+    try {
+      await apiFetch(`${API}/site-settings`, {
+        method:  'PATCH',
+        headers: jsonH(),
+        body:    JSON.stringify({
+          galleryFeaturedHeading: val('galleryFeaturedHeading') || '',
+          galleryFeaturedDesc:    val('galleryFeaturedDesc')    || '',
+        }),
+      });
+      showToast('Gallery text saved!', 'success');
+    } catch (err) {
+      showToast(err.message || 'Failed to save gallery text.', 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Save Gallery Text';
+    }
+  });
+})();
 
 /* ════════════════════════════════════════════════════════════════════════════
    SECTION 2 — Branding (logo, favicon, social links)

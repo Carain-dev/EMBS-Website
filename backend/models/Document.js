@@ -6,6 +6,7 @@ const documentSchema = new mongoose.Schema(
     description: { type: String, default: '' },
     category: { type: String, default: '' },
     fileUrl: { type: String, required: true },
+    originalFilename: { type: String, default: '' },  /* original uploaded filename, e.g. EMBS_Brochure_2025.pdf */
     mimeType: { type: String, default: '' },
     public: { type: Boolean, default: true },
     published: { type: Boolean, default: true },

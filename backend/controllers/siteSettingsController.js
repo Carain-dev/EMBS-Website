@@ -21,6 +21,8 @@ const DEFAULT_SETTINGS = {
   mission: '',
   establishedYear: '',
   podcastCoverUrl: '',
+  galleryFeaturedHeading: '',
+  galleryFeaturedDesc: '',
   activitiesHeroImageUrl: '',
   blogHeroImageUrl: '',
   membersHeroImageUrl: '',
