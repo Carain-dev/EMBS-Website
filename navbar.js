@@ -42,7 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var mapUrl = normalizeText(settings.mapUrl);
     var mapFrame = document.querySelector('.contact-map-card iframe');
-    if (mapFrame && mapUrl) {
+    /* Only apply the stored mapUrl if it is a genuine Google Maps embed URL
+       (must contain /maps/embed). A plain maps.google.com/?q=... URL cannot
+       be iframed and would break the contact page map. */
+    if (mapFrame && mapUrl && mapUrl.indexOf('/maps/embed') !== -1) {
       mapFrame.setAttribute('src', mapUrl);
     }
 
