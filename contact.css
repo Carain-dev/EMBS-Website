@@ -376,3 +376,185 @@ main { padding-top: calc(68px + 44px); }
   color: #c77dff;
   border-color: rgba(107,45,139,0.5);
 }
+
+/* ── Static map card (replaces broken iframe) ── */
+.contact-map-card-link {
+  display: block;
+  text-decoration: none;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(107,45,139,0.22);
+  margin-bottom: 1.5rem;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.contact-map-card-link:hover {
+  box-shadow: 0 10px 36px rgba(107,45,139,0.18);
+  transform: translateY(-2px);
+}
+.contact-map-card-link:focus-visible {
+  outline: 2px solid #6B2D8B;
+  outline-offset: 3px;
+}
+
+.contact-map-static {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  border-radius: 13px;
+  background: #e8ecf0;
+}
+
+.contact-map-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Gradient overlay so pin and labels read clearly */
+.contact-map-static::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0) 30%,
+    rgba(255,255,255,0.55) 100%
+  );
+  pointer-events: none;
+}
+
+/* Pin centered on campus */
+.contact-map-pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  z-index: 3;
+  filter: drop-shadow(0 4px 8px rgba(107,45,139,0.4));
+  animation: map-pin-drop 0.5s cubic-bezier(0.22,1,0.36,1) 0.15s both;
+}
+
+@keyframes map-pin-drop {
+  from { opacity: 0; transform: translate(-50%, -130%); }
+  to   { opacity: 1; transform: translate(-50%, -100%); }
+}
+
+/* Info tooltip bottom-left */
+.contact-map-tooltip {
+  position: absolute;
+  bottom: 44px;
+  left: 14px;
+  z-index: 4;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 0.6rem 0.85rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  max-width: calc(100% - 28px);
+}
+
+.contact-map-tooltip-icon {
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+.contact-map-tooltip-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #0d1030;
+  line-height: 1.3;
+  margin: 0 0 0.15rem;
+}
+
+.contact-map-tooltip-addr {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.68rem;
+  color: #6a7080;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* "Open in Google Maps" CTA bottom-right */
+.contact-map-cta {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6B2D8B;
+  background: #ffffff;
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.contact-map-card-link:hover .contact-map-cta {
+  background: #6B2D8B;
+  color: #ffffff;
+}
+
+/* ── Google Maps iframe ── */
+.contact-map-iframe {
+  display: block;
+  width: 100%;
+  height: 280px;
+  border: 0;
+  border-radius: 13px 13px 0 0;
+}
+
+/* Fallback info strip shown below the iframe
+   (visible when iframe loads fine too — acts as a label) */
+.contact-map-fallback {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #f8f9fc;
+  border-top: 1px solid rgba(107,45,139,0.1);
+}
+
+.contact-map-fallback svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.contact-map-fallback-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #0d1030;
+  margin: 0 0 0.1rem;
+  line-height: 1.3;
+}
+
+.contact-map-fallback-addr {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.68rem;
+  color: #6a7080;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.contact-map-fallback-link {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6B2D8B;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+.contact-map-fallback-link:hover { color: #00A99D; }
