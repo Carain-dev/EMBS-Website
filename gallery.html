@@ -1,23 +1,23 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gallery – IEEE EMBS</title>
+  <title>Gallery � IEEE EMBS</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="manifest" href="site.webmanifest" />
   <meta name="description" content="Photographs from events, workshops, competitions and activities hosted by the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
-  <meta name="author" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
+  <meta name="author" content="IEEE EMBS Student Chapter � KPR Institute of Engineering and Technology" />
   <meta name="theme-color" content="#0a0e1a" />
-  <meta property="og:site_name" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
-  <meta property="og:title" content="Gallery – IEEE EMBS KPRIET" />
+  <meta property="og:site_name" content="IEEE EMBS Student Chapter � KPR Institute of Engineering and Technology" />
+  <meta property="og:title" content="Gallery � IEEE EMBS KPRIET" />
   <meta property="og:description" content="Photographs from events, workshops, competitions and activities hosted by the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="logo-cropped.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Gallery – IEEE EMBS KPRIET" />
+  <meta name="twitter:title" content="Gallery � IEEE EMBS KPRIET" />
   <meta name="twitter:description" content="Photographs from events, workshops, competitions and activities hosted by the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,15 +25,16 @@
   <link rel="stylesheet" href="navbar.css" />
   <script src="config.js"></script>
   <link rel="stylesheet" href="gallery.css" />
+  <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
 </head>
 <body>
 
 <a class="skip-link" href="#gallery-main">Skip to main content</a>
 
-<!-- ═══════════════════════════════════════
+<!-- ---------------------------------------
      NAVBAR
-════════════════════════════════════════ -->
+---------------------------------------- -->
 <nav class="navbar" id="navbar">
   <div class="nav-inner">
     <div class="nav-brand">
@@ -92,9 +93,9 @@
   </div>
 </nav>
 
-<!-- ═══════════════════════════════════════
+<!-- ---------------------------------------
      ANNOUNCEMENT BAR
-════════════════════════════════════════ -->
+---------------------------------------- -->
 <div class="announce-bar">
   <div class="announce-label">Updates</div>
   <div class="announce-track-wrap">
@@ -104,7 +105,7 @@
 
 <main id="gallery-main" class="gallery-page" tabindex="-1">
 
-  <!-- ── SECTION 1: HERO ─────────────────── -->
+  <!-- -- SECTION 1: HERO ------------------- -->
   <section id="gal-hero" aria-labelledby="gal-hero-title">
     <div class="gal-hero-inner">
       <span class="gal-hero-eyebrow" aria-hidden="true">
@@ -112,20 +113,20 @@
         IEEE EMBS KPRIET
       </span>
       <h1 class="gal-hero-title" id="gal-hero-title">Moments That Define<br class="gal-hero-br" /> Our Chapter</h1>
-      <p class="gal-hero-desc">A visual archive of events, workshops, competitions, and chapter activities — documenting our journey in biomedical engineering and innovation.</p>
+      <p class="gal-hero-desc">A visual archive of events, workshops, competitions, and chapter activities � documenting our journey in biomedical engineering and innovation.</p>
 
-      <!-- Stats strip — numbers populated by JS from real API data -->
+      <!-- Stats strip � numbers populated by JS from real API data -->
       <div class="gal-hero-stats" id="galHeroStats" aria-label="Gallery statistics">
         <div class="gal-hero-stat">
-          <span class="gal-hero-stat-num" id="galStatPhotos" aria-label="Total photos">—</span>
+          <span class="gal-hero-stat-num" id="galStatPhotos" aria-label="Total photos">�</span>
           <span class="gal-hero-stat-label">Photos</span>
         </div>
         <div class="gal-hero-stat">
-          <span class="gal-hero-stat-num" id="galStatAlbums" aria-label="Total albums">—</span>
+          <span class="gal-hero-stat-num" id="galStatAlbums" aria-label="Total albums">�</span>
           <span class="gal-hero-stat-label">Albums</span>
         </div>
         <div class="gal-hero-stat">
-          <span class="gal-hero-stat-num" id="galStatVideos" aria-label="Total videos">—</span>
+          <span class="gal-hero-stat-num" id="galStatVideos" aria-label="Total videos">�</span>
           <span class="gal-hero-stat-label">Videos</span>
         </div>
       </div>
@@ -135,7 +136,7 @@
     <div class="gal-hero-dots" aria-hidden="true"></div>
   </section>
 
-  <!-- ── SECTION 2: FILTER / NAV BAR ────── -->
+  <!-- -- SECTION 2: FILTER / NAV BAR ------ -->
   <nav id="gal-filters" aria-label="Filter gallery content">
     <div class="gal-filters-inner" id="galFiltersInner">
       <!-- Skeleton shown while JS loads -->
@@ -149,7 +150,7 @@
     </div>
   </nav>
 
-  <!-- ── SECTION 3: ALBUMS (caption groups) ── -->
+  <!-- -- SECTION 3: ALBUMS (caption groups) -- -->
   <section id="gal-albums" aria-labelledby="gal-albums-heading">
     <div class="gal-section-inner">
       <div class="gal-section-header gal-reveal-target">
@@ -167,7 +168,7 @@
     </div>
   </section>
 
-  <!-- ── SECTION 4: FEATURED HEADER ──────── -->
+  <!-- -- SECTION 4: FEATURED HEADER -------- -->
   <section id="gal-featured-header">
     <div class="gal-section-inner">
       <div class="gal-featured-header-inner gal-reveal-target">
@@ -178,7 +179,7 @@
     </div>
   </section>
 
-  <!-- ── SECTION 5: PHOTO GRID ───────────── -->
+  <!-- -- SECTION 5: PHOTO GRID ------------- -->
   <section id="gal-grid" aria-labelledby="gal-grid-heading">
     <div class="gal-grid-inner">
       <h2 class="sr-only" id="gal-grid-heading">All Photos</h2>
@@ -195,7 +196,7 @@
     </div>
   </section>
 
-  <!-- ── SECTION 6: VIDEO HIGHLIGHTS ──────── -->
+  <!-- -- SECTION 6: VIDEO HIGHLIGHTS -------- -->
   <section id="gal-videos" aria-labelledby="gal-videos-heading">
     <div class="gal-videos-inner">
       <div class="gal-section-header gal-reveal-target">
@@ -213,7 +214,7 @@
     </div>
   </section>
 
-  <!-- ── SECTION 7: CTA ────────────────────── -->
+  <!-- -- SECTION 7: CTA ---------------------- -->
   <section id="gal-cta" aria-labelledby="gal-cta-heading">
     <div class="gal-cta-inner gal-reveal-target">
       <h2 class="gal-cta-title" id="gal-cta-heading">Be Part of the Story</h2>
@@ -230,7 +231,7 @@
 
 </main>
 
-<!-- ── LIGHTBOX ──────────────────────────────── -->
+<!-- -- LIGHTBOX -------------------------------- -->
 <div id="gal-lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" aria-hidden="true">
   <div class="lb-inner" id="lbInner">
     <button class="lb-close" id="lbClose" aria-label="Close image viewer">
@@ -250,9 +251,9 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
+<!-- ---------------------------------------
      FOOTER
-════════════════════════════════════════ -->
+---------------------------------------- -->
 <footer class="footer">
   <div class="footer-main">
     <div class="footer-grid">
@@ -312,9 +313,9 @@
   </div>
 </footer>
 
-<!-- ═══════════════════════════════════════
+<!-- ---------------------------------------
      BACK TO TOP
-════════════════════════════════════════ -->
+---------------------------------------- -->
 <button class="back-to-top" id="backToTop" aria-label="Back to top">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </button>
@@ -323,6 +324,14 @@
 <script src="announceBar.js" defer></script>
 <script src="newsletter.js" defer></script>
 <script src="gallery-public.js" defer></script>
+<script>
+  window.EMBS_ANIM_CONFIG = {
+    sections: [
+      { label: '.gal-section-badge', heading: '.gal-section-title' }
+    ]
+  };
+</script>
+<script src="animations.js" defer></script>
 
 </body>
 </html>

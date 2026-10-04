@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="navbar.css" />
   <script src="config.js"></script>
   <link rel="stylesheet" href="activities.css" />
+  <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
 </head>
 <body>
@@ -153,118 +154,235 @@
     <div class="act-cards-grid">
 
       <!-- Card 1 — Events -->
-      <article class="act-card">
-        <div class="act-card-img-wrap">
-          <!-- Replace src with an events photo -->
-          <img src="bg-image-embs/bluebg.jpeg" alt="IEEE EMBS Events" class="act-card-img" />
-          <div class="act-card-icon" aria-hidden="true">
+      <article class="act-card" data-card-index="0">
+        <div class="act-card-visual" aria-hidden="true">
+          <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <radialGradient id="ev-bg" cx="30%" cy="40%" r="80%">
+                <stop offset="0%" stop-color="#3b0764"/>
+                <stop offset="100%" stop-color="#1a0533"/>
+              </radialGradient>
+              <radialGradient id="ev-orb1" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#a855f7" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="#6B2D8B" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="ev-orb2" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#00A99D" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#00A99D" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="400" height="200" fill="url(#ev-bg)"/>
+            <ellipse cx="80" cy="80" rx="120" ry="100" fill="url(#ev-orb1)"/>
+            <ellipse cx="320" cy="140" rx="100" ry="80" fill="url(#ev-orb2)"/>
+            <!-- Fluid wave paths -->
+            <path d="M0 120 C60 90, 120 150, 200 110 C280 70, 340 130, 400 100 L400 200 L0 200Z" fill="rgba(107,45,139,0.25)"/>
+            <path d="M0 140 C80 110, 160 160, 240 130 C320 100, 370 145, 400 130 L400 200 L0 200Z" fill="rgba(0,169,157,0.18)"/>
+            <!-- Floating circles -->
+            <circle cx="60" cy="50" r="4" fill="rgba(168,85,247,0.6)"/>
+            <circle cx="120" cy="30" r="2.5" fill="rgba(0,169,157,0.5)"/>
+            <circle cx="200" cy="55" r="3" fill="rgba(168,85,247,0.4)"/>
+            <circle cx="300" cy="40" r="5" fill="rgba(0,169,157,0.3)"/>
+            <circle cx="360" cy="70" r="2" fill="rgba(168,85,247,0.5)"/>
             <!-- Calendar icon -->
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="3" y="4" width="18" height="17" rx="3" stroke="#6B2D8B" stroke-width="1.6"/>
-              <path d="M3 9h18" stroke="#6B2D8B" stroke-width="1.6" stroke-linecap="round"/>
-              <path d="M8 2v4M16 2v4" stroke="#6B2D8B" stroke-width="1.6" stroke-linecap="round"/>
-              <circle cx="8" cy="14" r="1" fill="#6B2D8B"/>
-              <circle cx="12" cy="14" r="1" fill="#6B2D8B"/>
-              <circle cx="16" cy="14" r="1" fill="#6B2D8B"/>
-            </svg>
-          </div>
+            <rect x="170" y="62" width="60" height="56" rx="8" fill="rgba(255,255,255,0.08)" stroke="rgba(168,85,247,0.5)" stroke-width="1.5"/>
+            <line x1="170" y1="78" x2="230" y2="78" stroke="rgba(168,85,247,0.5)" stroke-width="1.5"/>
+            <line x1="185" y1="56" x2="185" y2="68" stroke="rgba(168,85,247,0.6)" stroke-width="2" stroke-linecap="round"/>
+            <line x1="215" y1="56" x2="215" y2="68" stroke="rgba(168,85,247,0.6)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="185" cy="92" r="3" fill="rgba(0,169,157,0.7)"/>
+            <circle cx="200" cy="92" r="3" fill="rgba(168,85,247,0.7)"/>
+            <circle cx="215" cy="92" r="3" fill="rgba(0,169,157,0.7)"/>
+          </svg>
         </div>
         <div class="act-card-body">
+          <span class="act-card-tag">Technical</span>
           <h3 class="act-card-title">Events</h3>
           <p class="act-card-desc">Workshops, seminars, guest lectures, competitions, hackathons and technical events conducted by IEEE EMBS.</p>
-          <div class="act-card-footer">
-            <a href="events.html" class="act-card-btn">Explore Events &rarr;</a>
-          </div>
+          <a href="events.html" class="act-card-btn">
+            Explore Events
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="13,6 19,12 13,18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </div>
       </article>
 
       <!-- Card 2 — Projects & Research -->
-      <article class="act-card">
-        <div class="act-card-img-wrap">
-          <!-- Replace src with a research/lab photo -->
-          <img src="bg-image-embs/glassdna.jpeg" alt="IEEE EMBS Projects and Research" class="act-card-img" />
-          <div class="act-card-icon" aria-hidden="true">
-            <!-- Flask / research icon -->
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 3h6M10 3v7L5 19a1 1 0 0 0 .9 1.5h12.2A1 1 0 0 0 19 19l-5-9V3" stroke="#6B2D8B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M7.5 15.5h9" stroke="#6B2D8B" stroke-width="1.4" stroke-linecap="round"/>
-            </svg>
-          </div>
+      <article class="act-card" data-card-index="1">
+        <div class="act-card-visual" aria-hidden="true">
+          <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <radialGradient id="pr-bg" cx="70%" cy="30%" r="80%">
+                <stop offset="0%" stop-color="#042f2e"/>
+                <stop offset="100%" stop-color="#0a1a1a"/>
+              </radialGradient>
+              <radialGradient id="pr-orb1" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#00A99D" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#00A99D" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="pr-orb2" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#6B2D8B" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#6B2D8B" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="400" height="200" fill="url(#pr-bg)"/>
+            <ellipse cx="300" cy="60" rx="130" ry="110" fill="url(#pr-orb1)"/>
+            <ellipse cx="80" cy="160" rx="100" ry="80" fill="url(#pr-orb2)"/>
+            <path d="M0 130 C70 100, 150 155, 230 120 C310 85, 360 135, 400 115 L400 200 L0 200Z" fill="rgba(0,169,157,0.2)"/>
+            <path d="M0 155 C90 125, 180 165, 260 140 C340 115, 380 150, 400 138 L400 200 L0 200Z" fill="rgba(107,45,139,0.15)"/>
+            <!-- DNA helix hint -->
+            <path d="M160 30 C175 50, 225 50, 240 70 C225 90, 175 90, 160 110 C175 130, 225 130, 240 150" fill="none" stroke="rgba(0,169,157,0.5)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M240 30 C225 50, 175 50, 160 70 C175 90, 225 90, 240 110 C225 130, 175 130, 160 150" fill="none" stroke="rgba(168,85,247,0.4)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="200" cy="70" r="4" fill="rgba(0,169,157,0.7)"/>
+            <circle cx="200" cy="110" r="4" fill="rgba(168,85,247,0.6)"/>
+            <circle cx="340" cy="45" r="3" fill="rgba(0,169,157,0.4)"/>
+            <circle cx="60" cy="55" r="2.5" fill="rgba(168,85,247,0.4)"/>
+          </svg>
         </div>
         <div class="act-card-body">
+          <span class="act-card-tag">Research</span>
           <h3 class="act-card-title">Projects &amp; Research</h3>
           <p class="act-card-desc">Student innovations, biomedical engineering research, healthcare technologies and interdisciplinary projects.</p>
-          <div class="act-card-footer">
-            <a href="projects.html" class="act-card-btn">Explore Projects &rarr;</a>
-          </div>
+          <a href="projects.html" class="act-card-btn">
+            Explore Projects
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="13,6 19,12 13,18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </div>
       </article>
 
       <!-- Card 3 — Blog & Articles -->
-      <article class="act-card">
-        <div class="act-card-img-wrap">
-          <!-- Replace src with a writing/articles photo -->
-          <img src="bg-image-embs/bluedns.jpeg" alt="IEEE EMBS Blog and Articles" class="act-card-img" />
-          <div class="act-card-icon" aria-hidden="true">
-            <!-- Document / article icon -->
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="4" y="2" width="16" height="20" rx="2" stroke="#6B2D8B" stroke-width="1.6"/>
-              <path d="M8 7h8M8 11h8M8 15h5" stroke="#6B2D8B" stroke-width="1.4" stroke-linecap="round"/>
-            </svg>
-          </div>
+      <article class="act-card" data-card-index="2">
+        <div class="act-card-visual" aria-hidden="true">
+          <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <radialGradient id="bl-bg" cx="50%" cy="50%" r="80%">
+                <stop offset="0%" stop-color="#1e1040"/>
+                <stop offset="100%" stop-color="#0d0820"/>
+              </radialGradient>
+              <radialGradient id="bl-orb1" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#818cf8" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#818cf8" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="bl-orb2" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#00A99D" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#00A99D" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="400" height="200" fill="url(#bl-bg)"/>
+            <ellipse cx="200" cy="80" rx="160" ry="100" fill="url(#bl-orb1)"/>
+            <ellipse cx="350" cy="170" rx="90" ry="70" fill="url(#bl-orb2)"/>
+            <path d="M0 100 C100 70, 200 130, 300 90 C360 70, 390 110, 400 95 L400 200 L0 200Z" fill="rgba(129,140,248,0.18)"/>
+            <path d="M0 140 C80 115, 200 155, 300 125 C370 105, 395 140, 400 130 L400 200 L0 200Z" fill="rgba(0,169,157,0.14)"/>
+            <!-- Document lines -->
+            <rect x="155" y="45" width="90" height="110" rx="6" fill="rgba(255,255,255,0.05)" stroke="rgba(129,140,248,0.4)" stroke-width="1.5"/>
+            <line x1="168" y1="67" x2="232" y2="67" stroke="rgba(129,140,248,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="168" y1="80" x2="232" y2="80" stroke="rgba(129,140,248,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="168" y1="93" x2="215" y2="93" stroke="rgba(0,169,157,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="168" y1="106" x2="228" y2="106" stroke="rgba(129,140,248,0.35)" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="168" y1="119" x2="200" y2="119" stroke="rgba(0,169,157,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="60" cy="40" r="3" fill="rgba(129,140,248,0.5)"/>
+            <circle cx="340" cy="50" r="2.5" fill="rgba(0,169,157,0.4)"/>
+            <circle cx="350" cy="100" r="4" fill="rgba(129,140,248,0.3)"/>
+          </svg>
         </div>
         <div class="act-card-body">
+          <span class="act-card-tag">Editorial</span>
           <h3 class="act-card-title">Blog &amp; Articles</h3>
           <p class="act-card-desc">Research summaries, biomedical trends, tutorials, event reports and student-written technical articles.</p>
-          <div class="act-card-footer">
-            <a href="blog.html" class="act-card-btn">Read Articles &rarr;</a>
-          </div>
+          <a href="blog.html" class="act-card-btn">
+            Read Articles
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="13,6 19,12 13,18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </div>
       </article>
 
       <!-- Card 4 — EMBS Podcast -->
-      <article class="act-card">
-        <div class="act-card-img-wrap">
-          <!-- Replace src with a podcast/microphone photo -->
-          <img src="bg-image-embs/heart.jpeg" alt="IEEE EMBS Podcast" class="act-card-img" />
-          <div class="act-card-icon" aria-hidden="true">
-            <!-- Microphone icon -->
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="9" y="2" width="6" height="11" rx="3" stroke="#6B2D8B" stroke-width="1.6"/>
-              <path d="M5 10a7 7 0 0 0 14 0" stroke="#6B2D8B" stroke-width="1.6" stroke-linecap="round"/>
-              <path d="M12 17v5M9 22h6" stroke="#6B2D8B" stroke-width="1.6" stroke-linecap="round"/>
-            </svg>
-          </div>
+      <article class="act-card" data-card-index="3">
+        <div class="act-card-visual" aria-hidden="true">
+          <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <radialGradient id="pd-bg" cx="40%" cy="60%" r="80%">
+                <stop offset="0%" stop-color="#0c1a2e"/>
+                <stop offset="100%" stop-color="#060d18"/>
+              </radialGradient>
+              <radialGradient id="pd-orb1" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#00A99D" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#00A99D" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="pd-orb2" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#a855f7" stop-opacity="0.45"/>
+                <stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="400" height="200" fill="url(#pd-bg)"/>
+            <ellipse cx="100" cy="100" rx="120" ry="110" fill="url(#pd-orb1)"/>
+            <ellipse cx="320" cy="80" rx="110" ry="90" fill="url(#pd-orb2)"/>
+            <path d="M0 110 C80 80, 170 140, 260 105 C340 75, 385 120, 400 105 L400 200 L0 200Z" fill="rgba(0,169,157,0.2)"/>
+            <path d="M0 150 C100 120, 200 162, 300 135 C370 118, 398 150, 400 140 L400 200 L0 200Z" fill="rgba(168,85,247,0.14)"/>
+            <!-- Waveform bars -->
+            <rect x="150" y="85" width="6" height="30" rx="3" fill="rgba(0,169,157,0.6)"/>
+            <rect x="162" y="72" width="6" height="56" rx="3" fill="rgba(168,85,247,0.7)"/>
+            <rect x="174" y="80" width="6" height="40" rx="3" fill="rgba(0,169,157,0.5)"/>
+            <rect x="186" y="60" width="6" height="80" rx="3" fill="rgba(168,85,247,0.8)"/>
+            <rect x="198" y="75" width="6" height="50" rx="3" fill="rgba(0,169,157,0.65)"/>
+            <rect x="210" y="68" width="6" height="64" rx="3" fill="rgba(168,85,247,0.6)"/>
+            <rect x="222" y="82" width="6" height="36" rx="3" fill="rgba(0,169,157,0.5)"/>
+            <rect x="234" y="90" width="6" height="20" rx="3" fill="rgba(168,85,247,0.5)"/>
+            <circle cx="60" cy="60" r="3" fill="rgba(0,169,157,0.4)"/>
+            <circle cx="340" cy="45" r="2.5" fill="rgba(168,85,247,0.4)"/>
+          </svg>
         </div>
         <div class="act-card-body">
+          <span class="act-card-tag">Audio</span>
           <h3 class="act-card-title">EMBS Podcast</h3>
           <p class="act-card-desc">Interviews, healthcare innovations, expert talks and biomedical engineering discussions.</p>
-          <div class="act-card-footer">
-            <a href="podcast.html" class="act-card-btn">Listen Now &rarr;</a>
-          </div>
+          <a href="podcast.html" class="act-card-btn">
+            Listen Now
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="13,6 19,12 13,18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </div>
       </article>
 
-      <!-- Card 5 — Gallery (centred on desktop) -->
-      <article class="act-card">
-        <div class="act-card-img-wrap">
-          <!-- Replace src with a gallery/event moments photo -->
-          <img src="bg-image-embs/bluebg.jpeg" alt="IEEE EMBS Gallery" class="act-card-img" />
-          <div class="act-card-icon" aria-hidden="true">
-            <!-- Image / gallery icon -->
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="2" y="4" width="20" height="16" rx="3" stroke="#6B2D8B" stroke-width="1.6"/>
-              <circle cx="8.5" cy="9.5" r="1.5" stroke="#6B2D8B" stroke-width="1.4"/>
-              <path d="M2 16l5-5 4 4 3-3 5 5" stroke="#6B2D8B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
+      <!-- Card 5 — Gallery -->
+      <article class="act-card" data-card-index="4">
+        <div class="act-card-visual" aria-hidden="true">
+          <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <radialGradient id="gal-bg" cx="60%" cy="40%" r="80%">
+                <stop offset="0%" stop-color="#2e0854"/>
+                <stop offset="100%" stop-color="#150428"/>
+              </radialGradient>
+              <radialGradient id="gal-orb1" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#c084fc" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#c084fc" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="gal-orb2" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#00A99D" stop-opacity="0.45"/>
+                <stop offset="100%" stop-color="#00A99D" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="400" height="200" fill="url(#gal-bg)"/>
+            <ellipse cx="250" cy="70" rx="160" ry="100" fill="url(#gal-orb1)"/>
+            <ellipse cx="60" cy="160" rx="100" ry="75" fill="url(#gal-orb2)"/>
+            <path d="M0 115 C70 85, 160 145, 250 108 C330 76, 380 125, 400 110 L400 200 L0 200Z" fill="rgba(192,132,252,0.2)"/>
+            <path d="M0 148 C90 120, 190 158, 280 132 C360 112, 395 148, 400 138 L400 200 L0 200Z" fill="rgba(0,169,157,0.15)"/>
+            <!-- Photo grid hint -->
+            <rect x="148" y="42" width="44" height="44" rx="5" fill="rgba(255,255,255,0.07)" stroke="rgba(192,132,252,0.45)" stroke-width="1.2"/>
+            <rect x="200" y="42" width="44" height="44" rx="5" fill="rgba(255,255,255,0.07)" stroke="rgba(0,169,157,0.4)" stroke-width="1.2"/>
+            <rect x="148" y="93" width="44" height="44" rx="5" fill="rgba(255,255,255,0.07)" stroke="rgba(0,169,157,0.4)" stroke-width="1.2"/>
+            <rect x="200" y="93" width="44" height="44" rx="5" fill="rgba(255,255,255,0.07)" stroke="rgba(192,132,252,0.45)" stroke-width="1.2"/>
+            <!-- Small mountain/image icons inside cells -->
+            <path d="M155 77 l8-10 6 7 4-4 10 10H155Z" fill="rgba(192,132,252,0.35)"/>
+            <path d="M207 77 l9-11 5 6 5-5 12 10H207Z" fill="rgba(0,169,157,0.35)"/>
+            <circle cx="60" cy="50" r="3" fill="rgba(192,132,252,0.5)"/>
+            <circle cx="340" cy="55" r="2.5" fill="rgba(0,169,157,0.4)"/>
+          </svg>
         </div>
         <div class="act-card-body">
+          <span class="act-card-tag">Visual</span>
           <h3 class="act-card-title">Gallery</h3>
           <p class="act-card-desc">Explore memorable moments from IEEE EMBS events, workshops, outreach programs and competitions.</p>
-          <div class="act-card-footer">
-            <a href="gallery.html" class="act-card-btn">Open Gallery &rarr;</a>
-          </div>
+          <a href="gallery.html" class="act-card-btn">
+            Open Gallery
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="13,6 19,12 13,18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </div>
       </article>
 
@@ -409,6 +527,26 @@
 <script src="activities.js" defer></script>
 <script src="activities-stats.js" defer></script>
 <script src="page-hero-image.js" defer></script>
+<script>
+  /* ── Activities page animation config ── */
+  window.EMBS_ANIM_CONFIG = {
+    hero: {
+      heading:   '.act-hero-heading',
+      sub:       '.act-hero-desc',
+      baseDelay: 60
+    },
+    sections: [
+      { label: '.act-explore-label', heading: '.act-explore-title' },
+      { label: '.act-impact-label',  heading: '.act-impact-title' },
+      { label: '.act-cta-label',     heading: '.act-cta-heading' }
+    ],
+    stagger: [
+      { container: '.act-cards-grid', child: '.act-card' },
+      { container: '.act-stats-grid', child: '.act-stat-card' }
+    ]
+  };
+</script>
+<script src="animations.js" defer></script>
 
 </body>
 </html>

@@ -1,0 +1,314 @@
+/* ================================================================
+   animations.css — IEEE EMBS KPRIET
+   Single source of truth for all text reveal animations.
+
+   Depends on navbar.css :root tokens:
+     --purple: #6B2D8B   --teal: #00A99D
+     --font-heading       --font-body
+
+   CLASS REFERENCE
+   ──────────────────────────────────────────────────────────────
+   .embs-word-split      Parent wrapper — JS wraps each word in
+                         a <span class="embs-word"> inside a
+                         <span class="embs-word-line"> clip.
+                         Words animate individually, staggered.
+
+   .embs-hero-sub        Subtitle / description beneath a hero heading.
+                         Fades + rises as a unit (no word split).
+
+   .embs-hero-cta        CTA button row inside a hero section.
+                         Appears last in the hero sequence.
+
+   .embs-reveal          Any element that should fade+rise when it
+                         enters the viewport. Trigger: IntersectionObserver
+                         adds .embs-in.
+
+   .embs-stagger-parent  Container whose direct .embs-reveal children
+                         receive auto-calculated stagger delays.
+                         JS sets --embs-stagger-i CSS variable on each child.
+
+   .embs-section-label   Small uppercase eyebrow label above a heading.
+                         Shorter delay, simple fade.
+   ================================================================ */
+
+/* ── 1. KEYFRAMES ──────────────────────────────────────────────── */
+
+/* Core "rise" motion: up + fade + subtle unblur */
+@keyframes embs-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Lighter version for body text / subtitles — less blur, less travel */
+@keyframes embs-rise-soft {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── 2. WORD-SPLIT REVEAL (hero headings) ──────────────────────── */
+
+/*  The JS splits each heading into individual word spans:
+    <h1 class="embs-word-split">
+      <span class="embs-word-line">
+        <span class="embs-word" style="--embs-wi:0">Where</span>
+      </span>
+      <span class="embs-word-line">
+        <span class="embs-word" style="--embs-wi:1">Engineering</span>
+      </span>
+      ...
+    </h1>
+
+    The .embs-word-line acts as a vertical clip so the word
+    enters from below the baseline without affecting surrounding text.
+    display: inline-block on .embs-word keeps normal text wrapping. */
+
+.embs-word-split {
+  /* Preserve line breaks that are in the original markup */
+  display: block;
+}
+
+.embs-word-line {
+  display: inline;          /* Flow naturally in prose */
+  overflow: visible;        /* NO clip — avoids layout shifts */
+  vertical-align: top;
+}
+
+.embs-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(18px);
+  filter: blur(4px);
+  /* Will be triggered by JS adding .embs-word-split--go to the parent */
+  /* transition chosen over animation so we can stagger via delay */
+  transition:
+    opacity  0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    filter   0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--embs-wi, 0) * 75ms + var(--embs-base-delay, 0ms));
+  /* Whitespace — normal so words inside block-level child spans still wrap */
+  white-space: normal;
+}
+
+/* Triggered state — JS adds this class to the parent heading */
+.embs-word-split--go .embs-word {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* ── 3. HERO SUBTITLE & CTA ──────────────────────────────────────── */
+
+.embs-hero-sub {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity  0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--embs-sub-delay, 380ms);
+}
+
+.embs-hero-sub--go {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.embs-hero-cta {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity  0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--embs-cta-delay, 520ms);
+}
+
+.embs-hero-cta--go {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── 4. SCROLL REVEAL (section headings + cards) ──────────────── */
+
+.embs-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity  0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Stagger index set by JS as --embs-stagger-i */
+  transition-delay: calc(var(--embs-stagger-i, 0) * 80ms);
+}
+
+.embs-reveal.embs-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Lighter version for body paragraphs — less travel */
+.embs-reveal--soft {
+  transform: translateY(12px);
+}
+
+/* ── 5. SECTION LABEL (eyebrow text) ──────────────────────────── */
+
+.embs-section-label {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity  0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: 0ms;
+}
+
+.embs-section-label.embs-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* When label is paired with an .embs-reveal heading in the same
+   observed group, the heading delay is offset by 90ms after the label */
+.embs-reveal.embs-reveal--heading {
+  transition-delay: calc(var(--embs-stagger-i, 0) * 80ms + 90ms);
+}
+
+/* ── 6. BUTTON HOVER MICRO-INTERACTIONS ──────────────────────── */
+
+/* Arrow/icon inside a button nudges right on hover.
+   Add .embs-btn-arrow to the <svg> or <span> icon inside a button. */
+.embs-btn-arrow {
+  display: inline-block;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+a:hover .embs-btn-arrow,
+button:hover .embs-btn-arrow {
+  transform: translateX(4px);
+}
+
+/* Card title lifts slightly on hover.
+   Add .embs-card-title to heading elements inside clickable cards. */
+.embs-card-title {
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+              color 0.22s ease;
+}
+
+a:hover .embs-card-title,
+.card-hover:hover .embs-card-title {
+  transform: translateY(-2px);
+}
+
+/* ── 7. NAV LINK UNDERLINE ACCENT ────────────────────────────── */
+/* The existing navbar already has color transition.
+   This adds a subtle sliding underline accent to desktop nav links. */
+
+@media (min-width: 821px) {
+  .nav-link {
+    position: relative;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, var(--purple), var(--teal));
+    border-radius: 2px;
+    transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+                left   0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    width: 100%;
+    left: 0;
+  }
+}
+
+/* ── 8. REDUCED MOTION ────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Words appear instantly */
+  .embs-word {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+
+  .embs-word-split--go .embs-word {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  /* Hero sub + cta appear instantly */
+  .embs-hero-sub,
+  .embs-hero-cta {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Scroll reveals appear instantly */
+  .embs-reveal,
+  .embs-section-label {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Hover micro-interactions disabled */
+  .embs-btn-arrow {
+    transition: none !important;
+  }
+
+  .embs-card-title {
+    transition: none !important;
+  }
+
+  /* Nav underline instant */
+  .nav-link::after {
+    transition: none !important;
+  }
+}
+
+/* ── 9. MOBILE ADJUSTMENTS ───────────────────────────────────── */
+
+@media (max-width: 600px) {
+  /* Reduce travel distance on small screens */
+  .embs-word {
+    transform: translateY(12px);
+  }
+
+  .embs-word-split--go .embs-word {
+    transform: translateY(0);
+  }
+
+  .embs-reveal {
+    transform: translateY(14px);
+  }
+
+  .embs-reveal.embs-in {
+    transform: translateY(0);
+  }
+
+  /* Tighten stagger so the full card row doesn't take too long */
+  .embs-reveal {
+    transition-delay: calc(var(--embs-stagger-i, 0) * 55ms);
+  }
+}

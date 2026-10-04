@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="navbar.css" />
   <script src="config.js"></script>
   <link rel="stylesheet" href="blog.css" />
+  <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
 </head>
 <body>
@@ -261,6 +262,21 @@
 <script src="newsletter.js" defer></script>
 <script type="module" src="blog.js"></script>
 <script src="page-hero-image.js" defer></script>
+<script>
+  /* ── Blog page animation config — editorial treatment ── */
+  window.EMBS_ANIM_CONFIG = {
+    hero: {
+      heading:   '.blog-hero-heading',
+      sub:       '.blog-hero-desc',
+      baseDelay: 50   /* snappier stagger for the editorial feel */
+    },
+    sections: [
+      { label: '.blog-grid-label', heading: '.blog-grid-title' }
+    ],
+    reveal: ['.blog-hero-label', '.blog-filters-label']
+  };
+</script>
+<script src="animations.js" defer></script>
 </body>
 </html>
 

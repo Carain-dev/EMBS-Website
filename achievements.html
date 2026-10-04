@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="navbar.css" />
   <script src="config.js"></script>
   <link rel="stylesheet" href="achievements.css" />
+  <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
 </head>
 <body>
@@ -417,6 +418,24 @@
 <script src="announceBar.js" defer></script>
 <script src="newsletter.js" defer></script>
 <script src="achievements-public.js" defer></script>
+<script>
+  window.EMBS_ANIM_CONFIG = {
+    hero: {
+      heading:   '.ach-hero-heading',
+      sub:       '.ach-hero-desc',
+      baseDelay: 60
+    },
+    sections: [
+      { label: '.ach-submit-label', heading: '.ach-submit-heading' }
+    ],
+    stagger: [
+      { container: '.ach-cards-grid', child: '.ach-card' },
+      { container: '.ach-stats-inner', child: '.ach-stat-card' }
+    ],
+    reveal: ['.ach-hero-label']
+  };
+</script>
+<script src="animations.js" defer></script>
 </body>
 </html>
 

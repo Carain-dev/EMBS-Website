@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="navbar.css" />
   <script src="config.js"></script>
   <link rel="stylesheet" href="projects.css" />
+  <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
 </head>
 <body>
@@ -448,6 +449,23 @@
 <script src="newsletter.js" defer></script>
 <script type="module" src="projects.js"></script>
 <script src="page-hero-image.js" defer></script>
+<script>
+  window.EMBS_ANIM_CONFIG = {
+    hero: {
+      heading:   '.proj-hero-heading',
+      sub:       '.proj-hero-desc',
+      baseDelay: 60
+    },
+    sections: [
+      { label: '.proj-grid-label', heading: '.proj-grid-title' }
+    ],
+    stagger: [
+      { container: '.proj-grid', child: '.proj-card' }
+    ],
+    reveal: ['.proj-hero-label']
+  };
+</script>
+<script src="animations.js" defer></script>
 
 </body>
 </html>

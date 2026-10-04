@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="navbar.css" />
   <script src="config.js"></script>
   <link rel="stylesheet" href="podcast.css" />
+  <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
 </head>
 <body>
@@ -1096,7 +1097,24 @@
 <script src="announceBar.js" defer></script>
 <script src="newsletter.js" defer></script>
 <script src="podcast-public.js" defer></script>
-
+<script>
+  window.EMBS_ANIM_CONFIG = {
+    hero: {
+      heading:   '.pod-hero-heading',
+      sub:       '.pod-hero-desc',
+      baseDelay: 55
+    },
+    sections: [
+      { label: '.pod-featured-label', heading: '.pod-featured-title' },
+      { label: '.pod-latest-label',   heading: '.pod-latest-title' }
+    ],
+    stagger: [
+      { container: '.pod-ep-grid', child: '.pod-ep-card' }
+    ],
+    reveal: ['.pod-hero-label', '.pod-hero-meta']
+  };
+</script>
+<script src="animations.js" defer></script>
 </body>
 </html>
 

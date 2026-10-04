@@ -1,26 +1,26 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Members Î“Ã‡Ã´ IEEE EMBS</title>
+  <title>Members GÇô IEEE EMBS</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="manifest" href="site.webmanifest" />
   <meta name="description" content="Meet the core team and student members of the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
-  <meta name="author" content="IEEE EMBS Student Chapter Î“Ã‡Ã´ KPR Institute of Engineering and Technology" />
+  <meta name="author" content="IEEE EMBS Student Chapter GÇô KPR Institute of Engineering and Technology" />
   <meta name="theme-color" content="#0a0e1a" />
 
   <!-- Open Graph / link previews. Set og:url and og:image to the full
        https://<your-domain>/... form once the site has its final URL. -->
-  <meta property="og:site_name" content="IEEE EMBS Student Chapter Î“Ã‡Ã´ KPR Institute of Engineering and Technology" />
-  <meta property="og:title" content="Members Î“Ã‡Ã´ IEEE EMBS KPRIET" />
+  <meta property="og:site_name" content="IEEE EMBS Student Chapter GÇô KPR Institute of Engineering and Technology" />
+  <meta property="og:title" content="Members GÇô IEEE EMBS KPRIET" />
   <meta property="og:description" content="Meet the core team and student members of the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="logo-cropped.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Members Î“Ã‡Ã´ IEEE EMBS KPRIET" />
+  <meta name="twitter:title" content="Members GÇô IEEE EMBS KPRIET" />
   <meta name="twitter:description" content="Meet the core team and student members of the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="navbar.css" />
   <script src="config.js"></script>
   <link rel="stylesheet" href="members.css" />
+  <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
 </head>
 <body>
@@ -383,8 +384,8 @@
       var fac = res[1].data || [];
       var core = all.filter(function(m){ return CORE_RE.test(m.role||""); });
       if (elM) elM.textContent = all.length + "+";
-      if (elC) elC.textContent = core.length || "â€”";
-      if (elF) elF.textContent = fac.length  || "â€”";
+      if (elC) elC.textContent = core.length || "—";
+      if (elF) elF.textContent = fac.length  || "—";
     }).catch(function(){});
   }
   function initFadeIn() {
@@ -401,5 +402,27 @@
   initFadeIn();
 })();
 </script>
+<script>
+  /* -- Members page animation config -- */
+  /* NOTE: .mem-fade-in / .visible is handled by the inline script above.
+     animations.js handles the hero heading and join section only. */
+  window.EMBS_ANIM_CONFIG = {
+    hero: {
+      heading:   '.mhero-title',
+      sub:       '.mhero-desc',
+      baseDelay: 60
+    },
+    sections: [
+      { label: '.join-mem-label', heading: '.join-mem-title' }
+    ],
+    stagger: [
+      { container: '.cteam-grid', child: '.cteam-card' }
+    ],
+    reveal: ['.mhero-label', '.mhero-stat-strip']
+  };
+</script>
+<script src="animations.js" defer></script>
+
+
 </body>
 </html>

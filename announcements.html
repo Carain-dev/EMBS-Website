@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="navbar.css" />
   <script src="config.js"></script>
   <link rel="stylesheet" href="announcements.css" />
+  <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
 </head>
 <body>
@@ -258,6 +259,21 @@
 <script src="announceBar.js" defer></script>
 <script src="newsletter.js" defer></script>
 <script src="announcements-public.js" defer></script>
+<script>
+  window.EMBS_ANIM_CONFIG = {
+    hero: {
+      heading:   '.ann-hero-heading',
+      sub:       '.ann-hero-desc',
+      baseDelay: 60
+    },
+    sections: [
+      { heading: '.ann-featured-title' },
+      { heading: '.ann-newsletter-heading' }
+    ],
+    reveal: ['.ann-hero-label']
+  };
+</script>
+<script src="animations.js" defer></script>
 </body>
 </html>
 

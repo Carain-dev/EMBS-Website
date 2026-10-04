@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="navbar.css" />
   <script src="config.js"></script>
   <link rel="stylesheet" href="about.css" />
+  <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
 </head>
 <body>
@@ -477,6 +478,29 @@
 <script src="about-info.js" defer></script>
 <script src="about-brochure.js" defer></script>
 <script src="page-hero-image.js" defer></script>
+<script>
+  /* ── About page animation config ── */
+  window.EMBS_ANIM_CONFIG = {
+    hero: {
+      /* about.html has no true hero; the first section IS the content.
+         Treat .about-embs-heading as a page-entry heading with a
+         gentle delayed reveal (no word split — too short to benefit). */
+      heading:   '.about-embs-heading',
+      sub:       '.about-embs-desc',
+      baseDelay: 100
+    },
+    sections: [
+      { label: '.focus-label',    heading: '.focus-title' },
+      { label: '.timeline-label', heading: '.timeline-title' },
+      { label: '.join-label',     heading: '.join-title' }
+    ],
+    stagger: [
+      { container: '.focus-grid',   child: '.focus-card' },
+      { container: '.about-vm-cards', child: '.about-vm-card' }
+    ]
+  };
+</script>
+<script src="animations.js" defer></script>
 </body>
 </html>
 

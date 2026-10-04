@@ -27,6 +27,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="navbar.css" />
   <script src="config.js"></script>
+  <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
 </head>
 <body>
@@ -399,5 +400,31 @@
 <script src="featuredEventsService.js" defer></script>
 <script src="faculty-coordinators.js" defer></script>
 <script src="home-stats.js" defer></script>
+<script>
+  /* ── Homepage animation config ── */
+  window.EMBS_ANIM_CONFIG = {
+    hero: {
+      heading:   '.hero-heading',
+      sub:       '.hero-sub',
+      cta:       '.hero-buttons',
+      baseDelay: 60
+    },
+    sections: [
+      { label: '.activities-label',   heading: '.activities-title' },
+      { label: '.podcast-label',      heading: '.podcast-title' },
+      { label: '.whyjoin-label',      heading: '.whyjoin-title' },
+      { label: '.achievements-label', heading: '.achievements-title' },
+      { label: '.faculty-label',      heading: '.faculty-title' }
+    ],
+    stagger: [
+      { container: '.whyjoin-grid',   child: '.wj-card' }
+    ],
+    reveal: [
+      '.hero-stats',
+      '.hero-badge'
+    ]
+  };
+</script>
+<script src="animations.js" defer></script>
 </body>
 </html>
