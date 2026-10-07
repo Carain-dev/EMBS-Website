@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
       // "Twitter / X" and similar labels need normalising to a config key.
       key = key.replace(/\s*\/\s*x$/, '').replace(/[^a-z]/g, '');
 
-      var url = config[key];
+      /* Only real web links: a javascript: URL saved in Site Settings would run on click. */
+      var url = /^https?:\/\//i.test(String(config[key] || '').trim()) ? String(config[key]).trim() : '';
 
       if (url) {
         icon.setAttribute("href", url);
@@ -45,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
     /* Only apply the stored mapUrl if it is a genuine Google Maps embed URL
        (must contain /maps/embed). A plain maps.google.com/?q=... URL cannot
        be iframed and would break the contact page map. */
-    if (mapFrame && mapUrl && mapUrl.indexOf('/maps/embed') !== -1) {
+    if (mapFrame && /^https:\/\/(www\.)?google\.[a-z.]+\/maps\/embed/i.test(mapUrl)) {
       mapFrame.setAttribute('src', mapUrl);
     }
 

@@ -30,6 +30,22 @@
   <link rel="stylesheet" href="announcements.css" />
   <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
+  <!-- Shared motion + visual language (as on every redesigned page).
+       motion.js must run in <head>: it only sets a class now. -->
+  <link rel="stylesheet" href="motion.css" />
+  <link rel="stylesheet" href="experience.css" />
+  <link rel="stylesheet" href="pages-experience.css" />
+  <link rel="stylesheet" href="announcements-experience.css" />
+  <script src="motion.js"></script>
+  <!-- announcements-public.js replaces the sample bulletin in the markup;
+       hold it back (JS only) so it never shows as a real notice. -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('anx-pending');
+      setTimeout(function () { d.classList.remove('anx-pending'); }, 4000);
+    })();
+  </script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -98,11 +114,13 @@
   <div class="announce-track-wrap">
     <div class="announce-track"></div>
   </div>
+  <!-- Page progress hairline (pages-kit.js) -->
+  <span class="xp-progress" aria-hidden="true"></span>
 </div>
 
 <main id="main-content" tabindex="-1">
 
-<section id="announcement-hero" class="ann-hero">
+<section id="announcement-hero" class="ann-hero anx-hero">
   <div class="ann-hero-inner">
 
     <div class="ann-hero-left">
@@ -112,6 +130,15 @@
     </div>
 
     <div class="ann-hero-right">
+      <!-- The live board: filled from GET /api/announcements -->
+      <div class="anx-board" aria-labelledby="anxBoardTitle">
+        <div class="anx-board-top">
+          <span id="anxBoardTitle"><span class="pg-live" aria-hidden="true"></span>&nbsp; Live board</span>
+          <b id="anxToday"></b>
+        </div>
+        <div class="anx-board-count" aria-live="polite"><strong id="anxCount">&mdash;</strong><span>notices open</span></div>
+        <ol class="anx-board-list" id="anxList" aria-label="Open notices by deadline"></ol>
+      </div>
       <div class="ann-hero-illus">
         <svg class="ann-hero-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- Board -->
@@ -142,7 +169,7 @@
   </div>
 </section>
 
-<section id="announcement-filters" class="ann-filters-section">
+<section id="announcement-filters" class="ann-filters-section anx-filters">
   <div class="ann-filters-inner">
     <div class="ann-filters" role="group" aria-label="Filter announcements by category">
       <button class="ann-chip active" data-filter="all">All</button>
@@ -156,15 +183,19 @@
   </div>
 </section>
 
-<section id="announcement-cards" class="ann-cards-section">
+<section id="announcement-cards" class="ann-cards-section anx-feed" aria-labelledby="anxFeedTitle">
   <div class="ann-cards-inner">
+    <div class="anx-feed-head">
+      <span class="pg-eyebrow pg-eyebrow--ink">The feed</span>
+      <h2 class="pg-title" id="anxFeedTitle">Everything open,<br>as it is posted.</h2>
+    </div>
     <div class="ann-cards-grid">
 
     </div>
   </div>
 </section>
 
-<section id="featured-notice" class="ann-featured-section">
+<section id="featured-notice" class="ann-featured-section anx-bulletin">
   <div class="ann-featured-inner">
     <div class="ann-featured-card">
       <div class="ann-featured-top">
@@ -184,7 +215,7 @@
   </div>
 </section>
 
-<section id="newsletter" class="ann-newsletter-section">
+<section id="newsletter" class="ann-newsletter-section anx-subscribe">
   <div class="ann-newsletter-inner">
     <h2 class="ann-newsletter-heading">Never Miss an Opportunity</h2>
     <p class="ann-newsletter-desc">Subscribe to get the latest internships, competitions, scholarships, and deadlines delivered straight to your inbox.</p>
@@ -192,6 +223,12 @@
       <input type="email" class="ann-newsletter-input" placeholder="Enter your email address" />
       <button type="submit" class="ann-newsletter-btn">Subscribe</button>
     </form>
+    <nav class="pg-onward" aria-label="Continue exploring">
+      <a href="events.html"><small>Energy</small>Events <i aria-hidden="true">&rarr;</i></a>
+      <a href="achievements.html"><small>Progress</small>Achievements <i aria-hidden="true">&rarr;</i></a>
+      <a href="members.html"><small>People</small>Members <i aria-hidden="true">&rarr;</i></a>
+      <a href="contact.html"><small>Connection</small>Contact <i aria-hidden="true">&rarr;</i></a>
+    </nav>
   </div>
 </section>
 
@@ -270,9 +307,11 @@
       { heading: '.ann-featured-title' },
       { heading: '.ann-newsletter-heading' }
     ],
-    reveal: ['.ann-hero-label']
+    reveal: ['.ann-hero-label', '.anx-board', '.anx-subscribe .pg-onward']
   };
 </script>
+<script src="pages-kit.js" defer></script>
+<script src="announcements-experience.js" defer></script>
 <script src="animations.js" defer></script>
 </body>
 </html>

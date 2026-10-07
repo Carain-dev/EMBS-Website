@@ -1,0 +1,378 @@
+/* ================================================================
+   experience.css — IEEE EMBS KPRIET
+   The shared visual language of the GSAP-driven "experience" pages
+   (Home, About). Page files (home-experience.css, about-experience.css)
+   compose these primitives; the per-page engines animate them.
+
+   RECURRING MOTIFS
+     • Ambient light   — aurora + cursor light (motion.css / below)
+     • Technical grid  — fine 56px engineering grid
+     • Signal line     — abstract drawn line work (never data)
+     • Journey rail    — thin instrument line tracking the page
+     • Purple → teal   — every motif moves from #6B2D8B to #00A99D
+
+   Everything here is static and readable without JavaScript; motion
+   only ever starts from these resting states.
+   ================================================================ */
+
+
+/* ── 0. PRE-ENTRANCE ───────────────────────────────────────────── */
+/* `xp-pending` is set by an inline <head> script only when motion is
+   allowed, and removed by the page engine in the same task it builds
+   the entrance (or by a 3s failsafe). Pages mark extra opening-frame
+   elements with [data-xp-hold]. */
+
+html.xp-pending .navbar,
+html.xp-pending .announce-bar,
+html.xp-pending .xp-depth,
+html.xp-pending .xp-hero-light,
+html.xp-pending [data-xp-hold] {
+  opacity: 0;
+}
+
+
+/* ── 1. TYPOGRAPHY + MOVEMENT HOOKS ────────────────────────────── */
+
+/* Line masks for typography reveals (engines wrap lines in these).
+   Padding/negative margin keep descenders unclipped without moving
+   layout. */
+.xp-line {
+  display: block;
+  overflow: hidden;
+  padding: 0 0.06em 0.14em;
+  margin: 0 -0.06em -0.14em;
+}
+
+.xp-line-inner {
+  display: block;
+  /* when a line must wrap (phones), balance it — no single-word orphans */
+  text-wrap: balance;
+}
+
+/* Elements moved with the individual `translate` property, so their
+   own hover transforms and CSS transitions are untouched. */
+.xp-t {
+  translate: var(--xp-tx, 0px) var(--xp-ty, 0px);
+}
+
+/* Depth layers: pointer depth applies to the wrapper, scroll depth to
+   the children. */
+.xp-depth {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Engines drive these, so their CSS keyframes are switched off */
+html.embs-motion .xp-depth .mo-swirl,
+html.embs-motion .mo-blob {
+  animation: none;
+}
+
+/* Magnetic buttons: GSAP owns transform while active */
+html.xp-magnetic-on .xp-magnetic {
+  transition: box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+
+/* ── 2. TECHNICAL GRID ─────────────────────────────────────────── */
+
+.xp-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(170, 185, 230, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(170, 185, 230, 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 55% 60% at 72% 42%, #000 0%, transparent 72%);
+          mask-image: radial-gradient(ellipse 55% 60% at 72% 42%, #000 0%, transparent 72%);
+}
+
+/* On light grounds the grid inverts to ink */
+.xp-grid--ink {
+  background-image:
+    linear-gradient(rgba(40, 30, 90, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(40, 30, 90, 0.06) 1px, transparent 1px);
+}
+
+.xp-grid--cta {
+  -webkit-mask-image: radial-gradient(ellipse 50% 70% at 50% 50%, #000 0%, transparent 75%);
+          mask-image: radial-gradient(ellipse 50% 70% at 50% 50%, #000 0%, transparent 75%);
+}
+
+
+/* ── 3. CURSOR LIGHT ───────────────────────────────────────────── */
+
+.xp-hero-light {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 760px;
+  height: 760px;
+  margin: -380px 0 0 -380px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(closest-side,
+    rgba(0, 169, 157, 0.10) 0%,
+    rgba(107, 45, 139, 0.07) 45%,
+    rgba(0, 0, 0, 0) 100%);
+  transform: translate3d(68vw, 46vh, 0);
+  will-change: transform;
+}
+
+
+/* ── 4. SIGNAL LINE (abstract, decorative — not data) ──────────── */
+
+.xp-signal-path {
+  fill: none;
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.xp-signal-path--faint {
+  stroke-width: 1;
+  opacity: 0.45;
+}
+
+.xp-signal-node {
+  fill: #0e1527;
+  stroke: #00A99D;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.xp-signal-node--purple {
+  stroke: #9b5cc4;
+}
+
+
+/* ── 5. CLOSING PANEL (shared final call to action) ────────────── */
+/* Reprises the Home hero: same ground, same aurora, same grid. */
+
+.xp-cta {
+  position: relative;
+  padding-top: 5rem;
+  background: linear-gradient(180deg, #d2d6de 0%, #c3c7d1 100%);
+}
+
+.xp-cta-panel {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 8.5rem 2rem 9rem;
+  text-align: center;
+  background:
+    radial-gradient(ellipse 60% 70% at 20% 70%, rgba(107, 45, 139, 0.24) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 82% 30%, rgba(0, 169, 157, 0.16) 0%, transparent 65%),
+    linear-gradient(160deg, #0a0e1a 0%, #0d1530 55%, #091a1a 100%);
+}
+
+.xp-cta-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('bg-image-embs/network.jpeg') center center / cover no-repeat;
+  opacity: 0.16;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.xp-cta-panel .mo-aurora {
+  z-index: 0;
+}
+
+/* Auroras the engines scale must paint freely: with motion.css's
+   overflow + paint containment, scaling would expose the box edges.
+   The surrounding section/panel does the clipping instead. */
+html.embs-motion .xp-cta-panel .mo-aurora,
+html.embs-motion .xp-depth .mo-aurora,
+html.embs-motion .xp-aurora-free {
+  overflow: visible;
+  contain: none;
+}
+
+.xp-cta-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.xp-cta-title {
+  font-size: clamp(2.1rem, 4.4vw, 3.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  margin: 0.6rem 0 1.4rem;
+}
+
+.xp-cta-sub {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: rgba(200, 210, 230, 0.68);
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.xp-cta-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2.4rem;
+}
+
+.xp-cta-actions .btn-primary,
+.xp-cta-actions .btn-secondary {
+  display: inline-block;
+}
+
+
+/* ── 6. FOOTER: the system comes to rest ───────────────────────── */
+
+.footer {
+  position: relative;
+  overflow: hidden;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1100px;
+  height: 420px;
+  margin-left: -550px;
+  pointer-events: none;
+  background: radial-gradient(ellipse 50% 60% at 50% 0%,
+    rgba(107, 45, 139, 0.14) 0%, rgba(0, 169, 157, 0.05) 45%, transparent 75%);
+}
+
+.footer-main,
+.footer-bottom {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ── 7. PROGRESS LINE + JOURNEY RAIL ───────────────────────────── */
+
+.xp-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, #6B2D8B, #00A99D);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  opacity: 0.9;
+}
+
+.xp-rail {
+  display: none;
+}
+
+@media (min-width: 1360px) and (prefers-reduced-motion: no-preference) {
+  .xp-rail {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: max(28px, calc((100vw - 1200px) / 2 - 56px));
+    height: 44vh;
+    width: 9px;
+    margin-top: -22vh;
+    pointer-events: none;
+    z-index: 900;
+    --xp-rail-track: rgba(170, 185, 230, 0.16);
+    --xp-rail-tick:  rgba(170, 185, 230, 0.32);
+    --xp-rail-on:    #00A99D;
+  }
+
+  .xp-rail.is-light {
+    --xp-rail-track: rgba(40, 30, 80, 0.14);
+    --xp-rail-tick:  rgba(40, 30, 80, 0.30);
+    --xp-rail-on:    #6B2D8B;
+  }
+
+  .xp-rail-track,
+  .xp-rail-fill {
+    position: absolute;
+    left: 4px;
+    top: 0;
+    width: 1px;
+    height: 100%;
+  }
+
+  .xp-rail-track {
+    background: var(--xp-rail-track);
+    transition: background 0.5s ease;
+  }
+
+  .xp-rail-fill {
+    background: linear-gradient(180deg, #6B2D8B, #00A99D);
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+  }
+
+  .xp-rail-tick {
+    position: absolute;
+    left: 1px;
+    width: 7px;
+    height: 1px;
+    background: var(--xp-rail-tick);
+    transform-origin: 0 50%;
+    transition: background 0.5s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .xp-rail-tick.is-active {
+    background: var(--xp-rail-on);
+    transform: scaleX(1.9);
+  }
+
+  .xp-rail-node {
+    position: absolute;
+    left: 1px;
+    top: -3.5px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #00A99D;
+    box-shadow: 0 0 0 3px rgba(0, 169, 157, 0.14);
+    will-change: transform;
+  }
+}
+
+
+/* ── 8. RESPONSIVE ─────────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+  .xp-hero-light {
+    display: none;
+  }
+
+  .xp-cta {
+    padding-top: 3.5rem;
+  }
+
+  .xp-cta-panel {
+    padding: 5.5rem 1.25rem 6rem;
+  }
+}
+
+
+/* ── 9. REDUCED MOTION ─────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-progress,
+  .xp-hero-light {
+    display: none;
+  }
+}

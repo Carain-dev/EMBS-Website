@@ -6,7 +6,7 @@ const { sendResponse, sendError } = require('../utils/sendResponse');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 const normalizeBoolean = (value) => value === true || value === 'true' || value === 1 || value === '1' || value === 'yes' || value === 'on';
-const isAdminRequest = (req) => /^Bearer /i.test(String(req.headers.authorization || '')) || req.query.all === 'true';
+const { resolveAdminView, denyMessage } = require('../utils/requestAuth');
 
 const normalizeAchievementPayload = (payload = {}) => {
   const next = { ...payload };
@@ -24,7 +24,9 @@ const normalizeAchievementPayload = (payload = {}) => {
 };
 
 exports.getAll = asyncHandler(async (req, res) => {
-  const filter = isAdminRequest(req) ? {} : { featured: true };
+  const view = await resolveAdminView(req, { flags: ['all'] });
+  if (view.deny) return sendError(res, view.deny, denyMessage(view.deny));
+  const filter = view.admin ? {} : { featured: true };
   const { rows, meta } = await paginate(Achievement, filter, { date: -1 }, req.query);
   sendResponse(res, 200, rows, 'Success', meta);
 });
@@ -33,7 +35,7 @@ exports.getOne = asyncHandler(async (req, res) => {
   if (!isValidId(req.params.id)) return sendError(res, 400, 'Invalid achievement ID');
   const item = await Achievement.findById(req.params.id);
   if (!item) return sendError(res, 404, 'Achievement not found');
-  if (!isAdminRequest(req) && !item.featured) return sendError(res, 404, 'Achievement not found');
+  if (!item.featured && !(await resolveAdminView(req, { flags: ['all'] })).admin) return sendError(res, 404, 'Achievement not found');
   sendResponse(res, 200, item);
 });
 

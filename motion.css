@@ -1,0 +1,476 @@
+/* ================================================================
+   motion.css — IEEE EMBS KPRIET
+   Additive motion layer. Sits alongside animations.css; it does not
+   replace or override it.
+
+   Nothing here does anything until motion.js adds `embs-motion` to
+   <html>, and nothing is applied to a page until it opts in by
+   linking this file and using the classes below.
+
+   Load order on a page (when we start applying it):
+     <head>
+       … existing stylesheets …
+       <link rel="stylesheet" href="motion.css" />
+       <script src="motion.js"></script>   ← in <head>, NOT deferred,
+                                             so the class is set
+                                             before first paint
+     </head>
+
+   DESIGN RULES
+   ──────────────────────────────────────────────────────────────
+   • Reveals use CSS *animations* on the individual `translate` /
+     `scale` properties, never `transition` or `transform`. That way
+     they never clobber a card's own hover transition or transform.
+   • Hidden start states live only inside
+     @media (prefers-reduced-motion: no-preference), so with reduced
+     motion enabled, content can never be hidden — even if JS fails.
+   • Decorative layers move with transform/opacity only. Soft edges
+     come from radial-gradient falloff, not filter: blur().
+   • All hover effects are gated on (hover: hover) and (pointer: fine).
+
+   CLASS REFERENCE
+   ──────────────────────────────────────────────────────────────
+   Reveal
+     .mo-reveal              fade + rise when scrolled into view
+     .mo-reveal--fade        opacity only
+     .mo-reveal--scale       fade + gentle scale-up
+     .mo-reveal--left        slide in from the left
+     .mo-reveal--right       slide in from the right
+     .mo-reveal--down        drop in from above (fixed bars)
+     data-mo-delay="120"     extra delay in ms (optional)
+     data-mo-load-delay="700" delay used only during initial page load
+     (state classes set by JS: .is-in → animating, .mo-done → finished)
+
+   Decorative  (empty, aria-hidden elements inside a positioned parent)
+     .mo-aurora              two drifting brand-colour light fields
+     .mo-swirl               slowly rotating soft conic swirl
+     .mo-blob                single floating soft orb
+       .mo-blob--teal / --purple / --blue
+     .mo-float               gentle vertical bob (decor only)
+       .mo-float--slow
+     .mo-gradient-text       slow animated brand gradient on text
+
+   Parallax
+     data-mo-parallax="0.15" decorative parallax, speed -1…1
+
+   Hover  (fine-pointer devices only)
+     .mo-hover-lift          lift + deeper shadow
+     .mo-hover-glow          cursor-following soft glow
+     .mo-sheen               light sweep across (buttons)
+   ================================================================ */
+
+
+/* ── 1. TOKENS ─────────────────────────────────────────────────── */
+
+html.embs-motion {
+  --mo-ease:        cubic-bezier(0.22, 1, 0.36, 1);
+  --mo-ease-inout:  cubic-bezier(0.65, 0, 0.35, 1);
+  --mo-dur:         0.75s;
+  --mo-stagger:     70ms;
+  --mo-rise:        24px;
+  --mo-slide:       32px;
+
+  /* Brand colours, read from navbar.css tokens with safe fallbacks */
+  --mo-c1:          var(--purple, #6B2D8B);
+  --mo-c2:          var(--teal, #00A99D);
+  --mo-c3:          #5B7CFA;
+
+  --mo-glow-purple: rgba(107, 45, 139, 0.32);
+  --mo-glow-teal:   rgba(0, 169, 157, 0.28);
+  --mo-glow-blue:   rgba(91, 124, 250, 0.24);
+
+  --mo-lift:        -4px;
+  --mo-shadow-rest: 0 1px 2px rgba(8, 12, 28, 0.06);
+  --mo-shadow-lift: 0 14px 34px -12px rgba(43, 22, 74, 0.35),
+                    0 4px 12px -4px rgba(0, 169, 157, 0.18);
+}
+
+
+/* ── 2. KEYFRAMES ──────────────────────────────────────────────── */
+
+@keyframes mo-rise {
+  from { opacity: 0; translate: 0 var(--mo-rise); }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+@keyframes mo-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes mo-scale {
+  from { opacity: 0; scale: 0.96; translate: 0 calc(var(--mo-rise) * 0.4); }
+  to   { opacity: 1; scale: 1;    translate: 0 0; }
+}
+
+@keyframes mo-left {
+  from { opacity: 0; translate: calc(var(--mo-slide) * -1) 0; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+@keyframes mo-right {
+  from { opacity: 0; translate: var(--mo-slide) 0; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+@keyframes mo-down {
+  from { opacity: 0; translate: 0 -14px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+@keyframes mo-drift-a {
+  0%   { transform: translate3d(-12%, -8%, 0) rotate(0deg)   scale(1); }
+  50%  { transform: translate3d(8%,   6%,  0) rotate(18deg)  scale(1.08); }
+  100% { transform: translate3d(14%, -4%,  0) rotate(32deg)  scale(0.96); }
+}
+
+@keyframes mo-drift-b {
+  0%   { transform: translate3d(10%,  10%, 0) rotate(0deg)   scale(1.05); }
+  50%  { transform: translate3d(-6%,  -2%, 0) rotate(-14deg) scale(0.95); }
+  100% { transform: translate3d(-14%, 8%,  0) rotate(-28deg) scale(1.1); }
+}
+
+@keyframes mo-spin {
+  to { transform: rotate(1turn); }
+}
+
+@keyframes mo-bob {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -12px, 0); }
+}
+
+@keyframes mo-orbit {
+  0%   { transform: translate3d(0, 0, 0)      scale(1); }
+  33%  { transform: translate3d(18px, -22px, 0) scale(1.06); }
+  66%  { transform: translate3d(-14px, 10px, 0) scale(0.96); }
+  100% { transform: translate3d(0, 0, 0)      scale(1); }
+}
+
+@keyframes mo-gradient-pan {
+  to { background-position: 300% 50%; }
+}
+
+
+/* ── 3. SCROLL REVEAL ──────────────────────────────────────────── */
+
+html.embs-motion .mo-reveal--fade  { --mo-kf: mo-fade; }
+html.embs-motion .mo-reveal--scale { --mo-kf: mo-scale; }
+html.embs-motion .mo-reveal--left  { --mo-kf: mo-left; }
+html.embs-motion .mo-reveal--right { --mo-kf: mo-right; }
+html.embs-motion .mo-reveal--down  { --mo-kf: mo-down; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Waiting to enter the viewport. Only elements motion.js has actually
+     registered ([data-mo-ready]) are hidden, so anything it skips or
+     never reaches stays visible. */
+  html.embs-motion .mo-reveal[data-mo-ready]:not(.is-in) {
+    opacity: 0;
+  }
+
+  /* Entering. `both` holds the first keyframe during the stagger delay.
+     JS adds .mo-done on animationend, which drops the animation so the
+     element returns to its own natural styles. */
+  html.embs-motion .mo-reveal.is-in:not(.mo-done) {
+    animation-name: var(--mo-kf, mo-rise);
+    animation-duration: var(--mo-dur);
+    animation-timing-function: var(--mo-ease);
+    animation-delay: var(--mo-d, 0ms);
+    animation-fill-mode: both;
+  }
+}
+
+
+/* ── 4. DECORATIVE LAYERS ──────────────────────────────────────── */
+
+/* Shared base for every decorative layer */
+html.embs-motion .mo-aurora,
+html.embs-motion .mo-swirl,
+html.embs-motion .mo-blob {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Aurora — fills its positioned parent with two slow light fields */
+html.embs-motion .mo-aurora {
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  contain: layout paint;
+}
+
+html.embs-motion .mo-aurora::before,
+html.embs-motion .mo-aurora::after {
+  content: '';
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+html.embs-motion .mo-aurora::before {
+  top: -35vmax;
+  left: -20vmax;
+  background: radial-gradient(circle at center,
+    var(--mo-glow-purple) 0%, rgba(107, 45, 139, 0) 62%);
+  animation: mo-drift-a 28s var(--mo-ease-inout) infinite alternate;
+}
+
+html.embs-motion .mo-aurora::after {
+  bottom: -40vmax;
+  right: -25vmax;
+  background: radial-gradient(circle at center,
+    var(--mo-glow-teal) 0%, rgba(0, 169, 157, 0) 60%);
+  animation: mo-drift-b 34s var(--mo-ease-inout) infinite alternate;
+}
+
+/* Swirl — a soft conic vortex. The mask is static; only rotation animates. */
+html.embs-motion .mo-swirl {
+  width: var(--mo-swirl-size, 520px);
+  height: var(--mo-swirl-size, 520px);
+  border-radius: 50%;
+  opacity: var(--mo-swirl-opacity, 0.35);
+  background: conic-gradient(from 0deg,
+    rgba(107, 45, 139, 0),
+    var(--mo-glow-purple),
+    rgba(91, 124, 250, 0.18),
+    var(--mo-glow-teal),
+    rgba(0, 169, 157, 0),
+    rgba(107, 45, 139, 0));
+  -webkit-mask: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.6) 40%, transparent 70%);
+          mask: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.6) 40%, transparent 70%);
+  will-change: transform;
+  animation: mo-spin 40s linear infinite;
+}
+
+/* Blob — single soft orb */
+html.embs-motion .mo-blob {
+  width: var(--mo-blob-size, 280px);
+  height: var(--mo-blob-size, 280px);
+  border-radius: 50%;
+  /* closest-side: fully transparent by the element's edge, so the
+     circle never shows a hard rim */
+  background: radial-gradient(closest-side circle at 50% 50%,
+    var(--mo-blob-color, var(--mo-glow-purple)) 0%,
+    rgba(0, 0, 0, 0) 100%);
+  will-change: transform;
+  animation: mo-orbit 18s var(--mo-ease-inout) infinite;
+  animation-delay: var(--mo-float-delay, 0s);
+}
+
+html.embs-motion .mo-blob--teal   { --mo-blob-color: var(--mo-glow-teal); }
+html.embs-motion .mo-blob--purple { --mo-blob-color: var(--mo-glow-purple); }
+html.embs-motion .mo-blob--blue   { --mo-blob-color: var(--mo-glow-blue); }
+
+/* Float — for dedicated decorative elements only (it owns `transform`) */
+html.embs-motion .mo-float {
+  animation: mo-bob 6s var(--mo-ease-inout) infinite;
+  animation-delay: var(--mo-float-delay, 0s);
+  will-change: transform;
+}
+
+html.embs-motion .mo-float--slow {
+  animation-duration: 10s;
+}
+
+/* Gradient text — kept to short headings; background-position repaints */
+html.embs-motion .mo-gradient-text {
+  background-image: linear-gradient(100deg,
+    var(--mo-c1) 0%, var(--mo-c2) 25%, var(--mo-c3) 50%,
+    var(--mo-c2) 75%, var(--mo-c1) 100%);
+  background-size: 300% 100%;
+  background-position: 0% 50%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.embs-motion .mo-gradient-text {
+    animation: mo-gradient-pan 14s linear infinite;
+  }
+}
+
+/* Offscreen decor is paused by JS to save GPU/battery */
+html.embs-motion .mo-paused,
+html.embs-motion .mo-paused::before,
+html.embs-motion .mo-paused::after {
+  animation-play-state: paused;
+}
+
+
+/* ── 5. PARALLAX ───────────────────────────────────────────────── */
+/* Uses the individual `translate` property, so it composes with any
+   existing transform on the element instead of overwriting it.
+   JS writes --mo-py only on fine-pointer devices. */
+
+html.embs-motion [data-mo-parallax] {
+  translate: 0 var(--mo-py, 0px);
+}
+
+html.embs-motion.mo-parallax-on [data-mo-parallax] {
+  will-change: translate;
+}
+
+
+/* ── 6. HOVER EFFECTS ──────────────────────────────────────────── */
+
+@media (hover: hover) and (pointer: fine) {
+
+  /* Lift — `translate` composes with the card's own hover transform.
+     The transition list covers properties cards commonly animate, since
+     setting `transition` here replaces the element's own list. */
+  html.embs-motion .mo-hover-lift {
+    box-shadow: var(--mo-shadow-rest);
+    transition:
+      translate        0.35s var(--mo-ease),
+      transform        0.35s var(--mo-ease),
+      box-shadow       0.35s var(--mo-ease),
+      border-color     0.25s ease,
+      background-color 0.25s ease,
+      color            0.25s ease,
+      opacity          0.25s ease;
+  }
+
+  html.embs-motion .mo-hover-lift:hover,
+  html.embs-motion .mo-hover-lift:focus-within {
+    translate: 0 var(--mo-lift);
+    box-shadow: var(--mo-shadow-lift);
+  }
+
+  /* Glow — :where() keeps specificity at zero so any existing
+     position (absolute, sticky…) on the element still wins. */
+  :where(html.embs-motion .mo-hover-glow) {
+    position: relative;
+    isolation: isolate;
+  }
+
+  html.embs-motion .mo-hover-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    background: radial-gradient(
+      var(--mo-glow-size, 320px) circle at var(--mo-mx, 50%) var(--mo-my, 50%),
+      rgba(0, 169, 157, 0.16),
+      rgba(107, 45, 139, 0.10) 40%,
+      transparent 70%);
+    transition: opacity 0.35s var(--mo-ease);
+  }
+
+  html.embs-motion .mo-hover-glow:hover::after {
+    opacity: 1;
+  }
+
+  /* Sheen — a single light sweep on hover. */
+  :where(html.embs-motion .mo-sheen) {
+    position: relative;
+    overflow: hidden;
+  }
+
+  html.embs-motion .mo-sheen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 60%;
+    pointer-events: none;
+    background: linear-gradient(105deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.28) 50%,
+      rgba(255, 255, 255, 0) 100%);
+    transform: translate3d(-120%, 0, 0) skewX(-12deg);
+  }
+
+  html.embs-motion .mo-sheen:hover::before {
+    transform: translate3d(260%, 0, 0) skewX(-12deg);
+    transition: transform 0.8s var(--mo-ease);
+  }
+}
+
+
+/* ── 7. VIEW TRANSITIONS (progressive enhancement) ─────────────── */
+/* Cross-document transitions between same-origin pages that both link
+   this file. Browsers without support ignore all of this. */
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-old(root) {
+    animation: mo-vt-out 0.22s var(--mo-ease-inout, ease) both;
+  }
+
+  ::view-transition-new(root) {
+    animation: mo-vt-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes mo-vt-out {
+  to { opacity: 0; }
+}
+
+@keyframes mo-vt-in {
+  from { opacity: 0; translate: 0 10px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+
+/* ── 8. REDUCED MOTION ─────────────────────────────────────────── */
+/* Belt and braces: the hidden states above already only exist under
+   no-preference, but force everything visible and still regardless. */
+
+@media (prefers-reduced-motion: reduce) {
+  html.embs-motion .mo-reveal {
+    opacity: 1 !important;
+    animation: none !important;
+    translate: none !important;
+    scale: none !important;
+  }
+
+  html.embs-motion .mo-aurora::before,
+  html.embs-motion .mo-aurora::after,
+  html.embs-motion .mo-swirl,
+  html.embs-motion .mo-blob,
+  html.embs-motion .mo-float,
+  html.embs-motion .mo-gradient-text {
+    animation: none !important;
+  }
+
+  html.embs-motion [data-mo-parallax] {
+    translate: none !important;
+  }
+
+  html.embs-motion .mo-hover-lift,
+  html.embs-motion .mo-hover-lift:hover,
+  html.embs-motion .mo-hover-lift:focus-within {
+    translate: none !important;
+  }
+
+  html.embs-motion .mo-sheen::before {
+    display: none;
+  }
+}
+
+
+/* ── 9. PRINT ──────────────────────────────────────────────────── */
+
+@media print {
+  html.embs-motion .mo-reveal {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+
+  html.embs-motion .mo-aurora,
+  html.embs-motion .mo-swirl,
+  html.embs-motion .mo-blob {
+    display: none !important;
+  }
+}

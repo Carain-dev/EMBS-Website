@@ -7,7 +7,7 @@ const notifySubscribers = require('../utils/notifySubscribers');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 const normalizeBoolean = (value) => value === true || value === 'true' || value === 1 || value === '1' || value === 'yes' || value === 'on';
-const isAdminRequest = (req) => req.query.drafts === 'true' || req.query.all === 'true' || /^Bearer /i.test(String(req.headers.authorization || ''));
+const { resolveAdminView, denyMessage } = require('../utils/requestAuth');
 
 const normalizePodcastPayload = (payload = {}) => {
   const next = { ...payload };
@@ -25,18 +25,32 @@ const normalizePodcastPayload = (payload = {}) => {
     next.published = normalizeBoolean(next.published);
   }
 
-  if (next.published) {
-    next.publishedAt = next.publishedAt ? new Date(next.publishedAt) : new Date();
-  } else {
-    next.publishedAt = null;
+  /* Only touch publishedAt when the request sets `published`. A partial update
+     (e.g. just a caption) used to null it, and every re-save of a published
+     item reset it to "now". The update handler keeps the original date. */
+  if (Object.prototype.hasOwnProperty.call(next, 'published')) {
+    if (!next.published) next.publishedAt = null;
+    else if (next.publishedAt) next.publishedAt = new Date(next.publishedAt);
+    else next.publishedAt = undefined;
   }
 
   return next;
 };
 
+/* Re-publishing keeps the first publish date; publishing a draft stamps now. */
+const keepPublishedAt = async (id, payload) => {
+  if (!payload.published || payload.publishedAt) {
+    if (payload.publishedAt === undefined) delete payload.publishedAt;
+    return;
+  }
+  const prev = await Podcast.findById(id).select('publishedAt').lean();
+  payload.publishedAt = (prev && prev.publishedAt) || new Date();
+};
+
 exports.getAll = asyncHandler(async (req, res) => {
-  const isAdmin = isAdminRequest(req);
-  const filter = isAdmin ? {} : { published: true };
+  const view = await resolveAdminView(req);
+  if (view.deny) return sendError(res, view.deny, denyMessage(view.deny));
+  const filter = view.admin ? {} : { published: true };
   const { rows, meta } = await paginate(Podcast, filter, { publishedAt: -1, episodeNumber: -1 }, req.query);
   sendResponse(res, 200, rows, 'Success', meta);
 });
@@ -45,7 +59,7 @@ exports.getOne = asyncHandler(async (req, res) => {
   if (!isValidId(req.params.id)) return sendError(res, 400, 'Invalid episode ID');
   const episode = await Podcast.findById(req.params.id);
   if (!episode) return sendError(res, 404, 'Episode not found');
-  if (!isAdminRequest(req) && !episode.published) {
+  if (!episode.published && !(await resolveAdminView(req)).admin) {
     return sendError(res, 404, 'Episode not found');
   }
   sendResponse(res, 200, episode);
@@ -57,6 +71,8 @@ exports.create = asyncHandler(async (req, res) => {
   if (!title || !episodeNumber)
     return sendError(res, 400, 'Title and episode number are required');
   if (req.file) payload.thumbnail = req.file.path;
+  if (payload.published && !payload.publishedAt) payload.publishedAt = new Date();
+  if (payload.publishedAt === undefined) delete payload.publishedAt;
   const episode = await Podcast.create(payload);
   sendResponse(res, 201, episode, 'Episode created');
 
@@ -68,6 +84,7 @@ exports.update = asyncHandler(async (req, res) => {
   if (!isValidId(req.params.id)) return sendError(res, 400, 'Invalid episode ID');
   const payload = normalizePodcastPayload(req.body);
   if (req.file) payload.thumbnail = req.file.path;
+  await keepPublishedAt(req.params.id, payload);
 
   /* Read previous published state before overwriting */
   const prev = await Podcast.findById(req.params.id).select('published').lean();

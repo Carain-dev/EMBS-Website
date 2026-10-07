@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gallery – IEEE EMBS</title>
+  <title>Gallery â€“ IEEE EMBS</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="manifest" href="site.webmanifest" />
   <meta name="description" content="Photographs from events, workshops, competitions and activities hosted by the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
-  <meta name="author" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
+  <meta name="author" content="IEEE EMBS Student Chapter â€“ KPR Institute of Engineering and Technology" />
   <meta name="theme-color" content="#0a0e1a" />
-  <meta property="og:site_name" content="IEEE EMBS Student Chapter – KPR Institute of Engineering and Technology" />
-  <meta property="og:title" content="Gallery – IEEE EMBS KPRIET" />
+  <meta property="og:site_name" content="IEEE EMBS Student Chapter â€“ KPR Institute of Engineering and Technology" />
+  <meta property="og:title" content="Gallery â€“ IEEE EMBS KPRIET" />
   <meta property="og:description" content="Photographs from events, workshops, competitions and activities hosted by the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="logo-cropped.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Gallery – IEEE EMBS KPRIET" />
+  <meta name="twitter:title" content="Gallery â€“ IEEE EMBS KPRIET" />
   <meta name="twitter:description" content="Photographs from events, workshops, competitions and activities hosted by the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,6 +27,14 @@
   <link rel="stylesheet" href="gallery.css" />
   <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
+  <!-- Shared motion + visual language (as on Home, About, Activities).
+       motion.js must run in <head>: it only sets a class now and does
+       its DOM work on DOMContentLoaded. -->
+  <link rel="stylesheet" href="motion.css" />
+  <link rel="stylesheet" href="experience.css" />
+  <link rel="stylesheet" href="pages-experience.css" />
+  <link rel="stylesheet" href="gallery-experience.css" />
+  <script src="motion.js"></script>
 </head>
 <body>
 
@@ -101,32 +109,37 @@
   <div class="announce-track-wrap">
     <div class="announce-track"></div>
   </div>
+  <!-- Page progress hairline (pages-kit.js) -->
+  <span class="xp-progress" aria-hidden="true"></span>
 </div>
 
-<main id="gallery-main" class="gallery-page" tabindex="-1">
+<main id="gallery-main" class="gallery-page glx" tabindex="-1">
 
   <!-- -- SECTION 1: HERO ------------------- -->
   <section id="gal-hero" aria-labelledby="gal-hero-title">
+    <!-- Lit by the chapter's first photograph (gallery-experience.js) -->
+    <div class="glx-backdrop" aria-hidden="true"><img alt="" decoding="async" /></div>
+    <span class="glx-strip" aria-hidden="true"></span>
     <div class="gal-hero-inner">
       <span class="gal-hero-eyebrow" aria-hidden="true">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg>
         IEEE EMBS KPRIET
       </span>
       <h1 class="gal-hero-title" id="gal-hero-title">Moments That Define<br class="gal-hero-br" /> Our Chapter</h1>
-      <p class="gal-hero-desc">A visual archive of events, workshops, competitions, and chapter activities — documenting our journey in biomedical engineering and innovation.</p>
+      <p class="gal-hero-desc">A visual archive of events, workshops, competitions, and chapter activities â€” documenting our journey in biomedical engineering and innovation.</p>
 
-      <!-- Stats strip — numbers populated by JS from real API data -->
+      <!-- Stats strip â€” numbers populated by JS from real API data -->
       <div class="gal-hero-stats" id="galHeroStats" aria-label="Gallery statistics">
         <div class="gal-hero-stat">
-          <span class="gal-hero-stat-num" id="galStatPhotos" aria-label="Total photos">—</span>
+          <span class="gal-hero-stat-num" id="galStatPhotos" aria-label="Total photos">â€”</span>
           <span class="gal-hero-stat-label">Photos</span>
         </div>
         <div class="gal-hero-stat">
-          <span class="gal-hero-stat-num" id="galStatAlbums" aria-label="Total albums">—</span>
+          <span class="gal-hero-stat-num" id="galStatAlbums" aria-label="Total albums">â€”</span>
           <span class="gal-hero-stat-label">Albums</span>
         </div>
         <div class="gal-hero-stat">
-          <span class="gal-hero-stat-num" id="galStatVideos" aria-label="Total videos">—</span>
+          <span class="gal-hero-stat-num" id="galStatVideos" aria-label="Total videos">â€”</span>
           <span class="gal-hero-stat-label">Videos</span>
         </div>
       </div>
@@ -226,6 +239,12 @@
         </a>
         <a href="contact.html" class="gal-btn gal-btn--ghost">Become a Volunteer</a>
       </div>
+      <nav class="pg-onward" aria-label="Continue exploring">
+        <a href="events.html"><small>Energy</small>Events <i aria-hidden="true">&rarr;</i></a>
+        <a href="projects.html"><small>Discovery</small>Projects &amp; Research <i aria-hidden="true">&rarr;</i></a>
+        <a href="blog.html"><small>Knowledge</small>Blog &amp; Articles <i aria-hidden="true">&rarr;</i></a>
+        <a href="podcast.html"><small>Voice</small>EMBS Podcast <i aria-hidden="true">&rarr;</i></a>
+      </nav>
     </div>
   </section>
 
@@ -326,11 +345,19 @@
 <script src="gallery-public.js" defer></script>
 <script>
   window.EMBS_ANIM_CONFIG = {
+    hero: {
+      heading:   '.gal-hero-title',
+      sub:       '.gal-hero-desc',
+      baseDelay: 70
+    },
     sections: [
       { label: '.gal-section-badge', heading: '.gal-section-title' }
-    ]
+    ],
+    reveal: ['.gal-hero-eyebrow', '.gal-hero-stats', '#gal-cta .pg-onward']
   };
 </script>
+<script src="pages-kit.js" defer></script>
+<script src="gallery-experience.js" defer></script>
 <script src="animations.js" defer></script>
 
 </body>

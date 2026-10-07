@@ -30,6 +30,24 @@
   <link rel="stylesheet" href="activities.css" />
   <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
+  <link rel="stylesheet" href="motion.css" />
+  <link rel="stylesheet" href="experience.css" />
+  <link rel="stylesheet" href="activities-experience.css" />
+  <!-- Motion bootstrap: enables the motion CSS layer and, when motion is
+       allowed, holds the opening frame for activities-experience.js.
+       A 3s failsafe guarantees the page is never left hidden. -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('embs-motion');
+      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      d.classList.add('xp-pending');
+      window.__xpFailsafe = setTimeout(function () {
+        d.classList.remove('xp-pending');
+        window.__xpFailed = true;
+      }, 3000);
+    })();
+  </script>
 </head>
 <body>
 <a class="skip-link" href="#activities-main">Skip to main content</a>
@@ -113,6 +131,15 @@
   <div class="announce-track-wrap">
     <div class="announce-track"></div>
   </div>
+  <!-- Page progress hairline (activities-experience.js) -->
+  <span class="xp-progress" aria-hidden="true"></span>
+</div>
+
+<!-- Journey rail: one thread through the page (wide desktop only, decorative) -->
+<div class="xp-rail" aria-hidden="true">
+  <span class="xp-rail-track"></span>
+  <span class="xp-rail-fill"></span>
+  <span class="xp-rail-node"></span>
 </div>
 
 <!-- ═══════════════════════════════════════
@@ -121,35 +148,165 @@
 <main id="activities-main" tabindex="-1">
 
 <!-- ═══════════════════════════════════════
-     SECTION 1 — HERO
+     01 — ARRIVAL
+     The hero keeps its original classes (.act-hero-*), so
+     page-hero-image.js still sets the CMS photograph on .act-hero-img.
 ════════════════════════════════════════ -->
-<section class="act-hero">
+<section class="act-hero" id="act-top" aria-labelledby="actHeroTitle">
+  <div class="xp-depth xp-depth--far" aria-hidden="true">
+    <div class="mo-aurora"></div>
+    <div class="xp-grid act-hero-grid"></div>
+    <div class="mo-swirl act-hero-swirl"></div>
+  </div>
+  <div class="xp-depth xp-depth--near" aria-hidden="true">
+    <!-- Abstract signal flow (decorative, not data) -->
+    <svg class="act-hero-flow" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <defs>
+        <linearGradient id="actFlowGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#6B2D8B" stop-opacity="0"/>
+          <stop offset="0.3" stop-color="#6B2D8B" stop-opacity="0.75"/>
+          <stop offset="0.75" stop-color="#00A99D" stop-opacity="0.75"/>
+          <stop offset="1" stop-color="#00A99D" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path class="xp-signal-path act-flow-path" d="M-40 690 C 240 690, 360 560, 560 570 S 860 700, 1040 560 S 1300 330, 1480 320"/>
+      <path class="xp-signal-path xp-signal-path--faint act-flow-path" d="M-40 760 C 280 750, 420 640, 640 650 S 940 760, 1120 640 S 1340 450, 1480 440"/>
+      <path class="xp-signal-path xp-signal-path--faint act-flow-path" d="M-40 610 C 200 620, 330 470, 520 480 S 800 600, 980 470 S 1260 220, 1480 200"/>
+      <path class="act-flow-pulse" d="M-40 690 C 240 690, 360 560, 560 570 S 860 700, 1040 560 S 1300 330, 1480 320"/>
+      <path class="act-flow-pulse act-flow-pulse--b" d="M-40 610 C 200 620, 330 470, 520 480 S 800 600, 980 470 S 1260 220, 1480 200"/>
+      <circle class="xp-signal-node" cx="560" cy="570" r="4"/>
+      <circle class="xp-signal-node xp-signal-node--purple" cx="1040" cy="560" r="4"/>
+      <circle class="xp-signal-node" cx="980" cy="470" r="3"/>
+    </svg>
+  </div>
+  <div class="xp-hero-light" aria-hidden="true"></div>
+
   <div class="act-hero-inner">
 
     <div class="act-hero-left">
-      <span class="act-hero-label">IEEE EMBS</span>
-      <h1 class="act-hero-heading">Activities</h1>
-      <p class="act-hero-desc">The IEEE Engineering in Medicine and Biology Society Student Chapter actively organizes technical events, research initiatives, workshops, publications, podcasts, and community outreach programs that empower students to innovate at the intersection of engineering, medicine, and healthcare.</p>
+      <div class="act-hero-top" data-xp-hold>
+        <span class="act-hero-label">IEEE EMBS</span>
+        <span class="act-hero-rule" aria-hidden="true"></span>
+        <span class="act-eyebrow act-eyebrow--muted">KPRIET Student Chapter</span>
+      </div>
+
+      <h1 class="act-hero-heading" id="actHeroTitle" data-xp-hold>Activities</h1>
+
+      <p class="act-streams" data-xp-hold>
+        <a href="#act-events">Events</a><span class="act-streams-sep" aria-hidden="true"></span>
+        <a href="#act-research">Research</a><span class="act-streams-sep" aria-hidden="true"></span>
+        <a href="#act-knowledge">Articles</a><span class="act-streams-sep" aria-hidden="true"></span>
+        <a href="#act-podcast">Podcast</a><span class="act-streams-sep" aria-hidden="true"></span>
+        <a href="#act-moments">Gallery</a>
+      </p>
+
+      <div class="act-hero-foot" data-xp-hold>
+        <p class="act-hero-desc">The IEEE Engineering in Medicine and Biology Society Student Chapter actively organizes technical events, research initiatives, workshops, publications, podcasts, and community outreach programs that empower students to innovate at the intersection of engineering, medicine, and healthcare.</p>
+        <!-- Filled from GET /api/events by activities-feed.js (hidden until then) -->
+        <a class="act-next" id="actHeroNext" href="events.html" hidden>
+          <span class="act-live" aria-hidden="true"></span>
+          <span class="act-next-k"></span>
+          <span class="act-next-t"></span>
+          <span class="act-next-d"></span>
+        </a>
+      </div>
     </div>
 
-    <div class="act-hero-right">
-      <!-- Replace src with a biomedical-themed illustration or photo -->
-      <img src="bg-image-embs/network.jpeg" alt="IEEE EMBS Activities" class="act-hero-img" />
+    <div class="act-hero-right" data-xp-hold>
+      <figure class="act-hero-plate">
+        <img src="bg-image-embs/network.jpeg" alt="IEEE EMBS Activities" class="act-hero-img" />
+        <span class="act-hero-plate-shade" aria-hidden="true"></span>
+        <span class="act-hero-plate-tick act-hero-plate-tick--tl" aria-hidden="true"></span>
+        <span class="act-hero-plate-tick act-hero-plate-tick--br" aria-hidden="true"></span>
+      </figure>
     </div>
+
+    <nav class="act-index" aria-label="On this page" data-xp-hold>
+      <ol>
+        <li><a href="#act-ecosystem"><span>01</span>Ecosystem</a></li>
+        <li><a href="#act-events"><span>02</span>Events</a></li>
+        <li><a href="#act-research"><span>03</span>Research</a></li>
+        <li><a href="#act-knowledge"><span>04</span>Articles</a></li>
+        <li><a href="#act-podcast"><span>05</span>Podcast</a></li>
+        <li><a href="#act-moments"><span>06</span>Gallery</a></li>
+        <li><a href="#act-join"><span>07</span>Get involved</a></li>
+      </ol>
+    </nav>
 
   </div>
+
+  <div class="act-scroll-cue" aria-hidden="true"><span class="act-scroll-line"></span>Scroll</div>
 </section>
 
+
 <!-- ═══════════════════════════════════════
-     SECTION 2 — EXPLORE OUR ACTIVITIES
+     02 — THE ACTIVITY ECOSYSTEM
+     The five original cards, recomposed as an editorial index beside
+     a network map. Hover / focus (desktop) or scroll position (touch)
+     lights a strand and the strands it connects to.
 ════════════════════════════════════════ -->
-<section class="act-explore-section">
+<section class="act-explore-section" id="act-ecosystem" aria-labelledby="actExploreTitle">
+  <div class="xp-grid xp-grid--ink act-eco-grid" aria-hidden="true"></div>
   <div class="act-explore-inner">
 
     <div class="act-explore-header">
-      <span class="act-explore-label">What We Do</span>
-      <h2 class="act-explore-title">Explore Our Activities</h2>
+      <span class="act-explore-label">01 &mdash; What We Do</span>
+      <h2 class="act-explore-title" id="actExploreTitle">Explore Our<br>Activities</h2>
+      <p class="act-explore-sub">Five strands of work run through the chapter &mdash; and each one leads into the others.</p>
     </div>
+
+    <div class="act-eco">
+      <div class="act-eco-map" aria-hidden="true">
+        <svg class="act-eco-net" viewBox="-24 0 488 440" focusable="false">
+          <path class="act-eco-link" data-a="0" data-b="1" d="M112 118 Q213.4 68.2 318 92"/>
+          <path class="act-eco-pulse" data-a="0" data-b="1" d="M112 118 Q213.4 68.2 318 92"/>
+          <path class="act-eco-link" data-a="1" data-b="2" d="M318 92 Q378.4 163.2 362 262"/>
+          <path class="act-eco-pulse" data-a="1" data-b="2" d="M318 92 Q378.4 163.2 362 262"/>
+          <path class="act-eco-link" data-a="2" data-b="3" d="M362 262 Q304.5 337.5 206 356"/>
+          <path class="act-eco-pulse" data-a="2" data-b="3" d="M362 262 Q304.5 337.5 206 356"/>
+          <path class="act-eco-link" data-a="3" data-b="4" d="M206 356 Q113.1 350.7 72 282"/>
+          <path class="act-eco-pulse" data-a="3" data-b="4" d="M206 356 Q113.1 350.7 72 282"/>
+          <path class="act-eco-link" data-a="4" data-b="0" d="M72 282 Q51.0 193.6 112 118"/>
+          <path class="act-eco-pulse" data-a="4" data-b="0" d="M72 282 Q51.0 193.6 112 118"/>
+          <path class="act-eco-link act-eco-link--chord" data-a="0" data-b="2" d="M112 118 Q226.0 209.1 362 262"/>
+          <path class="act-eco-pulse" data-a="0" data-b="2" d="M112 118 Q226.0 209.1 362 262"/>
+          <path class="act-eco-link act-eco-link--chord" data-a="1" data-b="3" d="M318 92 Q241.7 215.4 206 356"/>
+          <path class="act-eco-pulse" data-a="1" data-b="3" d="M318 92 Q241.7 215.4 206 356"/>
+          <line class="act-eco-tether" data-n="0" x1="40" y1="60" x2="112" y2="118"/>
+          <line class="act-eco-tether" data-n="0" x1="180" y1="40" x2="112" y2="118"/>
+          <line class="act-eco-tether" data-n="1" x1="260" y1="30" x2="318" y2="92"/>
+          <line class="act-eco-tether" data-n="1" x1="400" y1="150" x2="318" y2="92"/>
+          <line class="act-eco-tether" data-n="2" x1="420" y1="330" x2="362" y2="262"/>
+          <line class="act-eco-tether" data-n="3" x1="300" y1="410" x2="206" y2="356"/>
+          <line class="act-eco-tether" data-n="3" x1="120" y1="410" x2="206" y2="356"/>
+          <line class="act-eco-tether" data-n="4" x1="20" y1="190" x2="72" y2="282"/>
+          <line class="act-eco-tether" data-n="1" x1="250" y1="180" x2="318" y2="92"/>
+          <line class="act-eco-tether" data-n="4" x1="170" y1="250" x2="72" y2="282"/>
+          <line class="act-eco-tether" data-n="0" x1="150" y1="180" x2="112" y2="118"/>
+          <line class="act-eco-tether" data-n="2" x1="280" y1="300" x2="362" y2="262"/>
+          <circle class="act-eco-sat" cx="40" cy="60" r="1.8"/>
+          <circle class="act-eco-sat" cx="180" cy="40" r="1.8"/>
+          <circle class="act-eco-sat" cx="260" cy="30" r="1.8"/>
+          <circle class="act-eco-sat" cx="400" cy="150" r="1.8"/>
+          <circle class="act-eco-sat" cx="420" cy="330" r="1.8"/>
+          <circle class="act-eco-sat" cx="300" cy="410" r="1.8"/>
+          <circle class="act-eco-sat" cx="120" cy="410" r="1.8"/>
+          <circle class="act-eco-sat" cx="20" cy="190" r="1.8"/>
+          <circle class="act-eco-sat" cx="250" cy="180" r="1.8"/>
+          <circle class="act-eco-sat" cx="170" cy="250" r="1.8"/>
+          <circle class="act-eco-sat" cx="150" cy="180" r="1.8"/>
+          <circle class="act-eco-sat" cx="280" cy="300" r="1.8"/>
+          <g class="act-eco-pt" data-node="0" transform="translate(112 118)"><circle class="act-eco-pt-halo" r="30"/><circle class="act-eco-pt-ring" r="13"/><circle class="act-eco-pt-core" r="4.5"/><text class="act-eco-pt-label" x="-24" y="4" text-anchor="end">Events</text></g>
+          <g class="act-eco-pt" data-node="1" transform="translate(318 92)"><circle class="act-eco-pt-halo" r="30"/><circle class="act-eco-pt-ring" r="13"/><circle class="act-eco-pt-core" r="4.5"/><text class="act-eco-pt-label" x="24" y="4" text-anchor="start">Research</text></g>
+          <g class="act-eco-pt" data-node="2" transform="translate(362 262)"><circle class="act-eco-pt-halo" r="30"/><circle class="act-eco-pt-ring" r="13"/><circle class="act-eco-pt-core" r="4.5"/><text class="act-eco-pt-label" x="24" y="4" text-anchor="start">Articles</text></g>
+          <g class="act-eco-pt" data-node="3" transform="translate(206 356)"><circle class="act-eco-pt-halo" r="30"/><circle class="act-eco-pt-ring" r="13"/><circle class="act-eco-pt-core" r="4.5"/><text class="act-eco-pt-label" x="24" y="4" text-anchor="start">Podcast</text></g>
+          <g class="act-eco-pt" data-node="4" transform="translate(72 282)"><circle class="act-eco-pt-halo" r="30"/><circle class="act-eco-pt-ring" r="13"/><circle class="act-eco-pt-core" r="4.5"/><text class="act-eco-pt-label" x="-24" y="4" text-anchor="end">Gallery</text></g>
+        </svg>
+        <div class="act-eco-readout">
+          <span class="act-eco-readout-k">Strand</span>
+          <span class="act-eco-readout-v">Events</span>
+        </div>
+      </div>
 
     <div class="act-cards-grid">
 
@@ -194,7 +351,7 @@
           </svg>
         </div>
         <div class="act-card-body">
-          <span class="act-card-tag">Technical</span>
+          <div class="act-card-meta"><span class="act-card-index">01</span><span class="act-card-tag">Technical</span><span class="act-card-count" data-act-count="events"></span></div>
           <h3 class="act-card-title">Events</h3>
           <p class="act-card-desc">Workshops, seminars, guest lectures, competitions, hackathons and technical events conducted by IEEE EMBS.</p>
           <a href="events.html" class="act-card-btn">
@@ -237,7 +394,7 @@
           </svg>
         </div>
         <div class="act-card-body">
-          <span class="act-card-tag">Research</span>
+          <div class="act-card-meta"><span class="act-card-index">02</span><span class="act-card-tag">Research</span><span class="act-card-count" data-act-count="projects"></span></div>
           <h3 class="act-card-title">Projects &amp; Research</h3>
           <p class="act-card-desc">Student innovations, biomedical engineering research, healthcare technologies and interdisciplinary projects.</p>
           <a href="projects.html" class="act-card-btn">
@@ -283,7 +440,7 @@
           </svg>
         </div>
         <div class="act-card-body">
-          <span class="act-card-tag">Editorial</span>
+          <div class="act-card-meta"><span class="act-card-index">03</span><span class="act-card-tag">Editorial</span><span class="act-card-count" data-act-count="blogs"></span></div>
           <h3 class="act-card-title">Blog &amp; Articles</h3>
           <p class="act-card-desc">Research summaries, biomedical trends, tutorials, event reports and student-written technical articles.</p>
           <a href="blog.html" class="act-card-btn">
@@ -330,7 +487,7 @@
           </svg>
         </div>
         <div class="act-card-body">
-          <span class="act-card-tag">Audio</span>
+          <div class="act-card-meta"><span class="act-card-index">04</span><span class="act-card-tag">Audio</span><span class="act-card-count" data-act-count="podcasts"></span></div>
           <h3 class="act-card-title">EMBS Podcast</h3>
           <p class="act-card-desc">Interviews, healthcare innovations, expert talks and biomedical engineering discussions.</p>
           <a href="podcast.html" class="act-card-btn">
@@ -376,7 +533,7 @@
           </svg>
         </div>
         <div class="act-card-body">
-          <span class="act-card-tag">Visual</span>
+          <div class="act-card-meta"><span class="act-card-index">05</span><span class="act-card-tag">Visual</span><span class="act-card-count" data-act-count="gallery"></span></div>
           <h3 class="act-card-title">Gallery</h3>
           <p class="act-card-desc">Explore memorable moments from IEEE EMBS events, workshops, outreach programs and competitions.</p>
           <a href="gallery.html" class="act-card-btn">
@@ -387,18 +544,68 @@
       </article>
 
     </div>
+    </div>
+
   </div>
 </section>
 
+
 <!-- ═══════════════════════════════════════
-     SECTION 3 — OUR IMPACT
+     03 — EVENTS
+     Featured event + chronological flow, both from GET /api/events
+     (activities-feed.js). Nothing here is written by hand.
 ════════════════════════════════════════ -->
-<section class="act-impact-section">
+<section class="act-events" id="act-events" aria-labelledby="actEventsTitle">
+  <div class="mo-aurora act-aurora-free" aria-hidden="true"></div>
+  <div class="xp-grid act-ev-grid" aria-hidden="true"></div>
+
+  <div class="act-wrap">
+    <header class="act-head">
+      <span class="act-eyebrow">02 &mdash; Events</span>
+      <h2 class="act-title" id="actEventsTitle">The chapter,<br>in motion.</h2>
+      <p class="act-sub">Workshops, seminars, guest lectures, competitions, hackathons and technical events conducted by IEEE EMBS.</p>
+    </header>
+
+    <div class="act-feature" id="actEventFeature" data-state="loading" aria-busy="true">
+      <div class="act-skeleton act-skeleton--feature" aria-hidden="true"><span></span><span></span><span></span></div>
+      <p class="act-visually-hidden">Loading events&hellip;</p>
+    </div>
+  </div>
+
+  <div class="act-flow" id="actFlow">
+    <div class="act-wrap act-flow-head">
+      <div>
+        <span class="act-eyebrow act-eyebrow--muted">Chronology</span>
+        <h3 class="act-flow-title">Every event, in order.</h3>
+      </div>
+      <a class="act-link" href="events.html">All events <span aria-hidden="true">&rarr;</span></a>
+    </div>
+    <div class="act-flow-viewport">
+      <ol class="act-flow-list" id="actFlowList" data-state="loading" aria-label="Events in date order">
+        <li class="act-flow-item act-flow-item--ghost" aria-hidden="true"><span class="act-skeleton act-skeleton--card"></span></li>
+        <li class="act-flow-item act-flow-item--ghost" aria-hidden="true"><span class="act-skeleton act-skeleton--card"></span></li>
+        <li class="act-flow-item act-flow-item--ghost" aria-hidden="true"><span class="act-skeleton act-skeleton--card"></span></li>
+      </ol>
+    </div>
+    <div class="act-wrap act-flow-foot" aria-hidden="true">
+      <span class="act-flow-meter"><span class="act-flow-meter-fill"></span></span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     MOMENTUM READOUT (original "Our Impact" section)
+     #statEventsCount / #statProjectsCount are written by
+     activities-stats.js and counted up by the engine.
+════════════════════════════════════════ -->
+<section class="act-impact-section" id="act-impact" aria-labelledby="actImpactTitle">
+  <div class="act-bigword" aria-hidden="true"><span>Momentum</span></div>
   <div class="act-impact-inner">
 
     <div class="act-impact-header">
       <span class="act-impact-label">By the Numbers</span>
-      <h2 class="act-impact-title">Our Impact</h2>
+      <h2 class="act-impact-title" id="actImpactTitle">Our Impact</h2>
     </div>
 
     <div class="act-stats-grid">
@@ -427,17 +634,160 @@
   </div>
 </section>
 
+
 <!-- ═══════════════════════════════════════
-     SECTION 4 — CALL TO ACTION
+     04 — PROJECTS & RESEARCH
+     Projects from GET /api/projects. The line work behind them is a
+     conceptual illustration — not a diagram of any real system.
 ════════════════════════════════════════ -->
-<section class="act-cta-section">
-  <div class="act-cta-inner">
-    <span class="act-cta-label">Get Involved</span>
-    <h2 class="act-cta-heading">Join Our Journey of Innovation</h2>
-    <p class="act-cta-desc">Be part of a community that bridges engineering and medicine. Participate in cutting-edge research, attend transformative events, and collaborate with like-minded students passionate about shaping the future of healthcare technology.</p>
-    <div class="act-cta-buttons">
-      <a href="about.html#join-embs" class="act-cta-btn-primary">Become a Member</a>
-      <a href="events.html" class="act-cta-btn-secondary">Explore Events</a>
+<section class="act-research" id="act-research" aria-labelledby="actResearchTitle">
+  <div class="xp-grid act-rx-grid" aria-hidden="true"></div>
+  <svg class="act-rx-schematic" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+    <circle class="act-rx-ring" cx="400" cy="400" r="330"/>
+    <circle class="act-rx-ring act-rx-ring--dash" cx="400" cy="400" r="250"/>
+    <circle class="act-rx-ring" cx="400" cy="400" r="160"/>
+    <line class="act-rx-axis" x1="40" y1="400" x2="760" y2="400"/>
+    <line class="act-rx-axis" x1="400" y1="40" x2="400" y2="760"/>
+    <path class="xp-signal-path act-rx-trace" d="M70 470 L210 470 L240 430 L270 520 L300 330 L330 470 L470 470 C 540 470, 560 380, 620 380 S 700 450, 740 440"/>
+    <path class="act-rx-link" d="M400 240 L560 160 L680 240"/>
+    <path class="act-rx-link" d="M400 560 L250 640 L140 590"/>
+    <rect class="act-rx-chip" x="545" y="145" width="30" height="30" rx="4"/>
+    <rect class="act-rx-chip" x="235" y="625" width="30" height="30" rx="4"/>
+    <circle class="xp-signal-node" cx="680" cy="240" r="5"/>
+    <circle class="xp-signal-node xp-signal-node--purple" cx="140" cy="590" r="5"/>
+    <circle class="xp-signal-node" cx="400" cy="400" r="6"/>
+  </svg>
+
+  <div class="act-wrap">
+    <header class="act-head act-head--split">
+      <span class="act-eyebrow">03 &mdash; Projects &amp; Research</span>
+      <h2 class="act-title" id="actResearchTitle">The work behind<br>the ideas.</h2>
+      <p class="act-sub">Student innovations, biomedical engineering research, healthcare technologies and interdisciplinary projects.</p>
+    </header>
+
+    <div class="act-rx" id="actResearch" data-state="loading" aria-busy="true">
+      <div class="act-skeleton act-skeleton--feature act-skeleton--dark" aria-hidden="true"><span></span><span></span><span></span></div>
+      <p class="act-visually-hidden">Loading projects&hellip;</p>
+    </div>
+
+    <div class="act-sec-foot">
+      <a class="act-link" href="projects.html">All projects <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     05 — KNOWLEDGE (Blog & Articles)
+     Latest articles from GET /api/blogs.
+════════════════════════════════════════ -->
+<section class="act-knowledge" id="act-knowledge" aria-labelledby="actKnowledgeTitle">
+  <div class="act-wrap act-kn-layout">
+    <header class="act-head act-kn-head">
+      <span class="act-eyebrow act-eyebrow--ink">04 &mdash; Blog &amp; Articles</span>
+      <h2 class="act-title" id="actKnowledgeTitle">Written by<br>the chapter.</h2>
+      <p class="act-sub">Research summaries, biomedical trends, tutorials, event reports and student-written technical articles.</p>
+      <a class="act-link act-link--ink" href="blog.html">Visit the blog <span aria-hidden="true">&rarr;</span></a>
+    </header>
+
+    <div class="act-kn" id="actKnowledge" data-state="loading" aria-busy="true">
+      <div class="act-skeleton act-skeleton--rows" aria-hidden="true"><span></span><span></span><span></span></div>
+      <p class="act-visually-hidden">Loading articles&hellip;</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     06 — PODCAST
+     Cover from site settings, episodes from GET /api/podcasts.
+     The waveform is decorative — it does not represent audio.
+════════════════════════════════════════ -->
+<section class="act-podcast" id="act-podcast" aria-labelledby="actPodcastTitle">
+  <div class="mo-aurora act-aurora-free" aria-hidden="true"></div>
+
+  <div class="act-wrap act-pod-layout">
+    <div class="act-pod-art" aria-hidden="true">
+      <div class="act-pod-orbit"></div>
+      <div class="act-pod-orbit act-pod-orbit--inner"></div>
+      <div class="act-pod-cover" id="actPodCover">
+        <span class="act-pod-cover-fallback"><span>EMBS</span>Podcast</span>
+      </div>
+      <div class="act-pod-wave">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+    </div>
+
+    <div class="act-pod-body">
+      <header class="act-head">
+        <span class="act-eyebrow">05 &mdash; EMBS Podcast</span>
+        <h2 class="act-title" id="actPodcastTitle">Conversations<br>in biomedicine.</h2>
+        <p class="act-sub">Interviews, healthcare innovations, expert talks and biomedical engineering discussions.</p>
+      </header>
+
+      <div class="act-pod" id="actPodcast" data-state="loading" aria-busy="true">
+        <div class="act-skeleton act-skeleton--rows act-skeleton--dark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p class="act-visually-hidden">Loading episodes&hellip;</p>
+      </div>
+
+      <div class="act-sec-foot">
+        <a class="act-link" href="podcast.html">All episodes <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     07 — GALLERY / MOMENTS
+     Photographs from GET /api/gallery?type=gallery.
+════════════════════════════════════════ -->
+<section class="act-moments" id="act-moments" aria-labelledby="actMomentsTitle">
+  <div class="act-wrap">
+    <header class="act-head act-head--split">
+      <span class="act-eyebrow act-eyebrow--ink">06 &mdash; Gallery</span>
+      <h2 class="act-title" id="actMomentsTitle">Moments from<br>the chapter.</h2>
+      <p class="act-sub">Explore memorable moments from IEEE EMBS events, workshops, outreach programs and competitions.</p>
+    </header>
+
+    <div class="act-mo" id="actMoments" data-state="loading" aria-busy="true">
+      <div class="act-skeleton act-skeleton--plate" aria-hidden="true"></div>
+      <p class="act-visually-hidden">Loading photographs&hellip;</p>
+    </div>
+
+    <div class="act-sec-foot">
+      <a class="act-link act-link--ink" href="gallery.html">Open the gallery <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     08 — GET INVOLVED (original CTA section, shared closing panel)
+     The opening signal returns and gathers behind the heading.
+════════════════════════════════════════ -->
+<section class="act-cta-section xp-cta" id="act-join" aria-labelledby="actCtaTitle">
+  <div class="xp-cta-panel">
+    <div class="mo-aurora" aria-hidden="true"></div>
+    <div class="xp-grid xp-grid--cta" aria-hidden="true"></div>
+    <svg class="act-cta-flow" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+      <path class="xp-signal-path act-cta-path" d="M-40 560 C 260 560, 420 360, 720 350"/>
+      <path class="xp-signal-path xp-signal-path--faint act-cta-path" d="M-40 180 C 300 190, 440 340, 720 350"/>
+      <path class="xp-signal-path act-cta-path" d="M1480 160 C 1180 170, 1020 340, 720 350"/>
+      <path class="xp-signal-path xp-signal-path--faint act-cta-path" d="M1480 580 C 1160 570, 1000 360, 720 350"/>
+      <circle class="act-cta-core" cx="720" cy="350" r="5"/>
+    </svg>
+    <div class="act-cta-inner xp-cta-inner">
+      <span class="act-cta-label">Get Involved</span>
+      <h2 class="act-cta-heading xp-cta-title" id="actCtaTitle">Join Our Journey<br>of Innovation</h2>
+      <p class="act-cta-desc xp-cta-sub">Be part of a community that bridges engineering and medicine. Participate in cutting-edge research, attend transformative events, and collaborate with like-minded students passionate about shaping the future of healthcare technology.</p>
+      <div class="act-cta-buttons xp-cta-actions">
+        <a href="about.html#join-embs" class="act-cta-btn-primary mo-sheen xp-magnetic">Become a Member</a>
+        <a href="events.html" class="act-cta-btn-secondary mo-sheen">Explore Events</a>
+      </div>
     </div>
   </div>
 </section>
@@ -527,26 +877,13 @@
 <script src="activities.js" defer></script>
 <script src="activities-stats.js" defer></script>
 <script src="page-hero-image.js" defer></script>
-<script>
-  /* ── Activities page animation config ── */
-  window.EMBS_ANIM_CONFIG = {
-    hero: {
-      heading:   '.act-hero-heading',
-      sub:       '.act-hero-desc',
-      baseDelay: 60
-    },
-    sections: [
-      { label: '.act-explore-label', heading: '.act-explore-title' },
-      { label: '.act-impact-label',  heading: '.act-impact-title' },
-      { label: '.act-cta-label',     heading: '.act-cta-heading' }
-    ],
-    stagger: [
-      { container: '.act-cards-grid', child: '.act-card' },
-      { container: '.act-stats-grid', child: '.act-stat-card' }
-    ]
-  };
-</script>
-<script src="animations.js" defer></script>
+<script src="activities-feed.js" defer></script>
+<!-- Activities motion engine. GSAP + ScrollTrigger own every animation on
+     this page; animations.js and motion.js are intentionally not loaded. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+<script src="experience-core.js" defer></script>
+<script src="activities-experience.js" defer></script>
 
 </body>
 </html>

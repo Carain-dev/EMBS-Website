@@ -18,6 +18,21 @@
 
   if (!grid) return;
 
+  /* CMS fields are plain text: escape them before they go into HTML, and
+     only allow http(s)/mailto/tel or same-site links (never javascript:). */
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function safeUrl(u, fallback) {
+    var s = String(u == null ? '' : u).trim();
+    var probe = s.replace(/[\u0000-\u0020\u007f]/g, '');
+    if (!s) return fallback || '';
+    if (/^[a-z][a-z0-9+.-]*:/i.test(probe) && !/^(https?|mailto|tel):/i.test(probe)) return fallback || '';
+    return s;
+  }
+
   function fmtDate(d) {
     if (!d) return '';
     return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -26,30 +41,30 @@
   function buildCard(ev) {
     const eventUrl = `event.html?id=${encodeURIComponent(ev._id)}`;
     const registrationUrl = /^https?:\/\//i.test(String(ev.registrationLink || '')) ? ev.registrationLink : '';
-    const actionUrl = registrationUrl || eventUrl;
+    const actionUrl = esc(registrationUrl || eventUrl);
     const actionText = registrationUrl ? 'Register' : 'View Details';
     const shouldOpenNewTab = Boolean(registrationUrl);
 
     const div = document.createElement('div');
     div.className = 'ev-card';
     div.setAttribute('data-category', (ev.type || '').toLowerCase().replace(/\s+/g, '-'));
-    div.setAttribute('data-search', `${ev.title} ${ev.speaker} ${ev.venue} ${(ev.tags||[]).join(' ')}`.toLowerCase());
+    div.setAttribute('data-search', `${ev.title || ''} ${ev.speaker || ''} ${ev.venue || ''} ${(ev.tags||[]).join(' ')}`.toLowerCase());
     div.innerHTML = `
       <div class="ev-card-top" style="background:linear-gradient(135deg,#1a0533,#0a2a2a)">
-        ${ev.thumbnail ? `<img src="${ev.thumbnail}" alt="${ev.title}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.55;" loading="lazy" />` : ''}
-        <span class="ev-tag ev-tag--${ev.status || 'upcoming'}">${ev.status || 'Upcoming'}</span>
-        <div class="ev-card-type">${ev.type || ''}</div>
+        ${ev.thumbnail ? `<img src="${esc(ev.thumbnail)}" alt="${esc(ev.title)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.55;" loading="lazy" />` : ''}
+        <span class="ev-tag ev-tag--${esc(ev.status || 'upcoming')}">${esc(ev.status || 'Upcoming')}</span>
+        <div class="ev-card-type">${esc(ev.type)}</div>
       </div>
       <div class="ev-card-body">
         <div class="ev-meta">
           <span class="ev-date">${fmtDate(ev.date)}</span>
-          ${ev.time ? `<span class="ev-mode">${ev.time}</span>` : ''}
-          ${ev.mode ? `<span class="ev-mode">${ev.mode}</span>` : ''}
+          ${ev.time ? `<span class="ev-mode">${esc(ev.time)}</span>` : ''}
+          ${ev.mode ? `<span class="ev-mode">${esc(ev.mode)}</span>` : ''}
         </div>
-        <h3 class="ev-title"><a href="${eventUrl}">${ev.title}</a></h3>
-        <p class="ev-desc">${ev.description || ''}</p>
+        <h3 class="ev-title"><a href="${eventUrl}">${esc(ev.title)}</a></h3>
+        <p class="ev-desc">${esc(ev.description)}</p>
         <div class="ev-footer">
-          ${ev.venue ? `<span class="ev-location">${ev.venue}</span>` : ''}
+          ${ev.venue ? `<span class="ev-location">${esc(ev.venue)}</span>` : ''}
           <a href="${actionUrl}" class="act-btn act-btn--primary" ${shouldOpenNewTab ? 'target="_blank" rel="noopener noreferrer"' : ''}>${actionText}</a>
         </div>
       </div>`;

@@ -30,6 +30,23 @@
   <link rel="stylesheet" href="projects.css" />
   <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
+  <!-- Shared motion + visual language (as on Home, About, Activities).
+       motion.js must run in <head>: it only sets a class now and does
+       its DOM work on DOMContentLoaded. -->
+  <link rel="stylesheet" href="motion.css" />
+  <link rel="stylesheet" href="experience.css" />
+  <link rel="stylesheet" href="pages-experience.css" />
+  <link rel="stylesheet" href="projects-experience.css" />
+  <script src="motion.js"></script>
+  <!-- projects.js replaces the sample cards in the markup; hold them back
+       (JS only) so they never flash as real work. 4s failsafe. -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('prx-pending');
+      setTimeout(function () { d.classList.remove('prx-pending'); }, 4000);
+    })();
+  </script>
 </head>
 <body>
 <a class="skip-link" href="#projects-main">Skip to main content</a>
@@ -113,6 +130,8 @@
   <div class="announce-track-wrap">
     <div class="announce-track"></div>
   </div>
+  <!-- Page progress hairline (pages-kit.js) -->
+  <span class="xp-progress" aria-hidden="true"></span>
 </div>
 
 <!-- ═══════════════════════════════════════
@@ -123,27 +142,68 @@
 <!-- ═══════════════════════════════════════
      HERO SECTION
 ════════════════════════════════════════ -->
-<section class="proj-hero">
+<section class="proj-hero prx-hero" aria-labelledby="prxTitle">
+  <div class="xp-grid prx-hero-grid" aria-hidden="true"></div>
+  <span class="prx-ruler prx-ruler--x" aria-hidden="true"></span>
+  <span class="prx-ruler prx-ruler--y" aria-hidden="true"></span>
   <div class="proj-hero-inner">
-
     <div class="proj-hero-left">
-      <span class="proj-hero-label">Innovation Lab</span>
-      <h1 class="proj-hero-heading">Projects &amp; Research</h1>
-      <p class="proj-hero-desc">The IEEE EMBS Student Chapter fosters a culture of hands-on research and interdisciplinary innovation. Our members engineer solutions at the intersection of biomedical science and technology — spanning AI-powered diagnostics, medical device development, wearable healthcare systems, embedded biosensors, and advanced signal processing. Every project reflects our commitment to publishing impactful research and building the next generation of healthcare technology.</p>
+      <div class="prx-hero-top">
+        <span class="proj-hero-label">Innovation Lab</span>
+        <span class="pg-rule" aria-hidden="true"></span>
+        <span class="pg-eyebrow pg-eyebrow--muted">IEEE EMBS KPRIET</span>
+      </div>
+      <h1 class="proj-hero-heading" id="prxTitle">Projects <span class="prx-amp">&amp;</span><br>Research</h1>
+      <!-- Live index of the listed work (GET /api/projects) -->
+      <dl class="prx-index" id="prxIndex" aria-live="polite">
+        <div><dt>Projects</dt><dd data-prx="total">&mdash;</dd></div>
+        <div><dt>Fields</dt><dd data-prx="fields">&mdash;</dd></div>
+        <div><dt>In progress</dt><dd data-prx="ongoing">&mdash;</dd></div>
+      </dl>
+      <div class="prx-hero-go"><a class="pg-link" href="#prxWork">Enter the lab <span aria-hidden="true">&darr;</span></a></div>
     </div>
-
     <div class="proj-hero-right">
-      <!-- Edit src to change the hero image -->
-      <img src="bg-image-embs/glassdna.jpeg" alt="IEEE EMBS Biomedical Research" class="proj-hero-img" />
+      <figure class="prx-viewport">
+        <div class="prx-viewport-frame">
+          <!-- Edit src to change the hero image (page-hero-image.js applies the CMS image) -->
+          <img src="bg-image-embs/glassdna.jpeg" alt="IEEE EMBS Biomedical Research" class="proj-hero-img" />
+          <span class="prx-scan" aria-hidden="true"></span>
+        </div>
+        <span class="prx-mark prx-mark--tl" aria-hidden="true"></span>
+        <span class="prx-mark prx-mark--tr" aria-hidden="true"></span>
+        <span class="prx-mark prx-mark--bl" aria-hidden="true"></span>
+        <span class="prx-mark prx-mark--br" aria-hidden="true"></span>
+        <figcaption class="prx-fig"><b>Fig. 01</b><span>Innovation Lab</span></figcaption>
+      </figure>
     </div>
+  </div>
+</section>
 
+<!-- ═══════════════════════════════════════
+     RESEARCH STATEMENT (the chapter's own description)
+════════════════════════════════════════ -->
+<section class="prx-statement" aria-labelledby="prxStatementTitle">
+  <div class="pg-wrap prx-statement-grid">
+    <div class="prx-statement-side">
+      <span class="pg-eyebrow">Research statement</span>
+      <h2 class="pg-visually-hidden" id="prxStatementTitle">Research statement</h2>
+      <p class="prx-domains-k">Areas named in the statement</p>
+      <ol class="prx-domains">
+        <li><span>D&mdash;01</span>AI-powered diagnostics</li>
+        <li><span>D&mdash;02</span>Medical device development</li>
+        <li><span>D&mdash;03</span>Wearable healthcare systems</li>
+        <li><span>D&mdash;04</span>Embedded biosensors</li>
+        <li><span>D&mdash;05</span>Advanced signal processing</li>
+      </ol>
+    </div>
+    <p class="proj-hero-desc">The IEEE EMBS Student Chapter fosters a culture of hands-on research and interdisciplinary innovation. Our members engineer solutions at the intersection of biomedical science and technology — spanning AI-powered diagnostics, medical device development, wearable healthcare systems, embedded biosensors, and advanced signal processing. Every project reflects our commitment to publishing impactful research and building the next generation of healthcare technology.</p>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════
      CATEGORY FILTERS
 ════════════════════════════════════════ -->
-<section class="proj-filters-section">
+<section class="proj-filters-section prx-channels" aria-label="Research categories">
   <div class="proj-filters-inner">
     <span class="proj-filters-label">Research Categories</span>
     <div class="proj-filters" role="group" aria-label="Filter projects by category">
@@ -164,12 +224,14 @@
 <!-- ═══════════════════════════════════════
      PROJECTS GRID
 ════════════════════════════════════════ -->
-<section class="proj-grid-section">
+<section class="proj-grid-section prx-work" id="prxWork" aria-labelledby="prxWorkTitle">
   <div class="proj-grid-inner">
-
     <div class="proj-grid-header">
-      <span class="proj-grid-label">Innovation Lab</span>
-      <h2 class="proj-grid-title">Latest Research Projects</h2>
+      <div>
+        <span class="proj-grid-label">Innovation Lab</span>
+        <h2 class="proj-grid-title" id="prxWorkTitle">Latest Research<br>Projects</h2>
+      </div>
+      <p class="prx-work-note">Published by the chapter's project teams. The first is set out as a case study; the rest follow as spec sheets.</p>
     </div>
 
     <div class="proj-grid" id="projectsGrid">
@@ -365,6 +427,108 @@
   </div>
 </section>
 
+<!-- ═══════════════════════════════════════
+     THE SIGNAL — conceptual illustration, not a real system
+════════════════════════════════════════ -->
+<section class="prx-signal" aria-labelledby="prxSignalTitle">
+  <div class="pg-wrap">
+    <div class="pg-head">
+      <span class="pg-eyebrow">Biomedical &times; Engineering</span>
+      <h2 class="pg-title" id="prxSignalTitle">From the body<br>to a decision.</h2>
+      <p class="pg-sub">The fields in the statement meet along one path: a signal that starts in the body, is captured by instruments and becomes information through computation.</p>
+    </div>
+    <div class="prx-system" id="prxSystem">
+      <svg class="prx-wave" viewBox="0 0 1200 260" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <line class="prx-wave-axis" x1="0" y1="130" x2="1200" y2="130"/>
+        <line class="prx-wave-div" x1="400" y1="10" x2="400" y2="250"/>
+        <line class="prx-wave-div" x1="800" y1="10" x2="800" y2="250"/>
+        <path class="prx-wave-path prx-wave-path--bio" d="M0 130 C 30 70, 62 196, 104 128 S 168 44, 210 132 S 282 196, 322 118 S 384 104, 400 130"/>
+        <path class="prx-wave-path prx-wave-path--inst" d="M400 130 H430 V88 H460 V172 H490 V70 H520 V152 H550 V106 H580 V162 H610 V94 H640 V142 H670 V118 H700 V130 H800"/>
+        <path class="prx-wave-path prx-wave-path--comp" d="M800 130 H862 M1122 130 H1200"/>
+        <line class="prx-wave-edge" x1="862" y1="130" x2="930" y2="78"/>
+        <line class="prx-wave-edge" x1="862" y1="130" x2="930" y2="182"/>
+        <line class="prx-wave-edge" x1="930" y1="78" x2="1000" y2="112"/>
+        <line class="prx-wave-edge" x1="930" y1="182" x2="1000" y2="112"/>
+        <line class="prx-wave-edge" x1="1000" y1="112" x2="1060" y2="62"/>
+        <line class="prx-wave-edge" x1="1000" y1="112" x2="1060" y2="168"/>
+        <line class="prx-wave-edge" x1="1060" y1="62" x2="1122" y2="130"/>
+        <line class="prx-wave-edge" x1="1060" y1="168" x2="1122" y2="130"/>
+        <circle class="prx-wave-node" style="--i:0" cx="862" cy="130" r="6"/>
+        <circle class="prx-wave-node" style="--i:1" cx="930" cy="78" r="6"/>
+        <circle class="prx-wave-node" style="--i:2" cx="930" cy="182" r="6"/>
+        <circle class="prx-wave-node" style="--i:3" cx="1000" cy="112" r="7"/>
+        <circle class="prx-wave-node" style="--i:4" cx="1060" cy="62" r="6"/>
+        <circle class="prx-wave-node" style="--i:5" cx="1060" cy="168" r="6"/>
+        <circle class="prx-wave-node" style="--i:6" cx="1122" cy="130" r="8"/>
+      </svg>
+      <ol class="prx-stages">
+        <li>
+          <span class="prx-stage-n">01</span>
+          <span class="prx-stage-name">Biology</span>
+          <p class="prx-stage-txt">The body produces the signals that biomedical engineering works with.</p>
+          <div class="prx-stage-tags"><span>Embedded biosensors</span></div>
+        </li>
+        <li>
+          <span class="prx-stage-n">02</span>
+          <span class="prx-stage-name">Instrumentation</span>
+          <p class="prx-stage-txt">Sensors and devices capture those signals and turn them into data.</p>
+          <div class="prx-stage-tags"><span>Medical device development</span><span>Wearable healthcare systems</span></div>
+        </li>
+        <li>
+          <span class="prx-stage-n">03</span>
+          <span class="prx-stage-name">Computation</span>
+          <p class="prx-stage-txt">Processing and models turn the data into information a person can act on.</p>
+          <div class="prx-stage-tags"><span>Advanced signal processing</span><span>AI-powered diagnostics</span></div>
+        </li>
+      </ol>
+      <p class="prx-concept">Conceptual illustration &mdash; not a diagram of a specific project.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     PIPELINE — the listed projects by recorded status
+════════════════════════════════════════ -->
+<section class="prx-pipeline" aria-labelledby="prxPipeTitle">
+  <div class="pg-wrap">
+    <div class="pg-head">
+      <span class="pg-eyebrow pg-eyebrow--ink">Status</span>
+      <h2 class="pg-title" id="prxPipeTitle">Where the<br>work stands.</h2>
+      <p class="pg-sub">Each listed project, counted by the status its team has recorded.</p>
+    </div>
+    <ol class="prx-flow" id="prxFlow" aria-live="polite">
+      <li data-stage="ongoing"><span class="prx-flow-n">&mdash;</span><span class="prx-flow-k">Ongoing</span></li>
+      <li data-stage="completed"><span class="prx-flow-n">&mdash;</span><span class="prx-flow-k">Completed</span></li>
+      <li data-stage="published"><span class="prx-flow-n">&mdash;</span><span class="prx-flow-k">Published</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CLOSING
+════════════════════════════════════════ -->
+<section class="xp-cta pg-cta prx-cta" aria-labelledby="prxCtaTitle">
+  <div class="xp-cta-panel">
+    <div class="mo-aurora" aria-hidden="true"></div>
+    <div class="xp-grid xp-grid--cta" aria-hidden="true"></div>
+    <div class="xp-cta-inner">
+      <span class="pg-eyebrow">Build with us</span>
+      <h2 class="xp-cta-title" id="prxCtaTitle">Learning biomedical<br>engineering by building it.</h2>
+      <p class="xp-cta-sub">Have an idea for a project, or want to join a team? Get in touch with the chapter.</p>
+      <div class="xp-cta-actions">
+        <a href="contact.html" class="pg-btn pg-btn--primary mo-sheen xp-magnetic">Discuss a project idea</a>
+        <a href="about.html#join-embs" class="pg-btn mo-sheen">Become a Member</a>
+      </div>
+      <nav class="pg-onward" aria-label="Continue exploring">
+        <a href="events.html"><small>Energy</small>Events <i aria-hidden="true">&rarr;</i></a>
+        <a href="blog.html"><small>Knowledge</small>Blog &amp; Articles <i aria-hidden="true">&rarr;</i></a>
+        <a href="podcast.html"><small>Voice</small>EMBS Podcast <i aria-hidden="true">&rarr;</i></a>
+        <a href="gallery.html"><small>Memory</small>Gallery <i aria-hidden="true">&rarr;</i></a>
+      </nav>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <!-- ═══════════════════════════════════════
@@ -449,20 +613,30 @@
 <script src="newsletter.js" defer></script>
 <script type="module" src="projects.js"></script>
 <script src="page-hero-image.js" defer></script>
+<script src="pages-kit.js" defer></script>
+<script src="projects-experience.js" defer></script>
 <script>
+  /* ── Projects page animation config (animations.js owns headings;
+        motion.js reveals the cards projects.js renders) ── */
   window.EMBS_ANIM_CONFIG = {
     hero: {
       heading:   '.proj-hero-heading',
-      sub:       '.proj-hero-desc',
+      sub:       '.prx-index',
       baseDelay: 60
     },
     sections: [
-      { label: '.proj-grid-label', heading: '.proj-grid-title' }
+      { label: '.prx-statement-side .pg-eyebrow', heading: '.prx-statement .proj-hero-desc' },
+      { label: '.proj-grid-label', heading: '.proj-grid-title', desc: '.prx-work-note' },
+      { label: '.prx-signal .pg-eyebrow',   heading: '#prxSignalTitle', desc: '.prx-signal .pg-sub' },
+      { label: '.prx-pipeline .pg-eyebrow', heading: '#prxPipeTitle',   desc: '.prx-pipeline .pg-sub' },
+      { label: '.prx-cta .pg-eyebrow',      heading: '#prxCtaTitle',    desc: '.prx-cta .xp-cta-sub' }
     ],
     stagger: [
-      { container: '.proj-grid', child: '.proj-card' }
+      { container: '.prx-domains', child: 'li' },
+      { container: '.prx-stages', child: 'li' },
+      { container: '.prx-flow', child: 'li' }
     ],
-    reveal: ['.proj-hero-label']
+    reveal: ['.proj-hero-label', '.prx-hero-go', '.prx-viewport', '.proj-filters-inner', '.prx-cta .xp-cta-actions', '.prx-cta .pg-onward']
   };
 </script>
 <script src="animations.js" defer></script>

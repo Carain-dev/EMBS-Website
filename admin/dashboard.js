@@ -1,5 +1,13 @@
 'use strict';
 
+/* CMS values are plain text typed by editors (and subscriber emails come from
+   the public form): escape them before they go into innerHTML, and only allow
+   http(s) links, so stored markup cannot run script in an admin's session. */
+function admEsc(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function admHref(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? admEsc(String(u).trim()) : ''; }
+
 /* ── Auth Guard ── */
 if (localStorage.getItem('embs_admin_auth') !== 'true') {
   window.location.href = 'index.html';
@@ -143,9 +151,9 @@ function renderActivity(activities) {
 
   list.innerHTML = activities.map(item => `
     <li class="activity-item">
-      <div class="activity-dot activity-dot--${item.color || 'teal'}"></div>
+      <div class="activity-dot activity-dot--${admEsc(item.color || 'teal')}"></div>
       <div class="activity-body">
-        <span class="activity-text">${item.text}</span>
+        <span class="activity-text">${admEsc(item.text)}</span>
         <span class="activity-time">${relativeTime(item.ts)}</span>
       </div>
     </li>`).join('');

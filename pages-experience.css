@@ -1,0 +1,297 @@
+/* ================================================================
+   pages-experience.css — IEEE EMBS KPRIET
+   Shared language of the five content pages (Events, Projects, Blog,
+   Podcast, Gallery). Builds on experience.css + motion.css, which
+   Home, About and Activities already use, so every page speaks the
+   same visual language. Each page adds its own composition in its
+   own file — this one holds only what they have in common.
+
+   Motion ownership on these pages
+     animations.js  hero + section headings (EMBS_ANIM_CONFIG)
+     motion.js      .mo-reveal content, parallax, glow, offscreen pause
+     pages-kit.js   progress hairline + magnetic CTAs only
+   ================================================================ */
+
+:root {
+  --pg-ink:        #0d1030;
+  --pg-ink-soft:   #4f5675;
+  --pg-ink-faint:  rgba(13, 16, 48, 0.12);
+  --pg-paper:      #f0f2f8;
+  --pg-night:      #0a0e1a;
+  --pg-text:       #e8eaf6;
+  --pg-text-soft:  rgba(200, 210, 230, 0.64);
+  --pg-line:       rgba(170, 185, 230, 0.14);
+  --pg-teal:       #00A99D;
+  --pg-teal-hi:    #2fd3c6;
+  --pg-purple:     #6B2D8B;
+  --pg-gutter:     2rem;
+  --pg-nav:        112px;
+  --pg-ease:       cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* navbar.css sets html, body { overflow-x: hidden }, which turns <body>
+   into a non-scrolling scroll container and defeats position: sticky.
+   clip keeps the same horizontal guard without that side effect. */
+@supports (overflow: clip) {
+  html, body { overflow-x: clip; }
+}
+
+@media (max-width: 1023px) { :root { --pg-gutter: 1.75rem; } }
+@media (max-width: 767px)  { :root { --pg-gutter: 1rem; --pg-nav: 104px; } }
+
+.pg-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--pg-gutter);
+}
+
+.pg-eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pg-teal);
+}
+
+.pg-eyebrow--muted { color: rgba(200, 210, 230, 0.55); }
+.pg-eyebrow--ink   { color: var(--pg-purple); }
+
+.pg-rule {
+  display: inline-block;
+  width: 56px;
+  height: 1px;
+  vertical-align: middle;
+  background: linear-gradient(90deg, var(--pg-teal), rgba(0, 169, 157, 0));
+}
+
+.pg-visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Text link: underline sweep + arrow travel */
+.pg-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--pg-teal-hi);
+  text-decoration: none;
+  padding: 0.35rem 0;
+  background-image: linear-gradient(90deg, var(--pg-teal), var(--pg-purple));
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: color 0.3s ease, background-size 0.5s var(--pg-ease);
+}
+
+.pg-link span { display: inline-block; transition: transform 0.4s var(--pg-ease); }
+.pg-link:hover, .pg-link:focus-visible { color: #eef0fa; background-size: 100% 1px; }
+.pg-link:hover span, .pg-link:focus-visible span { transform: translateX(4px); }
+.pg-link--ink { color: var(--pg-purple); }
+.pg-link--ink:hover, .pg-link--ink:focus-visible { color: var(--pg-ink); }
+
+/* Pill buttons */
+.pg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 46px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--pg-text);
+  text-decoration: none;
+  border: 1px solid rgba(170, 185, 230, 0.3);
+  background: rgba(255, 255, 255, 0.02);
+  transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+.pg-btn svg { transition: transform 0.4s var(--pg-ease); }
+.pg-btn:hover, .pg-btn:focus-visible { border-color: rgba(0, 169, 157, 0.6); background-color: rgba(0, 169, 157, 0.08); }
+.pg-btn:hover svg { transform: translateX(3px); }
+
+.pg-btn--primary {
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(90deg, var(--pg-purple), var(--pg-teal));
+  box-shadow: 0 10px 30px rgba(107, 45, 139, 0.3);
+}
+
+.pg-btn--primary:hover, .pg-btn--primary:focus-visible {
+  border-color: transparent;
+  background: linear-gradient(90deg, #7a3a9c, #0bb8ab);
+  box-shadow: 0 14px 38px rgba(0, 169, 157, 0.28);
+}
+
+.pg-btn--ink { color: var(--pg-ink); border-color: rgba(13, 16, 48, 0.22); }
+.pg-btn--ink:hover, .pg-btn--ink:focus-visible { color: #fff; background: var(--pg-ink); border-color: var(--pg-ink); }
+
+/* Magnetic CTAs: pages-kit.js writes `translate`; the return is a
+   spring-like overshoot curve */
+html.kit-mag .xp-magnetic {
+  transition: translate 0.9s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease,
+              background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+html.kit-mag .xp-magnetic.is-pulled { transition-duration: 0.25s, 0.3s, 0.3s, 0.3s, 0.3s; }
+
+/* Live indicator — only ever used for genuinely upcoming items */
+.pg-live {
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pg-teal);
+  flex: 0 0 auto;
+}
+
+.pg-live::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 169, 157, 0.7);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pg-live::after { animation: pg-ping 2.4s var(--pg-ease) infinite; }
+}
+
+@keyframes pg-ping {
+  0%        { transform: scale(0.5); opacity: 0.9; }
+  80%, 100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Honest empty / error notes */
+.pg-note {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.4rem;
+  padding: 1.5rem 1.7rem;
+  border: 1px dashed rgba(170, 185, 230, 0.26);
+  border-radius: 18px;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--pg-text-soft);
+}
+
+.pg-note--ink { border-color: rgba(13, 16, 48, 0.2); color: var(--pg-ink-soft); }
+
+/* The CMS scripts' own loading / empty / error text (<p class="embs-empty">) */
+.pg-cms-note .embs-empty,
+.pg-cms-note > .embs-empty {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: inherit;
+}
+
+/* Section heads shared shape: eyebrow over title + standfirst */
+.pg-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 1.1rem 4rem;
+  align-items: end;
+  margin-bottom: 3.8rem;
+}
+
+.pg-head > .pg-eyebrow { grid-column: 1 / -1; }
+
+.pg-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 4.6vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: -0.026em;
+}
+
+.pg-sub {
+  margin: 0;
+  max-width: 440px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+@media (max-width: 767px) {
+  .pg-head { grid-template-columns: minmax(0, 1fr); margin-bottom: 2.6rem; }
+  .pg-title { font-size: clamp(2rem, 9vw, 2.7rem); }
+}
+
+/* "Continue the journey" cross-page links (shared closing strip) */
+.pg-onward {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--pg-line);
+  margin-top: 4.5rem;
+}
+
+.pg-onward a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.4rem 1.2rem 0.4rem 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--pg-text);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.pg-onward a small {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pg-teal);
+}
+
+.pg-onward a i {
+  font-style: normal;
+  display: inline-block;
+  transition: transform 0.4s var(--pg-ease);
+}
+
+.pg-onward a:hover, .pg-onward a:focus-visible { color: #fff; }
+.pg-onward a:hover i, .pg-onward a:focus-visible i { transform: translateX(5px); }
+
+@media (max-width: 767px) {
+  .pg-onward { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 3rem; }
+}
+
+/* The closing panel (experience.css .xp-cta) as used on these pages */
+.pg-cta { padding-top: 0; }               /* the panel meets the section above */
+.pg-cta .xp-cta-panel { padding-top: 8.5rem; padding-bottom: 7.5rem; }
+.pg-cta .xp-cta-title { color: #eef0fa; }
+
+@media (max-width: 767px) {
+  .pg-cta .xp-cta-panel { padding: 5.5rem 1.25rem 5rem; }
+  .pg-cta .xp-cta-actions { flex-direction: column; align-items: stretch; }
+}
+
+/* Progress hairline lives in the announcement bar (experience.css) */
+@media (prefers-reduced-motion: reduce) {
+  .pg-link, .pg-link span, .pg-btn, .pg-btn svg, .pg-onward a i { transition: none; }
+}

@@ -1,4 +1,12 @@
 if (localStorage.getItem('embs_admin_auth') !== 'true') window.location.href = 'index.html';
+
+/* CMS values are plain text typed by editors (and subscriber emails come from
+   the public form): escape them before they go into innerHTML, and only allow
+   http(s) links, so stored markup cannot run script in an admin's session. */
+function admEsc(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function admHref(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? admEsc(String(u).trim()) : ''; }
 'use strict';
 
 const API = window.EMBS_API_BASE;
@@ -64,15 +72,15 @@ function renderTable(filter = '') {
     const date   = b.publishedAt ? new Date(b.publishedAt).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : '—';
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td class="td-title" title="${b.title}">${b.title}</td>
-      <td>${b.tags ? b.tags.join(', ') : ''}</td>
+      <td class="td-title" title="${admEsc(b.title)}">${admEsc(b.title)}</td>
+      <td>${b.tags ? admEsc(b.tags.join(', ')) : ''}</td>
       <td><span class="status-badge status-badge--${status}">${status === 'published' ? 'Published' : 'Draft'}</span></td>
       <td>${date}</td>
       <td><div class="td-actions">
-        <button class="action-btn action-btn--edit" data-id="${b._id}" title="Edit">
+        <button class="action-btn action-btn--edit" data-id="${admEsc(b._id)}" title="Edit">
           <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <button class="action-btn action-btn--delete" data-id="${b._id}" title="Delete">
+        <button class="action-btn action-btn--delete" data-id="${admEsc(b._id)}" title="Delete">
           <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div></td>`;

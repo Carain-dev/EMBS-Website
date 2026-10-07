@@ -1,4 +1,12 @@
 if (localStorage.getItem('embs_admin_auth') !== 'true') window.location.href = 'index.html';
+
+/* CMS values are plain text typed by editors (and subscriber emails come from
+   the public form): escape them before they go into innerHTML, and only allow
+   http(s) links, so stored markup cannot run script in an admin's session. */
+function admEsc(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function admHref(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? admEsc(String(u).trim()) : ''; }
 'use strict';
 
 const API = window.EMBS_API_BASE;
@@ -64,15 +72,15 @@ function renderTable() {
       ? `<span class="td-expiry ${expired ? 'td-expiry--past' : ''}">${fmtDate(a.expiresAt)}</span>`
       : `<span class="td-expiry td-expiry--none">No expiry</span>`;
     const categoryHTML = a.category
-      ? `<span class="td-category">${a.category}</span>`
+      ? `<span class="td-category">${admEsc(a.category)}</span>`
       : `<span class="td-category td-category--none">General</span>`;
     const fileHTML = a.attachmentUrl
-      ? `<a class="td-file-link" href="${a.attachmentUrl}" target="_blank" rel="noopener">View</a>`
+      ? `<a class="td-file-link" href="${admHref(a.attachmentUrl)}" target="_blank" rel="noopener">View</a>`
       : `<span class="td-file-none">—</span>`;
-    return `<tr data-id="${a._id}">
+    return `<tr data-id="${admEsc(a._id)}">
       <td>
-        <div class="td-ann-title" title="${a.title}">${a.title}</div>
-        <div class="td-ann-body">${(a.body||'').slice(0,80)}${(a.body||'').length > 80 ? '...' : ''}</div>
+        <div class="td-ann-title" title="${admEsc(a.title)}">${admEsc(a.title)}</div>
+        <div class="td-ann-body">${admEsc((a.body||'').slice(0,80))}${(a.body||'').length > 80 ? '...' : ''}</div>
       </td>
       <td><span class="priority-badge priority-badge--${a.pinned ? 'urgent' : 'normal'}">${a.pinned ? 'Pinned' : 'Normal'}</span></td>
       <td>${categoryHTML}</td>
@@ -80,10 +88,10 @@ function renderTable() {
       <td>${fileHTML}</td>
       <td><span class="status-badge status-badge--${expired ? 'draft' : 'published'}">${expired ? 'Expired' : 'Published'}</span></td>
       <td><div class="action-btns">
-        <button class="action-btn action-btn--edit" onclick="editAnn('${a._id}')">
+        <button class="action-btn action-btn--edit" onclick="editAnn('${admEsc(a._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Edit
         </button>
-        <button class="action-btn action-btn--delete" onclick="openDeleteModal('${a._id}')">
+        <button class="action-btn action-btn--delete" onclick="openDeleteModal('${admEsc(a._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Delete
         </button>
       </div></td>

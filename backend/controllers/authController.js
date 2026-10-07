@@ -1,6 +1,7 @@
 const asyncHandler   = require('express-async-handler');
 const User           = require('../models/User');
 const sendTokenCookie = require('../config/jwt');
+const generateToken  = require('../utils/generateToken');
 const { sendResponse, sendError } = require('../utils/sendResponse');
 
 /* ── Register ────────────────────────────────── */
@@ -28,7 +29,10 @@ exports.register = asyncHandler(async (req, res) => {
   if (exists) return sendError(res, 400, 'Email already registered');
 
   const user  = await User.create({ name, email, password, role: role || 'viewer' });
-  const token = sendTokenCookie(res, user);
+  /* An admin creates this account, so do not set the session cookie here:
+     that replaced the admin's own cookie with the new user's, and `protect`
+     reads the cookie first, so the admin was silently logged in as them. */
+  const token = generateToken({ id: user._id, role: user.role });
 
   sendResponse(res, 201, {
     token,
@@ -89,8 +93,14 @@ exports.getMe = (req, res) => {
 };
 
 /* ── Update Profile ──────────────────────────── */
+/* The built-in admin login (id 'admin') has no User document to update. */
+const isBuiltInAdmin = (req) => req.user && req.user._id === 'admin';
+
 exports.updateMe = asyncHandler(async (req, res) => {
   const { name, email } = req.body;
+
+  if (isBuiltInAdmin(req))
+    return sendError(res, 400, 'The built-in admin account has no profile to update');
 
   if (req.body.password)
     return sendError(res, 400, 'Use /update-password to change your password');
@@ -112,6 +122,12 @@ exports.updatePassword = asyncHandler(async (req, res) => {
 
   if (!currentPassword || !newPassword)
     return sendError(res, 400, 'Current password and new password are required');
+
+  if (typeof currentPassword !== 'string' || typeof newPassword !== 'string')
+    return sendError(res, 400, 'Passwords must be strings');
+
+  if (isBuiltInAdmin(req))
+    return sendError(res, 400, 'The built-in admin password is set on the server (ADMIN_PASSWORD)');
 
   if (newPassword.length < 6)
     return sendError(res, 400, 'New password must be at least 6 characters');

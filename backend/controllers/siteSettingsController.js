@@ -60,7 +60,9 @@ const normalizeSettings = (settings = {}) => ({
 
 exports.getPublicSettings = asyncHandler(async (req, res) => {
   const settings = await SiteSettings.findOne().lean();
-  sendResponse(res, 200, normalizeSettings(settings || {}));
+  /* updatedBy is an internal admin user id; the public site never uses it. */
+  const { updatedBy, ...publicSettings } = settings || {};
+  sendResponse(res, 200, normalizeSettings(publicSettings));
 });
 
 exports.getSettings = asyncHandler(async (req, res) => {

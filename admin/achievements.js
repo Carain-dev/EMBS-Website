@@ -1,4 +1,12 @@
 if (localStorage.getItem('embs_admin_auth') !== 'true') window.location.href = 'index.html';
+
+/* CMS values are plain text typed by editors (and subscriber emails come from
+   the public form): escape them before they go into innerHTML, and only allow
+   http(s) links, so stored markup cannot run script in an admin's session. */
+function admEsc(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function admHref(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? admEsc(String(u).trim()) : ''; }
 'use strict';
 
 const API = window.EMBS_API_BASE;
@@ -52,17 +60,17 @@ function renderSummary() {
   grid.innerHTML = nonFeatured.map(a => `
     <div class="pending-card">
       <div class="pending-card-header">
-        <span class="pending-tag cat--${catClass(a.category)}">${a.category || 'Other'}</span>
-        <span class="pending-card-date">${a.date || ''}</span>
+        <span class="pending-tag cat--${catClass(a.category)}">${admEsc(a.category || 'Other')}</span>
+        <span class="pending-card-date">${admEsc(a.date || '')}</span>
       </div>
-      <div class="pending-card-title">${a.title}</div>
-      <div class="pending-card-desc">${a.description || ''}</div>
+      <div class="pending-card-title">${admEsc(a.title)}</div>
+      <div class="pending-card-desc">${admEsc(a.description || '')}</div>
       <div class="pending-card-actions">
-        <button class="action-btn action-btn--edit" onclick="featureAch('${a._id}')">
+        <button class="action-btn action-btn--edit" onclick="featureAch('${admEsc(a._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><polygon points="12,3 15,9 21,9 16.5,13.5 18.5,20 12,16 5.5,20 7.5,13.5 3,9 9,9" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
           Feature on Homepage
         </button>
-        <button class="action-btn action-btn--edit" onclick="editAch('${a._id}')">
+        <button class="action-btn action-btn--edit" onclick="editAch('${admEsc(a._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
           Edit
         </button>
@@ -111,15 +119,15 @@ function renderTable() {
   empty.style.display = 'none';
 
   tbody.innerHTML = filtered.map(a => `
-    <tr data-id="${a._id}">
-      <td><div class="td-title">${a.title}${a.featured ? ' <span style="font-size:0.68rem;background:rgba(107,45,139,0.22);color:#c084fc;border-radius:4px;padding:2px 6px;margin-left:4px;white-space:nowrap;">⭐ Homepage</span>' : ''}</div><div class="td-sub">${a.description || ''}</div></td>
-      <td>${a.date || ''}</td>
-      <td><span class="pending-tag cat--${catClass(a.category)}">${a.category || ''}</span></td>
+    <tr data-id="${admEsc(a._id)}">
+      <td><div class="td-title">${admEsc(a.title)}${a.featured ? ' <span style="font-size:0.68rem;background:rgba(107,45,139,0.22);color:#c084fc;border-radius:4px;padding:2px 6px;margin-left:4px;white-space:nowrap;">⭐ Homepage</span>' : ''}</div><div class="td-sub">${admEsc(a.description || '')}</div></td>
+      <td>${admEsc(a.date || '')}</td>
+      <td><span class="pending-tag cat--${catClass(a.category)}">${admEsc(a.category || '')}</span></td>
       <td><div class="action-btns">
-        <button class="action-btn action-btn--edit" onclick="editAch('${a._id}')">
+        <button class="action-btn action-btn--edit" onclick="editAch('${admEsc(a._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Edit
         </button>
-        <button class="action-btn action-btn--delete" onclick="openDeleteModal('${a._id}')">
+        <button class="action-btn action-btn--delete" onclick="openDeleteModal('${admEsc(a._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Delete
         </button>
       </div></td>

@@ -30,6 +30,14 @@
   <link rel="stylesheet" href="events.css" />
   <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
+  <!-- Shared motion + visual language (as on Home, About, Activities).
+       motion.js must run in <head>: it only sets a class now and does
+       its DOM work on DOMContentLoaded. -->
+  <link rel="stylesheet" href="motion.css" />
+  <link rel="stylesheet" href="experience.css" />
+  <link rel="stylesheet" href="pages-experience.css" />
+  <link rel="stylesheet" href="events-experience.css" />
+  <script src="motion.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -114,6 +122,8 @@
   <div class="announce-track-wrap">
     <div class="announce-track"></div>
   </div>
+  <!-- Page progress hairline (pages-kit.js) -->
+  <span class="xp-progress" aria-hidden="true"></span>
 </div>
 
 
@@ -123,36 +133,103 @@
 ════════════════════════════════════════ -->
 <main id="main-content" tabindex="-1">
 
-<section class="events-hero">
-  <div class="events-hero-inner">
-    <span class="events-page-label">All Events</span>
-    <h1 class="events-page-title">Events &amp; Programs</h1>
-    <p class="events-page-sub">Explore workshops, seminars, hackathons, and more from the IEEE EMBS Student Chapter.</p>
+<section class="events-hero evx-hero" aria-labelledby="evxTitle">
+  <div class="mo-aurora" aria-hidden="true"></div>
+  <div class="xp-grid evx-hero-grid" aria-hidden="true"></div>
+  <!-- The signal bus: decorative lanes, not data -->
+  <svg class="evx-bus" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <path class="evx-lane" d="M-20 520 C 300 520, 420 470, 720 470 S 1180 540, 1460 500"/>
+    <path class="evx-lane" d="M-20 580 C 320 590, 460 540, 760 540 S 1160 610, 1460 570"/>
+    <path class="evx-lane" d="M-20 640 C 280 650, 480 600, 780 610 S 1200 660, 1460 640"/>
+    <path class="evx-pulse-run evx-pulse-run--t" d="M-20 520 C 300 520, 420 470, 720 470 S 1180 540, 1460 500"/>
+    <path class="evx-pulse-run evx-pulse-run--p" d="M-20 580 C 320 590, 460 540, 760 540 S 1160 610, 1460 570"/>
+    <path class="evx-pulse-run evx-pulse-run--t" d="M-20 640 C 280 650, 480 600, 780 610 S 1200 660, 1460 640"/>
+    <path class="evx-pulse-run evx-pulse-run--p" d="M-20 520 C 300 520, 420 470, 720 470 S 1180 540, 1460 500"/>
+    <path class="evx-pulse-run evx-pulse-run--t" d="M-20 580 C 320 590, 460 540, 760 540 S 1160 610, 1460 570"/>
+  </svg>
 
-    <!-- Search Bar -->
-    <div class="events-search-wrap">
-      <span class="events-search-icon" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-      </span>
-      <input
-        type="search"
-        id="eventsSearch"
-        class="events-search-input"
-        placeholder="Search events..."
-        aria-label="Search events"
-        autocomplete="off"
-      />
+  <div class="events-hero-inner">
+    <div class="evx-hero-top">
+      <span class="events-page-label">All Events</span>
+      <span class="pg-rule" aria-hidden="true"></span>
+      <span class="pg-eyebrow pg-eyebrow--muted">IEEE EMBS KPRIET</span>
+    </div>
+    <h1 class="events-page-title" id="evxTitle">Events <span class="evx-amp">&amp;</span><br>Programs</h1>
+
+    <div class="evx-hero-row">
+      <p class="events-page-sub">Explore workshops, seminars, hackathons, and more from the IEEE EMBS Student Chapter.</p>
+      <!-- Live counts from GET /api/events (events-experience.js) -->
+      <dl class="evx-pulse" id="evxPulse" aria-live="polite">
+        <div><dt><span class="pg-live" aria-hidden="true"></span>Upcoming</dt><dd data-evx="upcoming">&mdash;</dd></div>
+        <div><dt>On record</dt><dd data-evx="total">&mdash;</dd></div>
+        <div><dt>Most recent</dt><dd data-evx="latest">&mdash;</dd></div>
+      </dl>
     </div>
 
-    <!-- Filter Chips -->
-    <div class="events-filters" role="group" aria-label="Filter events by category">
-      <button class="filter-chip active" data-filter="all">All</button>
-      <button class="filter-chip" data-filter="workshop">Workshops</button>
-      <button class="filter-chip" data-filter="seminar">Seminars</button>
-      <button class="filter-chip" data-filter="hackathon">Hackathons</button>
-      <button class="filter-chip" data-filter="guest-lecture">Guest Lectures</button>
-      <button class="filter-chip" data-filter="competition">Competitions</button>
-      <button class="filter-chip" data-filter="webinar">Webinars</button>
+    <div class="evx-console">
+      <div class="evx-console-inner">
+        <!-- Search Bar -->
+        <div class="events-search-wrap">
+          <span class="events-search-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+          <input
+            type="search"
+            id="eventsSearch"
+            class="events-search-input"
+            placeholder="Search events..."
+            aria-label="Search events"
+            autocomplete="off"
+          />
+        </div>
+
+        <!-- Filter Chips -->
+        <div class="events-filters" role="group" aria-label="Filter events by category">
+          <button class="filter-chip active" data-filter="all">All</button>
+          <button class="filter-chip" data-filter="workshop">Workshops</button>
+          <button class="filter-chip" data-filter="seminar">Seminars</button>
+          <button class="filter-chip" data-filter="hackathon">Hackathons</button>
+          <button class="filter-chip" data-filter="guest-lecture">Guest Lectures</button>
+          <button class="filter-chip" data-filter="competition">Competitions</button>
+          <button class="filter-chip" data-filter="webinar">Webinars</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FEATURED — the next event, set as a ticket
+     Rendered from GET /api/events by events-experience.js
+════════════════════════════════════════ -->
+<section class="evx-feature" aria-labelledby="evxFeatureTitle">
+  <div class="pg-wrap">
+    <div class="evx-feature-head">
+      <span class="pg-eyebrow" id="evxFeatureKicker">On the calendar</span>
+      <h2 id="evxFeatureTitle">The next thing happening</h2>
+    </div>
+    <div class="evx-feat" id="evxFeature" data-state="loading" aria-busy="true">
+      <p class="pg-visually-hidden">Loading the featured event&hellip;</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     RHYTHM — events per month, from the same data
+════════════════════════════════════════ -->
+<section class="evx-rhythm" aria-labelledby="evxRhythmTitle">
+  <div class="pg-wrap evx-rhythm-grid">
+    <div class="evx-rhythm-head">
+      <span class="pg-eyebrow pg-eyebrow--ink">The pulse</span>
+      <h2 class="pg-title" id="evxRhythmTitle">A year of<br>activity.</h2>
+      <p class="pg-sub">Every event on record, placed in the month it happened.</p>
+    </div>
+    <div>
+      <ol class="evx-chart" id="evxChart" aria-label="Events per month"></ol>
+      <div class="evx-chart-legend" aria-hidden="true">
+        <span><i class="evx-dot"></i>Held</span>
+        <span><i class="evx-dot is-upcoming"></i>Upcoming</span>
+      </div>
     </div>
   </div>
 </section>
@@ -160,7 +237,14 @@
 <!-- ═══════════════════════════════════════
      EVENTS GRID
 ════════════════════════════════════════ -->
-<section class="events-main" id="eventsGridSection">
+<section class="events-main evx-programme" id="eventsGridSection" aria-labelledby="evxProgTitle">
+  <div class="evx-prog-head">
+    <div>
+      <span class="pg-eyebrow pg-eyebrow--ink">The programme</span>
+      <h2 class="pg-title" id="evxProgTitle">Coming up,<br>and on record.</h2>
+    </div>
+    <p class="evx-prog-key" id="evxProgKey" aria-live="polite"></p>
+  </div>
   <div id="eventsGrid" class="events-grid">
     <!-- Events are loaded dynamically by events.js via GET /api/events -->
   </div><!-- /#eventsGrid -->
@@ -178,8 +262,30 @@
 </section>
 
 <!-- ═══════════════════════════════════════
-     FOOTER
+     CLOSING — be part of the next one
 ════════════════════════════════════════ -->
+<section class="xp-cta pg-cta evx-cta" aria-labelledby="evxCtaTitle">
+  <div class="xp-cta-panel">
+    <div class="mo-aurora" aria-hidden="true"></div>
+    <div class="xp-grid xp-grid--cta" aria-hidden="true"></div>
+    <div class="xp-cta-inner">
+      <span class="pg-eyebrow">Get involved</span>
+      <h2 class="xp-cta-title" id="evxCtaTitle">Be part of<br>the next event.</h2>
+      <p class="xp-cta-sub">Workshops, seminars, guest lectures, competitions and hackathons are open to students who want to work at the intersection of engineering and medicine.</p>
+      <div class="xp-cta-actions">
+        <a href="about.html#join-embs" class="pg-btn pg-btn--primary mo-sheen xp-magnetic">Become a Member</a>
+        <a href="activities.html" class="pg-btn mo-sheen">All activities</a>
+      </div>
+      <nav class="pg-onward" aria-label="Continue exploring">
+        <a href="projects.html"><small>Discovery</small>Projects &amp; Research <i aria-hidden="true">&rarr;</i></a>
+        <a href="blog.html"><small>Knowledge</small>Blog &amp; Articles <i aria-hidden="true">&rarr;</i></a>
+        <a href="podcast.html"><small>Voice</small>EMBS Podcast <i aria-hidden="true">&rarr;</i></a>
+        <a href="gallery.html"><small>Memory</small>Gallery <i aria-hidden="true">&rarr;</i></a>
+      </nav>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer class="footer">
@@ -260,15 +366,23 @@
 <script src="announceBar.js" defer></script>
 <script src="newsletter.js" defer></script>
 <script src="events.js" defer></script>
+<script src="pages-kit.js" defer></script>
+<script src="events-experience.js" defer></script>
 <script>
-  /* ── Events page animation config ── */
+  /* ── Events page animation config (animations.js owns headings) ── */
   window.EMBS_ANIM_CONFIG = {
     hero: {
       heading:   '.events-page-title',
       sub:       '.events-page-sub',
       baseDelay: 60
     },
-    reveal: ['.events-page-label']
+    sections: [
+      { label: '.evx-feature-head .pg-eyebrow', heading: '#evxFeatureTitle' },
+      { label: '.evx-rhythm-head .pg-eyebrow',  heading: '#evxRhythmTitle', desc: '.evx-rhythm-head .pg-sub' },
+      { label: '.evx-prog-head .pg-eyebrow',    heading: '#evxProgTitle' },
+      { label: '.evx-cta .pg-eyebrow',          heading: '#evxCtaTitle', desc: '.evx-cta .xp-cta-sub' }
+    ],
+    reveal: ['.events-page-label', '.evx-pulse', '.evx-console', '.evx-cta .xp-cta-actions', '.evx-cta .pg-onward']
   };
 </script>
 <script src="animations.js" defer></script>

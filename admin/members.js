@@ -1,4 +1,12 @@
 ﻿if (localStorage.getItem('embs_admin_auth') !== 'true') window.location.href = 'index.html';
+
+/* CMS values are plain text typed by editors (and subscriber emails come from
+   the public form): escape them before they go into innerHTML, and only allow
+   http(s) links, so stored markup cannot run script in an admin's session. */
+function admEsc(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function admHref(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? admEsc(String(u).trim()) : ''; }
 'use strict';
 
 const API = window.EMBS_API_BASE;
@@ -52,10 +60,10 @@ function roleOf(role) { return isExec(role) ? 'executive' : isCore(role) ? 'core
 /* â”€â”€ Avatar â”€â”€ */
 const COLORS = [['#6B2D8B','#00A99D'],['#1a6b8b','#00A99D'],['#8b2d6b','#a99d00'],['#2d6b1a','#00A99D']];
 function avatarHTML(m) {
-  if (m.photo) return `<img class="mem-avatar" src="${m.photo}" alt="${m.name}" />`;
+  if (m.photo) return `<img class="mem-avatar" src="${admEsc(m.photo)}" alt="${admEsc(m.name)}" />`;
   const c = COLORS[members.indexOf(m) % COLORS.length];
   const initials = m.name.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
-  return `<div class="mem-avatar-placeholder" style="background:linear-gradient(135deg,${c[0]},${c[1]})">${initials}</div>`;
+  return `<div class="mem-avatar-placeholder" style="background:linear-gradient(135deg,${c[0]},${c[1]})">${admEsc(initials)}</div>`;
 }
 
 /* â”€â”€ Render Table â”€â”€ */
@@ -81,19 +89,19 @@ function renderTable() {
       ? `<span style="font-size:0.7rem;background:rgba(107,45,139,0.18);color:#c084fc;border-radius:4px;padding:2px 6px;margin-left:4px;white-space:nowrap;">Org Chart</span>`
       : '';
     const linkedinLink = m.linkedin
-      ? `<a class="td-mem-linkedin" href="${m.linkedin}" target="_blank" rel="noopener">LinkedIn</a>` : '';
-    return `<tr data-id="${m._id}">
+      ? `<a class="td-mem-linkedin" href="${admHref(m.linkedin)}" target="_blank" rel="noopener">LinkedIn</a>` : '';
+    return `<tr data-id="${admEsc(m._id)}">
       <td class="col-mem-photo">${avatarHTML(m)}</td>
-      <td><div class="td-mem-name">${m.name}</div><div class="td-mem-phone">${m.email||''}</div></td>
-      <td><span class="pos-badge pos-badge--${role}">${m.role}</span>${orgBadge}</td>
-      <td><span style="font-size:0.78rem;color:var(--text-muted)">${m.batch||''}</span></td>
+      <td><div class="td-mem-name">${admEsc(m.name)}</div><div class="td-mem-phone">${admEsc(m.email||'')}</div></td>
+      <td><span class="pos-badge pos-badge--${role}">${admEsc(m.role)}</span>${orgBadge}</td>
+      <td><span style="font-size:0.78rem;color:var(--text-muted)">${admEsc(m.batch||'')}</span></td>
       <td>${linkedinLink}</td>
       <td><span class="status-badge status-badge--${status}">${status === 'active' ? 'Active' : 'Inactive'}</span></td>
       <td><div class="action-btns">
-        <button class="action-btn action-btn--edit" onclick="editMember('${m._id}')">
+        <button class="action-btn action-btn--edit" onclick="editMember('${admEsc(m._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Edit
         </button>
-        <button class="action-btn action-btn--delete" onclick="openDeleteModal('${m._id}')">
+        <button class="action-btn action-btn--delete" onclick="openDeleteModal('${admEsc(m._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Delete
         </button>
       </div></td>
@@ -336,20 +344,20 @@ function renderFacTable() {
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
     .map(c => {
       const avatar = c.photo
-        ? `<img src="${c.photo}" alt="${c.name}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(107,45,139,0.3);" />`
-        : `<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6B2D8B,#00A99D);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#fff;">${(c.name||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase()}</div>`;
+        ? `<img src="${admEsc(c.photo)}" alt="${admEsc(c.name)}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(107,45,139,0.3);" />`
+        : `<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6B2D8B,#00A99D);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#fff;">${admEsc((c.name||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase())}</div>`;
       const status = c.active !== false ? 'active' : 'inactive';
       return `<tr>
         <td>${avatar}</td>
-        <td style="font-size:0.85rem;font-weight:500;">${c.name || ''}</td>
-        <td style="font-size:0.82rem;color:var(--text-muted);">${c.role || ''}</td>
-        <td style="font-size:0.8rem;color:var(--text-muted);">${c.order ?? 0}</td>
+        <td style="font-size:0.85rem;font-weight:500;">${admEsc(c.name || '')}</td>
+        <td style="font-size:0.82rem;color:var(--text-muted);">${admEsc(c.role || '')}</td>
+        <td style="font-size:0.8rem;color:var(--text-muted);">${admEsc(c.order ?? 0)}</td>
         <td><span class="status-badge status-badge--${status}">${status === 'active' ? 'Published' : 'Unpublished'}</span></td>
         <td><div class="action-btns">
-          <button class="action-btn action-btn--edit" onclick="editFacultyCoordinator('${c._id}')">
+          <button class="action-btn action-btn--edit" onclick="editFacultyCoordinator('${admEsc(c._id)}')">
             <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Edit
           </button>
-          <button class="action-btn action-btn--delete" onclick="openFacDeleteModal('${c._id}')">
+          <button class="action-btn action-btn--delete" onclick="openFacDeleteModal('${admEsc(c._id)}')">
             <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Delete
           </button>
         </div></td>
@@ -573,21 +581,21 @@ function renderFadTable() {
 
   tbody.innerHTML = sorted.map(function (a) {
     var avatar = a.photo
-      ? '<img src="' + a.photo + '" alt="' + a.name + '" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(107,45,139,0.3);" />'
-      : '<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6B2D8B,#00A99D);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#fff;">' + (a.name || '?').split(' ').map(function (w) { return w[0]; }).slice(0, 2).join('').toUpperCase() + '</div>';
+      ? '<img src="' + admEsc(a.photo) + '" alt="' + admEsc(a.name) + '" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(107,45,139,0.3);" />'
+      : '<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6B2D8B,#00A99D);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#fff;">' + admEsc((a.name || '?').split(' ').map(function (w) { return w[0]; }).slice(0, 2).join('').toUpperCase()) + '</div>';
     var status = a.active !== false ? 'active' : 'inactive';
     return '<tr>' +
       '<td>' + avatar + '</td>' +
-      '<td style="font-size:0.85rem;font-weight:500;">' + (a.name || '') + '</td>' +
-      '<td style="font-size:0.82rem;color:var(--text-muted);">' + (a.role || '') + '</td>' +
-      '<td style="font-size:0.78rem;color:var(--text-muted);">' + (a.batch || '') + '</td>' +
+      '<td style="font-size:0.85rem;font-weight:500;">' + admEsc(a.name) + '</td>' +
+      '<td style="font-size:0.82rem;color:var(--text-muted);">' + admEsc(a.role) + '</td>' +
+      '<td style="font-size:0.78rem;color:var(--text-muted);">' + admEsc(a.batch) + '</td>' +
       '<td style="font-size:0.8rem;color:var(--text-muted);">' + (a.order || 0) + '</td>' +
       '<td><span class="status-badge status-badge--' + status + '">' + (status === 'active' ? 'Published' : 'Unpublished') + '</span></td>' +
       '<td><div class="action-btns">' +
-        '<button class="action-btn action-btn--edit" onclick="editFacultyAdvisor(\'' + a._id + '\')">' +
+        '<button class="action-btn action-btn--edit" onclick="editFacultyAdvisor(\'' + admEsc(a._id) + '\')">' +
           '<svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Edit' +
         '</button>' +
-        '<button class="action-btn action-btn--delete" onclick="openFadDeleteModal(\'' + a._id + '\')">' +
+        '<button class="action-btn action-btn--delete" onclick="openFadDeleteModal(\'' + admEsc(a._id) + '\')">' +
           '<svg viewBox="0 0 24 24" fill="none" width="12" height="12"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Delete' +
         '</button>' +
       '</div></td>' +

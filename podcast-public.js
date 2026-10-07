@@ -55,6 +55,21 @@
   /* ══════════════════════════════════════════════════════════
      PLAYER
   ══════════════════════════════════════════════════════════ */
+  /* CMS fields are plain text: escape them before they go into HTML, and
+     only allow http(s)/mailto/tel or same-site links (never javascript:). */
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function safeUrl(u, fallback) {
+    var s = String(u == null ? '' : u).trim();
+    var probe = s.replace(/[\u0000-\u0020\u007f]/g, '');
+    if (!s) return fallback || '';
+    if (/^[a-z][a-z0-9+.-]*:/i.test(probe) && !/^(https?|mailto|tel):/i.test(probe)) return fallback || '';
+    return s;
+  }
+
   const player = document.getElementById('pod-player');
   let episodeMap = {};   /* _id → episode object */
 
@@ -86,7 +101,7 @@
 
     /* Spotify link (direct open in new tab) */
     const spotifyLink = document.getElementById('pod-player-spotify');
-    const epSpotify   = ep.spotifyUrl || globalSpotifyUrl || '';
+    const epSpotify   = safeUrl(ep.spotifyUrl) || safeUrl(globalSpotifyUrl);
     if (spotifyLink) {
       spotifyLink.href  = epSpotify || '#';
       spotifyLink.style.display = epSpotify ? '' : 'none';
@@ -123,7 +138,7 @@
         src="${embedUrl}"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"
-        title="Spotify player — ${(ep.title || '').replace(/"/g, '&quot;')}"
+        title="Spotify player — ${esc(ep.title)}"
       ></iframe>`;
     }
     if (actionsEl) actionsEl.style.display = '';
@@ -145,33 +160,33 @@
 
     /* Spotify link for "Listen on Spotify" button:
        episode-specific first, then global fallback */
-    const epSpotify = ep.spotifyUrl || globalSpotifyUrl || '';
+    const epSpotify = safeUrl(ep.spotifyUrl) || safeUrl(globalSpotifyUrl);
     /* Only show Play button if a Spotify episode URL exists (embed requires it) */
     const hasEmbed  = Boolean(spotifyEpisodeId(ep.spotifyUrl || ''));
 
     article.innerHTML = `
       <div class="pod-ep-thumb-wrap">
-        <img src="${ep.thumbnail || FALLBACK_IMG}" alt="${ep.title || ''}" class="pod-ep-thumb" loading="lazy" />
-        <span class="pod-ep-num">EP. ${String(ep.episodeNumber || '').padStart(2, '0')}</span>
-        ${ep.guestName ? `<span class="pod-ep-badge">${ep.guestName.split(' ').pop()}</span>` : ''}
+        <img src="${esc(ep.thumbnail || FALLBACK_IMG)}" alt="${esc(ep.title)}" class="pod-ep-thumb" loading="lazy" />
+        <span class="pod-ep-num">EP. ${esc(String(ep.episodeNumber || '').padStart(2, '0'))}</span>
+        ${ep.guestName ? `<span class="pod-ep-badge">${esc(String(ep.guestName).split(' ').pop())}</span>` : ''}
       </div>
       <div class="pod-ep-body">
-        <h3 class="pod-ep-title">${ep.title || ''}</h3>
+        <h3 class="pod-ep-title">${esc(ep.title)}</h3>
         <div class="pod-ep-meta">
-          ${ep.guestName ? `<span class="pod-ep-guest">${USER_SVG} ${ep.guestName}</span>` : ''}
-          ${ep.duration  ? `<span class="pod-ep-duration">${CLOCK_SVG} ${ep.duration}</span>` : ''}
+          ${ep.guestName ? `<span class="pod-ep-guest">${USER_SVG} ${esc(ep.guestName)}</span>` : ''}
+          ${ep.duration  ? `<span class="pod-ep-duration">${CLOCK_SVG} ${esc(ep.duration)}</span>` : ''}
         </div>
-        ${ep.description ? `<p class="pod-ep-desc">${ep.description}</p>` : ''}
+        ${ep.description ? `<p class="pod-ep-desc">${esc(ep.description)}</p>` : ''}
         <div class="pod-ep-waveform" aria-hidden="true">${WAVE_BARS}</div>
         <div class="pod-ep-actions">
           ${hasEmbed
-            ? `<button class="pod-ep-btn pod-ep-btn--play" data-ep-id="${ep._id || ''}"
-                        aria-label="Play ${ep.title || 'episode'} on this page">
+            ? `<button class="pod-ep-btn pod-ep-btn--play" data-ep-id="${esc(ep._id)}"
+                        aria-label="Play ${esc(ep.title || 'episode')} on this page">
                  ${PLAY_SVG} Play Episode
                </button>`
             : ''}
           ${epSpotify
-            ? `<a href="${epSpotify}" target="_blank" rel="noopener noreferrer"
+            ? `<a href="${esc(epSpotify)}" target="_blank" rel="noopener noreferrer"
                   class="pod-ep-btn pod-ep-btn--spotify" aria-label="Listen on Spotify">
                  ${SPOTIFY_SVG} Listen on Spotify
                </a>`
@@ -198,7 +213,7 @@
     if (epNum) epNum.textContent = `EP. ${String(ep.episodeNumber || '').padStart(2, '0')}`;
 
     const dur = card.querySelector('.pod-feat-duration');
-    if (dur && ep.duration) dur.innerHTML = `${CLOCK_SVG} ${ep.duration}`;
+    if (dur && ep.duration) dur.innerHTML = `${CLOCK_SVG} ${esc(ep.duration)}`;
 
     const title   = card.querySelector('.pod-feat-ep-title');
     if (title) title.textContent = ep.title || '';
@@ -223,7 +238,7 @@
 
     /* Listen on Spotify → new tab */
     const spotifyBtn  = card.querySelector('.pod-feat-btn--spotify');
-    const featSpotify = ep.spotifyUrl || globalSpotifyUrl || '';
+    const featSpotify = safeUrl(ep.spotifyUrl) || safeUrl(globalSpotifyUrl);
     if (spotifyBtn) {
       spotifyBtn.href   = featSpotify || '#';
       spotifyBtn.target = '_blank';
@@ -262,8 +277,8 @@
           <div class="pod-guest-avatar" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;">${GUEST_SVG}</div>
         </div>
         <div class="pod-guest-info">
-          <h3 class="pod-guest-name">${g.name}</h3>
-          ${g.designation ? `<span class="pod-guest-designation">${g.designation}</span>` : ''}
+          <h3 class="pod-guest-name">${esc(g.name)}</h3>
+          ${g.designation ? `<span class="pod-guest-designation">${esc(g.designation)}</span>` : ''}
           <span class="pod-guest-spotify-badge" aria-label="Podcast guest">${SPOTIFY_BADGE} Podcast Guest</span>
         </div>
       </article>`).join('');
@@ -374,7 +389,7 @@
       .then(r => r.json())
       .then(json => {
         const url = json && json.data && json.data.socialLinks && json.data.socialLinks.spotify;
-        globalSpotifyUrl = url || '';
+        globalSpotifyUrl = safeUrl(url);
         if (globalSpotifyUrl) {
           document.querySelectorAll('[data-social="spotify"]').forEach(el => {
             el.href   = globalSpotifyUrl;

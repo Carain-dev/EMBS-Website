@@ -15,6 +15,10 @@
 
 const Subscriber = require('../models/Subscriber');
 const sendEmail  = require('./sendEmail');
+const { escapeHtml: e } = require('./escapeHtml');
+
+/* CMS text is plain text; escape it for the HTML part (the text part is untouched). */
+const safeHref = (u) => (/^https?:\/\//i.test(String(u || '')) ? e(u) : '');
 
 const SITE_NAME  = process.env.SITE_NAME  || 'IEEE EMBS Student Chapter';
 const SITE_URL   = process.env.CLIENT_URL || 'https://ieeekpriet.in';
@@ -89,15 +93,15 @@ function buildAnnouncementEmail(item) {
 
   return {
     subject: `📢 New Announcement: ${title}`,
-    html: wrapHtml(title, `
-      <h1 style="margin:0 0 8px;font-size:1.3rem;color:#0d1030;font-weight:700;">${title}</h1>
+    html: wrapHtml(e(title), `
+      <h1 style="margin:0 0 8px;font-size:1.3rem;color:#0d1030;font-weight:700;">${e(title)}</h1>
       ${item.expiresAt
         ? `<p style="margin:0 0 16px;font-size:0.78rem;color:${TEAL_COLOR};font-weight:600;">
              Valid until: ${new Date(item.expiresAt).toLocaleDateString('en-IN', { day:'numeric',month:'long',year:'numeric' })}
            </p>`
         : ''}
       ${excerpt
-        ? `<p style="margin:0 0 16px;font-size:0.92rem;color:#4a5070;line-height:1.7;">${excerpt}</p>`
+        ? `<p style="margin:0 0 16px;font-size:0.92rem;color:#4a5070;line-height:1.7;">${e(excerpt)}</p>`
         : ''}
       ${ctaButton('View Announcement', url)}
     `),
@@ -118,14 +122,14 @@ function buildEventEmail(item) {
 
   return {
     subject: `🗓️ New Event: ${title}`,
-    html: wrapHtml(title, `
-      <h1 style="margin:0 0 12px;font-size:1.3rem;color:#0d1030;font-weight:700;">${title}</h1>
+    html: wrapHtml(e(title), `
+      <h1 style="margin:0 0 12px;font-size:1.3rem;color:#0d1030;font-weight:700;">${e(title)}</h1>
       <table cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
         ${dateStr  ? `<tr><td style="padding:3px 12px 3px 0;font-size:0.78rem;color:#9a9fb8;font-weight:600;white-space:nowrap;">DATE</td><td style="font-size:0.9rem;color:#0d1030;">${dateStr}</td></tr>` : ''}
-        ${timeStr  ? `<tr><td style="padding:3px 12px 3px 0;font-size:0.78rem;color:#9a9fb8;font-weight:600;white-space:nowrap;">TIME</td><td style="font-size:0.9rem;color:#0d1030;">${timeStr}</td></tr>` : ''}
-        ${venue    ? `<tr><td style="padding:3px 12px 3px 0;font-size:0.78rem;color:#9a9fb8;font-weight:600;white-space:nowrap;">VENUE</td><td style="font-size:0.9rem;color:#0d1030;">${venue}</td></tr>` : ''}
+        ${timeStr  ? `<tr><td style="padding:3px 12px 3px 0;font-size:0.78rem;color:#9a9fb8;font-weight:600;white-space:nowrap;">TIME</td><td style="font-size:0.9rem;color:#0d1030;">${e(timeStr)}</td></tr>` : ''}
+        ${venue    ? `<tr><td style="padding:3px 12px 3px 0;font-size:0.78rem;color:#9a9fb8;font-weight:600;white-space:nowrap;">VENUE</td><td style="font-size:0.9rem;color:#0d1030;">${e(venue)}</td></tr>` : ''}
       </table>
-      ${desc ? `<p style="margin:0 0 4px;font-size:0.92rem;color:#4a5070;line-height:1.7;">${desc}${(item.description||'').length > 200 ? '…' : ''}</p>` : ''}
+      ${desc ? `<p style="margin:0 0 4px;font-size:0.92rem;color:#4a5070;line-height:1.7;">${e(desc)}${(item.description||'').length > 200 ? '…' : ''}</p>` : ''}
       ${ctaButton('View Event Details', url)}
     `),
     text: `New Event: ${title}\n${dateStr}${timeStr ? ' at ' + timeStr : ''}${venue ? '\n' + venue : ''}\n\n${item.description || ''}\n\n${url}`,
@@ -139,21 +143,21 @@ function buildPodcastEmail(item) {
   const guest   = item.guestName || '';
   const guestDes = item.guestDesignation || '';
   const desc    = (item.description || '').slice(0, 200).trimEnd();
-  const spotifyLink = item.spotifyUrl || url;
+  const spotifyLink = safeHref(item.spotifyUrl) ? item.spotifyUrl : url;
 
   return {
     subject: `🎙️ New Podcast Episode: ${epNum}${title}`,
-    html: wrapHtml(`${epNum}${title}`, `
+    html: wrapHtml(e(`${epNum}${title}`), `
       <span style="display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:0.12em;
                    text-transform:uppercase;color:${TEAL_COLOR};margin-bottom:8px;">New Episode</span>
-      <h1 style="margin:0 0 12px;font-size:1.3rem;color:#0d1030;font-weight:700;">${epNum}${title}</h1>
+      <h1 style="margin:0 0 12px;font-size:1.3rem;color:#0d1030;font-weight:700;">${e(epNum + title)}</h1>
       ${guest ? `
         <p style="margin:0 0 12px;font-size:0.88rem;color:#6B2D8B;font-weight:600;">
-          Guest: ${guest}${guestDes ? ` — ${guestDes}` : ''}
+          Guest: ${e(guest)}${guestDes ? ` — ${e(guestDes)}` : ''}
         </p>` : ''}
-      ${desc ? `<p style="margin:0 0 4px;font-size:0.92rem;color:#4a5070;line-height:1.7;">${desc}${(item.description||'').length > 200 ? '…' : ''}</p>` : ''}
+      ${desc ? `<p style="margin:0 0 4px;font-size:0.92rem;color:#4a5070;line-height:1.7;">${e(desc)}${(item.description||'').length > 200 ? '…' : ''}</p>` : ''}
       <div style="margin-top:20px;display:inline-flex;gap:12px;flex-wrap:wrap;">
-        ${ctaButton('🎧 Listen on Spotify', spotifyLink)}
+        ${ctaButton('🎧 Listen on Spotify', e(spotifyLink))}
       </div>
     `),
     text: `New Podcast Episode: ${epNum}${title}\n${guest ? 'Guest: ' + guest + '\n' : ''}\n${item.description || ''}\n\nListen: ${spotifyLink}`,

@@ -29,6 +29,13 @@
   <script src="config.js"></script>
   <link rel="stylesheet" href="contact.css" />
   <link rel="stylesheet" href="responsive.css" />
+  <!-- Shared motion + visual language (as on every redesigned page).
+       motion.js must run in <head>: it only sets a class now. -->
+  <link rel="stylesheet" href="motion.css" />
+  <link rel="stylesheet" href="experience.css" />
+  <link rel="stylesheet" href="pages-experience.css" />
+  <link rel="stylesheet" href="contact-experience.css" />
+  <script src="motion.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -97,21 +104,33 @@
   <div class="announce-track-wrap">
     <div class="announce-track"></div>
   </div>
+  <!-- Page progress hairline (pages-kit.js) -->
+  <span class="xp-progress" aria-hidden="true"></span>
 </div>
 
 <main id="main-content" tabindex="-1">
 
-  <section id="contact-hero" class="contact-hero">
+  <section id="contact-hero" class="contact-hero ctx-hero">
+    <!-- Every line converges on one point (decorative) -->
+    <svg class="ctx-lines" viewBox="0 0 1440 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+      <path class="ctx-line ctx-line--p" d="M-20 150 C 420 150, 760 250, 1150 330"/>
+      <path class="ctx-line ctx-line--t" d="M520 660 C 760 640, 900 420, 1150 330"/>
+      <path class="ctx-line ctx-line--t" d="M1460 60 C 1360 120, 1240 260, 1150 330"/>
+      <path class="ctx-line ctx-line--p" d="M1460 620 C 1360 560, 1240 400, 1150 330"/>
+      <circle class="ctx-core-ring" cx="1150" cy="330" r="14"/>
+      <circle class="ctx-core" cx="1150" cy="330" r="5"/>
+    </svg>
     <div class="contact-hero-inner">
       <span class="contact-hero-label">Get in Touch</span>
       <h1 class="contact-hero-heading">Contact Us</h1>
+      <p class="ctx-lede">Questions about membership, events, the podcast or a project idea &mdash; every conversation with the chapter starts here.</p>
     </div>
   </section>
 
-  <section id="contact-layout" class="contact-layout">
+  <section id="contact-layout" class="contact-layout ctx-layout">
     <div class="contact-layout-inner">
 
-      <div class="contact-col contact-col--form">
+      <div class="contact-col contact-col--form mo-reveal">
         <h2 class="contact-col-heading">Send a Message</h2>
         <form class="contact-form" onsubmit="return false;">
           <div class="contact-field">
@@ -134,7 +153,7 @@
         </form>
       </div>
 
-      <div class="contact-col contact-col--info">
+      <div class="contact-col contact-col--info mo-reveal" data-mo-delay="120">
         <h2 class="contact-col-heading">Contact Information</h2>
 
         <ul class="contact-info-list">
@@ -233,7 +252,7 @@
     </div>
   </section>
 
-  <section id="faq" class="contact-faq">
+  <section id="faq" class="contact-faq ctx-faq">
     <div class="contact-faq-inner">
       <h2 class="contact-faq-heading">FAQ</h2>
 
@@ -260,6 +279,12 @@
         </details>
 
       </div>
+      <nav class="pg-onward" aria-label="Continue exploring">
+        <a href="about.html"><small>Identity</small>About the chapter <i aria-hidden="true">&rarr;</i></a>
+        <a href="members.html"><small>People</small>Members <i aria-hidden="true">&rarr;</i></a>
+        <a href="events.html"><small>Energy</small>Events <i aria-hidden="true">&rarr;</i></a>
+        <a href="index.html"><small>Home</small>Back to the start <i aria-hidden="true">&rarr;</i></a>
+      </nav>
     </div>
   </section>
 
@@ -328,6 +353,8 @@
 <script src="announceBar.js" defer></script>
 <script src="newsletter.js" defer></script>
 <script src="contactForm.js" defer></script>
+<script src="pages-kit.js" defer></script>
+<script src="contact-experience.js" defer></script>
 </body>
 </html>
 

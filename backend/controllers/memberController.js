@@ -3,6 +3,7 @@ const mongoose     = require('mongoose');
 const Member       = require('../models/Member');
 const { paginate } = require('../utils/paginate');
 const { sendResponse, sendError } = require('../utils/sendResponse');
+const { resolveAdminView, denyMessage } = require('../utils/requestAuth');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
@@ -14,6 +15,9 @@ exports.getAll = asyncHandler(async (req, res) => {
      default — public directory: active members only */
   let filter;
   if (req.query.all === 'true') {
+    /* Admin view (includes inactive members): requires a valid staff token. */
+    const view = await resolveAdminView(req, { flags: ['all'], header: false });
+    if (view.deny) return sendError(res, view.deny, denyMessage(view.deny));
     filter = {};
   } else if (req.query.orgchart === 'true') {
     filter = { inOrgChart: true };
@@ -40,6 +44,11 @@ exports.getOne = asyncHandler(async (req, res) => {
 
   const member = await Member.findById(req.params.id);
   if (!member) return sendError(res, 404, 'Member not found');
+
+  /* Publicly a member is visible when active or shown in the org chart (the
+     same members the public pages list); anything else is admin-only. */
+  if (!member.active && !member.inOrgChart && !(await resolveAdminView(req, { flags: ['all'] })).admin)
+    return sendError(res, 404, 'Member not found');
 
   sendResponse(res, 200, member);
 });

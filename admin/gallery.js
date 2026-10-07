@@ -1,4 +1,12 @@
 if (localStorage.getItem('embs_admin_auth') !== 'true') window.location.href = 'index.html';
+
+/* CMS values are plain text typed by editors (and subscriber emails come from
+   the public form): escape them before they go into innerHTML, and only allow
+   http(s) links, so stored markup cannot run script in an admin's session. */
+function admEsc(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function admHref(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? admEsc(String(u).trim()) : ''; }
 'use strict';
 
 const API = window.EMBS_API_BASE;
@@ -55,28 +63,28 @@ function renderGallery() {
 
   grid.innerHTML = filtered.map((img, idx) => {
     const imgContent = img.imageUrl
-      ? `<img src="${img.imageUrl}" alt="${img.title}" loading="lazy" />`
-      : `<div class="gal-card-img-placeholder">${(img.title||'').slice(0,2).toUpperCase()}</div>`;
+      ? `<img src="${admEsc(img.imageUrl)}" alt="${admEsc(img.title)}" loading="lazy" />`
+      : `<div class="gal-card-img-placeholder">${admEsc((img.title||'').slice(0,2).toUpperCase())}</div>`;
     const statusClass = img.published ? 'published' : 'draft';
     const statusText = img.published ? 'Published' : 'Draft';
-    return `<div class="gal-card" data-id="${img._id}" data-idx="${idx}">
+    return `<div class="gal-card" data-id="${admEsc(img._id)}" data-idx="${idx}">
       <div class="gal-card-img-wrap">
         ${imgContent}
         <div class="gal-card-overlay">
           <button class="gal-card-action gal-card-action--view" onclick="openLightbox(${idx});event.stopPropagation();" title="View">
             <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/></svg>
           </button>
-          <button class="gal-card-action gal-card-action--toggle" onclick="toggleGalleryPublished('${img._id}', ${!!img.published});event.stopPropagation();" title="${img.published ? 'Unpublish' : 'Publish'}">
+          <button class="gal-card-action gal-card-action--toggle" onclick="toggleGalleryPublished('${admEsc(img._id)}', ${!!img.published});event.stopPropagation();" title="${img.published ? 'Unpublish' : 'Publish'}">
             <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
           </button>
-          <button class="gal-card-action gal-card-action--delete" onclick="openDeleteModal('${img._id}');event.stopPropagation();" title="Delete">
+          <button class="gal-card-action gal-card-action--delete" onclick="openDeleteModal('${admEsc(img._id)}');event.stopPropagation();" title="Delete">
             <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
           </button>
         </div>
       </div>
       <div class="gal-card-body">
-        <div class="gal-card-name" title="${img.title}">${img.title}</div>
-        <div class="gal-card-meta"><span class="gal-album-tag">${img.caption||''}</span></div>
+        <div class="gal-card-name" title="${admEsc(img.title)}">${admEsc(img.title)}</div>
+        <div class="gal-card-meta"><span class="gal-album-tag">${admEsc(img.caption||'')}</span></div>
         <div class="gal-card-meta"><span class="status-badge status-badge--${statusClass}">${statusText}</span></div>
       </div>
     </div>`;
@@ -298,20 +306,20 @@ function renderEvtGalTable() {
   empty.style.display = 'none';
   tbody.innerHTML = evtGalItems.sort((a,b) => (a.order??0)-(b.order??0)).map(i => {
     const thumb = i.imageUrl
-      ? `<img src="${i.imageUrl}" alt="${i.title}" style="width:36px;height:36px;border-radius:6px;object-fit:cover;" />`
-      : `<div style="width:36px;height:36px;border-radius:6px;background:rgba(107,45,139,0.15);display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:#c084fc;">${(i.title||'').slice(0,2).toUpperCase()}</div>`;
+      ? `<img src="${admEsc(i.imageUrl)}" alt="${admEsc(i.title)}" style="width:36px;height:36px;border-radius:6px;object-fit:cover;" />`
+      : `<div style="width:36px;height:36px;border-radius:6px;background:rgba(107,45,139,0.15);display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:#c084fc;">${admEsc((i.title||'').slice(0,2).toUpperCase())}</div>`;
     const st = i.published ? 'published' : 'draft';
     return `<tr>
       <td>${thumb}</td>
-      <td style="font-size:0.83rem;font-weight:500;">${i.title||''}</td>
-      <td style="font-size:0.78rem;color:var(--text-muted);">${i.caption||''}</td>
-      <td style="font-size:0.78rem;color:var(--text-muted);">${i.order??0}</td>
+      <td style="font-size:0.83rem;font-weight:500;">${admEsc(i.title||'')}</td>
+      <td style="font-size:0.78rem;color:var(--text-muted);">${admEsc(i.caption||'')}</td>
+      <td style="font-size:0.78rem;color:var(--text-muted);">${admEsc(i.order??0)}</td>
       <td><span class="status-badge status-badge--${st}">${i.published?'Published':'Draft'}</span></td>
       <td><div class="action-btns">
-        <button class="action-btn action-btn--edit" onclick="editEvtGal('${i._id}')">
+        <button class="action-btn action-btn--edit" onclick="editEvtGal('${admEsc(i._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Edit
         </button>
-        <button class="action-btn action-btn--delete" onclick="openEvtGalDelete('${i._id}')">
+        <button class="action-btn action-btn--delete" onclick="openEvtGalDelete('${admEsc(i._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Delete
         </button>
       </div></td>
@@ -453,15 +461,15 @@ function renderVidTable() {
     const urlShort = (i.videoUrl||'').length > 40 ? (i.videoUrl||'').slice(0,40)+'…' : (i.videoUrl||'');
     const st = i.published ? 'published' : 'draft';
     return `<tr>
-      <td style="font-size:0.83rem;font-weight:500;">${i.title||''}</td>
-      <td style="font-size:0.75rem;color:var(--text-muted);font-family:monospace;">${urlShort}</td>
-      <td style="font-size:0.78rem;color:var(--text-muted);">${i.order??0}</td>
+      <td style="font-size:0.83rem;font-weight:500;">${admEsc(i.title||'')}</td>
+      <td style="font-size:0.75rem;color:var(--text-muted);font-family:monospace;">${admEsc(urlShort)}</td>
+      <td style="font-size:0.78rem;color:var(--text-muted);">${admEsc(i.order??0)}</td>
       <td><span class="status-badge status-badge--${st}">${i.published?'Published':'Draft'}</span></td>
       <td><div class="action-btns">
-        <button class="action-btn action-btn--edit" onclick="editVid('${i._id}')">
+        <button class="action-btn action-btn--edit" onclick="editVid('${admEsc(i._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Edit
         </button>
-        <button class="action-btn action-btn--delete" onclick="openVidDelete('${i._id}')">
+        <button class="action-btn action-btn--delete" onclick="openVidDelete('${admEsc(i._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Delete
         </button>
       </div></td>

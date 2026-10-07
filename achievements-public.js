@@ -11,6 +11,21 @@
     'faculty':         { label: 'Faculty',           badgeClass: 'ach-card-badge--faculty',      icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="20" height="14" rx="3" stroke="#00A99D" stroke-width="1.5"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" stroke="#00A99D" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="12" x2="12" y2="16" stroke="#00A99D" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="14" x2="14" y2="14" stroke="#00A99D" stroke-width="1.5" stroke-linecap="round"/></svg>` },
   };
 
+  /* CMS fields are plain text: escape them before they go into HTML, and
+     only allow http(s)/mailto/tel or same-site links (never javascript:). */
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function safeUrl(u, fallback) {
+    var s = String(u == null ? '' : u).trim();
+    var probe = s.replace(/[\u0000-\u0020\u007f]/g, '');
+    if (!s) return fallback || '';
+    if (/^[a-z][a-z0-9+.-]*:/i.test(probe) && !/^(https?|mailto|tel):/i.test(probe)) return fallback || '';
+    return s;
+  }
+
   const DEFAULT_CAT = { label: 'Achievement', badgeClass: 'ach-card-badge--award', icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" stroke="#6B2D8B" stroke-width="1.5" stroke-linejoin="round"/></svg>` };
 
   const DATE_SVG = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/><line x1="3" y1="9" x2="21" y2="9" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
@@ -27,13 +42,13 @@
         <div class="ach-card-icon">${cat.icon}</div>
         <span class="ach-card-badge ${cat.badgeClass}">${cat.label}</span>
       </div>
-      ${item.image ? `<div class="ach-card-img-wrap"><img src="${item.image}" alt="${item.title}" class="ach-card-img" loading="lazy" /></div>` : ''}
+      ${item.image ? `<div class="ach-card-img-wrap"><img src="${esc(item.image)}" alt="${esc(item.title)}" class="ach-card-img" loading="lazy" /></div>` : ''}
       <div class="ach-card-body">
-        <h3 class="ach-card-title">${item.title}</h3>
-        ${item.description ? `<p class="ach-card-desc">${item.description}</p>` : ''}
+        <h3 class="ach-card-title">${esc(item.title)}</h3>
+        ${item.description ? `<p class="ach-card-desc">${esc(item.description)}</p>` : ''}
         <div class="ach-card-meta">
-          ${item.recipient ? `<span class="ach-card-recipient">${USER_SVG} ${item.recipient}</span>` : ''}
-          ${item.date ? `<span class="ach-card-date">${DATE_SVG} ${item.date}</span>` : ''}
+          ${item.recipient ? `<span class="ach-card-recipient">${USER_SVG} ${esc(item.recipient)}</span>` : ''}
+          ${item.date ? `<span class="ach-card-date">${DATE_SVG} ${esc(item.date)}</span>` : ''}
         </div>
       </div>`;
     return article;

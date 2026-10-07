@@ -1,4 +1,12 @@
 if (localStorage.getItem('embs_admin_auth') !== 'true') window.location.href = 'index.html';
+
+/* CMS values are plain text typed by editors (and subscriber emails come from
+   the public form): escape them before they go into innerHTML, and only allow
+   http(s) links, so stored markup cannot run script in an admin's session. */
+function admEsc(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function admHref(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? admEsc(String(u).trim()) : ''; }
 'use strict';
 
 const API = window.EMBS_API_BASE;
@@ -63,25 +71,25 @@ function renderTable() {
 
   tbody.innerHTML = filtered.map(p => {
     const thumbCell = p.thumbnail
-      ? `<img class="td-thumb" src="${p.thumbnail}" alt="thumb" />`
+      ? `<img class="td-thumb" src="${admEsc(p.thumbnail)}" alt="thumb" />`
       : `<div class="td-thumb-placeholder"></div>`;
     const teamText = Array.isArray(p.teamMembers) ? p.teamMembers.join(', ') : (p.teamMembers || '—');
-    const githubBtn = `<a class="td-link-btn td-link-btn--github ${p.repoUrl ? '' : 'disabled'}" ${p.repoUrl ? `href="${p.repoUrl}" target="_blank" rel="noopener"` : ''} title="GitHub">GitHub</a>`;
-    const paperBtn = `<a class="td-link-btn ${p.paperUrl || p.liveUrl ? '' : 'disabled'}" ${p.paperUrl || p.liveUrl ? `href="${p.paperUrl || p.liveUrl}" target="_blank" rel="noopener"` : ''} title="Paper">Paper</a>`;
+    const githubBtn = `<a class="td-link-btn td-link-btn--github ${p.repoUrl ? '' : 'disabled'}" ${p.repoUrl ? `href="${admHref(p.repoUrl)}" target="_blank" rel="noopener"` : ''} title="GitHub">GitHub</a>`;
+    const paperBtn = `<a class="td-link-btn ${p.paperUrl || p.liveUrl ? '' : 'disabled'}" ${p.paperUrl || p.liveUrl ? `href="${admHref(p.paperUrl || p.liveUrl)}" target="_blank" rel="noopener"` : ''} title="Paper">Paper</a>`;
     const statusText = p.featured ? 'Published' : (p.visibility === 'hidden' ? 'Hidden' : 'Draft');
-    return `<tr data-id="${p._id}">
+    return `<tr data-id="${admEsc(p._id)}">
       <td class="col-proj-thumb">${thumbCell}</td>
-      <td><div class="td-proj-title" title="${p.title}">${p.title}</div></td>
-      <td><span class="cat-badge">${p.category || (p.tags || []).join(', ') || '—'}</span></td>
-      <td>${teamText || '—'}</td>
+      <td><div class="td-proj-title" title="${admEsc(p.title)}">${admEsc(p.title)}</div></td>
+      <td><span class="cat-badge">${admEsc(p.category || (p.tags || []).join(', ') || '—')}</span></td>
+      <td>${admEsc(teamText || '—')}</td>
       <td><div class="td-links">${githubBtn}${paperBtn}</div></td>
-      <td><span class="status-badge status-badge--${String(p.status || 'ongoing').toLowerCase() === 'completed' ? 'completed' : 'draft'}">${p.status || 'ongoing'}</span></td>
+      <td><span class="status-badge status-badge--${String(p.status || 'ongoing').toLowerCase() === 'completed' ? 'completed' : 'draft'}">${admEsc(p.status || 'ongoing')}</span></td>
       <td><span class="status-badge status-badge--${p.featured ? 'published' : 'draft'}">${statusText}</span></td>
       <td><div class="action-btns">
-        <button class="action-btn action-btn--edit" onclick="editProject('${p._id}')">
+        <button class="action-btn action-btn--edit" onclick="editProject('${admEsc(p._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Edit
         </button>
-        <button class="action-btn action-btn--delete" onclick="openDeleteModal('${p._id}')">
+        <button class="action-btn action-btn--delete" onclick="openDeleteModal('${admEsc(p._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Delete
         </button>
       </div></td>

@@ -30,6 +30,24 @@
   <link rel="stylesheet" href="about.css" />
   <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
+  <link rel="stylesheet" href="motion.css" />
+  <link rel="stylesheet" href="experience.css" />
+  <link rel="stylesheet" href="about-experience.css" />
+  <!-- Motion bootstrap: enables the motion CSS layer and, when motion is
+       allowed, holds the opening frame for about-experience.js.
+       A 3s failsafe guarantees the page is never left hidden. -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('embs-motion');
+      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      d.classList.add('xp-pending');
+      window.__xpFailsafe = setTimeout(function () {
+        d.classList.remove('xp-pending');
+        window.__xpFailed = true;
+      }, 3000);
+    })();
+  </script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -92,20 +110,98 @@
   <div class="announce-track-wrap">
     <div class="announce-track"></div>
   </div>
+  <!-- Page progress hairline (about-experience.js) -->
+  <span class="xp-progress" aria-hidden="true"></span>
 </div>
 
-<!-- About page content goes here -->
+<!-- Journey rail: one thread through the page (wide desktop only, decorative) -->
+<div class="xp-rail" aria-hidden="true">
+  <span class="xp-rail-track"></span>
+  <span class="xp-rail-fill"></span>
+  <span class="xp-rail-node"></span>
+</div>
 
-<!-- About EMBS Section -->
 <main id="main-content" tabindex="-1">
 
+<!-- ════════════════════════════════════════════════════════════
+     ARRIVAL — editorial opening. Shares the Home hero's DNA:
+     same ground, aurora, grid, heart artwork and motion language.
+     ════════════════════════════════════════════════════════════ -->
+<section class="ab-hero" aria-labelledby="abHeroTitle">
+  <div class="xp-depth xp-depth--far" aria-hidden="true">
+    <div class="mo-aurora"></div>
+    <div class="xp-grid ab-hero-grid"></div>
+    <div class="mo-swirl ab-hero-swirl"></div>
+  </div>
+  <div class="xp-depth xp-depth--near" aria-hidden="true">
+    <img class="ab-hero-heart" src="bg-image-embs/heart.jpeg" alt="" />
+    <!-- Abstract line work (decorative, not data) -->
+    <svg class="ab-hero-trace" viewBox="0 0 900 900" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <defs>
+        <linearGradient id="abTraceGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#6B2D8B" stop-opacity="0"/>
+          <stop offset="0.35" stop-color="#6B2D8B" stop-opacity="0.7"/>
+          <stop offset="0.8" stop-color="#00A99D" stop-opacity="0.7"/>
+          <stop offset="1" stop-color="#00A99D" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <circle class="ab-trace-ring" cx="560" cy="430" r="250"/>
+      <circle class="ab-trace-ring ab-trace-ring--inner" cx="560" cy="430" r="168"/>
+      <path class="xp-signal-path ab-trace-path" d="M40 640 C 220 640, 300 520, 420 520 S 620 600, 720 470 S 840 300, 900 280"/>
+      <circle class="xp-signal-node" cx="420" cy="520" r="4"/>
+      <circle class="xp-signal-node xp-signal-node--purple" cx="720" cy="470" r="4"/>
+    </svg>
+  </div>
+  <div class="xp-hero-light" aria-hidden="true"></div>
+
+  <div class="ab-hero-inner">
+    <div class="ab-hero-top" data-xp-hold>
+      <span class="ab-eyebrow">About the Chapter</span>
+      <span class="ab-hero-rule" aria-hidden="true"></span>
+      <span class="ab-eyebrow ab-eyebrow--muted">IEEE Engineering in Medicine &amp; Biology Society</span>
+    </div>
+
+    <h1 class="ab-hero-title" id="abHeroTitle" data-xp-hold>We bridge the gap<br>between technology<br>and <span class="ab-accent mo-gradient-text">healthcare.</span></h1>
+
+    <div class="ab-hero-foot" data-xp-hold>
+      <p class="ab-hero-sub">The IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology — a student-driven community advancing biomedical engineering through research, innovation and collaboration.</p>
+      <dl class="ab-meta">
+        <div class="ab-meta-item"><dt>Established</dt><dd data-ab-est>&mdash;</dd></div>
+        <div class="ab-meta-item"><dt>Department</dt><dd>Biomedical Engineering</dd></div>
+        <div class="ab-meta-item"><dt>Institution</dt><dd>KPRIET, Coimbatore</dd></div>
+      </dl>
+    </div>
+
+    <nav class="ab-index" aria-label="On this page" data-xp-hold>
+      <ol>
+        <li><a href="#about-embs"><span>01</span>Who we are</a></li>
+        <li><a href="#purpose"><span>02</span>Purpose</a></li>
+        <li><a href="#vision-mission"><span>03</span>Mission &amp; vision</a></li>
+        <li><a href="#what-we-do"><span>04</span>What we do</a></li>
+        <li><a href="#focus-areas"><span>05</span>Focus areas</a></li>
+        <li><a href="#chapter-history"><span>06</span>Journey</a></li>
+        <li><a href="#people"><span>07</span>People</a></li>
+        <li><a href="#join-embs"><span>08</span>Join</a></li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="ab-scroll-cue" aria-hidden="true"><span class="ab-scroll-line"></span>Scroll</div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     WHO WE ARE — identity, with the chapter's own photograph
+     ════════════════════════════════════════════════════════════ -->
 <section id="about-embs" class="about-embs">
+  <div class="ab-bigword" aria-hidden="true"><span>Engineering</span><span>× Medicine</span></div>
+  <div class="xp-grid xp-grid--ink ab-who-grid" aria-hidden="true"></div>
+
   <div class="about-embs-container">
 
-    <!-- Left: Text -->
     <div class="about-embs-left">
-      <!-- Glass DNA SVG background -->
-      <svg class="about-dna-bg" viewBox="0 0 200 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <!-- Legacy helix artwork: kept in the markup, hidden by about-experience.css -->
+      <svg class="about-dna-bg" aria-hidden="true" focusable="false" viewBox="0 0 200 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
         <defs>
           <linearGradient id="dna-strand1" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stop-color="#a855f7" stop-opacity="0.9"/>
@@ -160,32 +256,19 @@
         <circle cx="100" cy="300" r="5" fill="#2dd4bf" opacity="0.5" filter="url(#dna-softglow)"/>
         <circle cx="100" cy="450" r="5" fill="#c084fc" opacity="0.5" filter="url(#dna-softglow)"/>
       </svg>
+
       <span class="about-embs-label">Who We Are</span>
-      <h2 class="about-embs-heading">Engineering in Medicine &amp; Biology Society</h2>
+      <h2 class="about-embs-heading">Engineering in Medicine<br>&amp; Biology Society</h2>
       <p class="about-embs-desc" id="aboutChapterDesc">The IEEE Engineering in Medicine and Biology Society (EMBS) Student Chapter at KPR Institute of Engineering and Technology is a student-driven community dedicated to advancing biomedical engineering through research, innovation, and collaboration. We bridge the gap between technology and healthcare.</p>
 
-      <div class="about-vm-cards">
-        <!-- Vision card — edit here -->
-        <div class="about-vm-card">
-          <div class="about-vm-icon">
-            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="6" stroke="#6B2D8B" stroke-width="1.8"/><circle cx="16" cy="16" r="12" stroke="#6B2D8B" stroke-width="1.2" stroke-dasharray="3 3"/><circle cx="16" cy="16" r="2" fill="#6B2D8B"/></svg>
-          </div>
-          <h4 class="about-vm-title">Our Vision</h4>
-          <p class="about-vm-text" id="aboutVisionText">To be a leading student chapter that inspires the next generation of biomedical engineers and healthcare innovators.</p>
-        </div>
-
-        <!-- Mission card — edit here -->
-        <div class="about-vm-card">
-          <div class="about-vm-icon">
-            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 16l6 6 14-14" stroke="#00A99D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <h4 class="about-vm-title">Our Mission</h4>
-          <p class="about-vm-text" id="aboutMissionText">To foster interdisciplinary learning, research, and community engagement at the intersection of engineering and medicine.</p>
-        </div>
-      </div>
+      <dl class="ab-facts">
+        <div class="ab-fact"><dt>Society</dt><dd>IEEE Engineering in Medicine &amp; Biology Society</dd></div>
+        <div class="ab-fact"><dt>Chapter</dt><dd>Student Chapter</dd></div>
+        <div class="ab-fact"><dt>Host institution</dt><dd>KPR Institute of Engineering and Technology</dd></div>
+        <div class="ab-fact"><dt>Department</dt><dd>Biomedical Engineering</dd></div>
+      </dl>
     </div>
 
-    <!-- Right: Image placeholder -->
     <div class="about-embs-right">
       <div class="about-img-placeholder">
         <span>Chapter / Lab Image</span>
@@ -194,24 +277,181 @@
         <span class="about-est-year" id="aboutEstYear">2018</span>
         <span class="about-est-sub">Est. at Our College</span>
       </div>
+      <p class="ab-figcap" aria-hidden="true"><span>Fig. 01</span> The chapter at work</p>
     </div>
 
   </div>
 </section>
 
-<!-- Key Focus Areas -->
-<section id="vision-mission" class="focus-section">
+
+<!-- ════════════════════════════════════════════════════════════
+     PURPOSE — a pause. One statement, read as you scroll.
+     ════════════════════════════════════════════════════════════ -->
+<section id="purpose" class="ab-purpose" aria-labelledby="abPurposeTitle">
+  <div class="mo-aurora xp-aurora-free" aria-hidden="true"></div>
+  <div class="xp-grid ab-purpose-grid" aria-hidden="true"></div>
+  <svg class="ab-signal" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="abSignalGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#6B2D8B" stop-opacity="0"/>
+        <stop offset="0.25" stop-color="#6B2D8B" stop-opacity="0.65"/>
+        <stop offset="0.75" stop-color="#00A99D" stop-opacity="0.65"/>
+        <stop offset="1" stop-color="#00A99D" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <path class="xp-signal-path" d="M-20 380 C 180 380, 260 300, 420 300 S 640 400, 780 350 S 1020 240, 1160 270 S 1360 330, 1460 300"/>
+    <path class="xp-signal-path xp-signal-path--faint" d="M-20 430 C 220 420, 330 360, 520 372 S 820 440, 1010 404 S 1300 350, 1460 380"/>
+  </svg>
+
+  <div class="ab-purpose-inner">
+    <span class="ab-eyebrow">Why we exist</span>
+    <h2 class="ab-purpose-title" id="abPurposeTitle">Advancing biomedical engineering through research, innovation and collaboration.</h2>
+    <p class="ab-purpose-sub">Advancing innovation at the intersection of engineering and medicine. A student-driven community committed to biomedical research, technology, and impact.</p>
+
+    <ol class="ab-triad" aria-label="What the chapter is dedicated to">
+      <li class="ab-triad-item"><span class="ab-triad-n">i.</span>Research</li>
+      <li class="ab-triad-item"><span class="ab-triad-n">ii.</span>Innovation</li>
+      <li class="ab-triad-item"><span class="ab-triad-n">iii.</span>Collaboration</li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     MISSION → VISION — the present, then the direction.
+     One connected system; the signal travels from one to the other.
+     ════════════════════════════════════════════════════════════ -->
+<section id="vision-mission" class="ab-mv" aria-labelledby="abMvTitle">
+  <div class="xp-grid xp-grid--ink ab-mv-grid" aria-hidden="true"></div>
+
+  <div class="ab-mv-inner">
+    <header class="ab-mv-head">
+      <span class="ab-eyebrow ab-eyebrow--ink">Mission &amp; Vision</span>
+      <h2 class="ab-mv-title" id="abMvTitle">From what we do today<br>to where we are going.</h2>
+    </header>
+
+    <div class="ab-mv-stage">
+      <div class="about-vm-cards">
+
+        <!-- Mission — the present -->
+        <div class="about-vm-card ab-mv-card ab-mv-card--mission">
+          <span class="ab-mv-kicker"><span class="ab-mv-dot"></span>Now</span>
+          <div class="about-vm-icon">
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 16l6 6 14-14" stroke="#00A99D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h4 class="about-vm-title">Our Mission</h4>
+          <p class="about-vm-text" id="aboutMissionText">To foster interdisciplinary learning, research, and community engagement at the intersection of engineering and medicine.</p>
+        </div>
+
+        <!-- The connection between them (decorative) -->
+        <div class="ab-mv-link" aria-hidden="true">
+          <span class="ab-mv-link-track"></span>
+          <span class="ab-mv-link-fill"></span>
+          <span class="ab-mv-link-node"></span>
+        </div>
+
+        <!-- Vision — the direction -->
+        <div class="about-vm-card ab-mv-card ab-mv-card--vision">
+          <span class="ab-mv-glow" aria-hidden="true"></span>
+          <span class="ab-mv-kicker"><span class="ab-mv-dot"></span>Next</span>
+          <div class="about-vm-icon">
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="6" stroke="#6B2D8B" stroke-width="1.8"/><circle cx="16" cy="16" r="12" stroke="#6B2D8B" stroke-width="1.2" stroke-dasharray="3 3"/><circle cx="16" cy="16" r="2" fill="#6B2D8B"/></svg>
+          </div>
+          <h4 class="about-vm-title">Our Vision</h4>
+          <p class="about-vm-text" id="aboutVisionText">To be a leading student chapter that inspires the next generation of biomedical engineers and healthcare innovators.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     WHAT WE DO — the chapter as one connected system.
+     Each node is a real part of the site.
+     ════════════════════════════════════════════════════════════ -->
+<section id="what-we-do" class="ab-do" aria-labelledby="abDoTitle">
+  <div class="xp-grid ab-do-grid" aria-hidden="true"></div>
+
+  <div class="ab-do-inner">
+    <header class="ab-do-head">
+      <span class="ab-eyebrow">What we do</span>
+      <h2 class="ab-do-title" id="abDoTitle">One chapter,<br>five ways in.</h2>
+      <p class="ab-do-sub">Everything the chapter runs connects back to the same purpose — engineering in service of health.</p>
+    </header>
+
+    <div class="ab-eco">
+      <svg class="ab-eco-lines" aria-hidden="true" focusable="false"></svg>
+
+      <div class="ab-eco-hub" aria-hidden="true">
+        <span class="ab-eco-hub-ring"></span>
+        <span class="ab-eco-hub-label">IEEE EMBS<br><small>KPRIET</small></span>
+      </div>
+
+      <a class="ab-eco-node ab-eco-node--a mo-hover-glow" href="events.html">
+        <span class="ab-eco-index">01</span>
+        <h3 class="ab-eco-name">Events &amp; Workshops</h3>
+        <p class="ab-eco-desc">Hands-on workshops, technical conferences and guest lectures.</p>
+        <span class="ab-eco-go">Events <span aria-hidden="true">&rarr;</span></span>
+      </a>
+      <a class="ab-eco-node ab-eco-node--b mo-hover-glow" href="projects.html">
+        <span class="ab-eco-index">02</span>
+        <h3 class="ab-eco-name">Projects &amp; Research</h3>
+        <p class="ab-eco-desc">Student research spanning AI in healthcare, medical imaging, wearables and rehabilitation engineering.</p>
+        <span class="ab-eco-go">Projects <span aria-hidden="true">&rarr;</span></span>
+      </a>
+      <a class="ab-eco-node ab-eco-node--c mo-hover-glow" href="blog.html">
+        <span class="ab-eco-index">03</span>
+        <h3 class="ab-eco-name">Blog &amp; Articles</h3>
+        <p class="ab-eco-desc">Technical write-ups on biomedical engineering, signal processing and medical imaging, written by students.</p>
+        <span class="ab-eco-go">Articles <span aria-hidden="true">&rarr;</span></span>
+      </a>
+      <a class="ab-eco-node ab-eco-node--d mo-hover-glow" href="podcast.html">
+        <span class="ab-eco-index">04</span>
+        <h3 class="ab-eco-name">The EMBS Podcast</h3>
+        <p class="ab-eco-desc">Conversations with researchers, clinicians and alumni about the path from lab to bedside.</p>
+        <span class="ab-eco-go">Listen <span aria-hidden="true">&rarr;</span></span>
+      </a>
+      <a class="ab-eco-node ab-eco-node--e mo-hover-glow" href="gallery.html">
+        <span class="ab-eco-index">05</span>
+        <h3 class="ab-eco-name">Gallery</h3>
+        <p class="ab-eco-desc">Photographs from the events, workshops and competitions the chapter hosts.</p>
+        <span class="ab-eco-go">Gallery <span aria-hidden="true">&rarr;</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     BIOMEDICAL × ENGINEERING — the four focus areas
+     ════════════════════════════════════════════════════════════ -->
+<section id="focus-areas" class="focus-section">
+  <div class="ab-helix" aria-hidden="true">
+    <img src="bg-image-embs/glassdna.jpeg" alt="" loading="lazy" />
+  </div>
+  <div class="xp-grid xp-grid--ink ab-focus-grid" aria-hidden="true"></div>
+
   <div class="focus-container">
 
     <div class="focus-header">
       <span class="focus-label">Research &amp; Innovation</span>
       <h2 class="focus-title">Key Focus Areas</h2>
+      <p class="ab-focus-intro">Where biology meets engineering — the four areas that run through the chapter's projects, articles and talks.</p>
+
+      <ol class="ab-axis" aria-label="The disciplines the chapter connects">
+        <li class="ab-axis-term">Biology</li>
+        <li class="ab-axis-term">Engineering</li>
+        <li class="ab-axis-term">Technology</li>
+        <li class="ab-axis-term">Healthcare</li>
+      </ol>
     </div>
 
     <div class="focus-grid">
 
       <!-- Card 1 — Biomedical Signal Processing -->
-      <div class="focus-card">
+      <div class="focus-card mo-hover-glow">
         <div class="focus-icon">
           <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <polyline points="4,24 10,24 14,12 18,36 22,18 26,30 30,24 44,24" stroke="url(#g1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -224,7 +464,7 @@
       </div>
 
       <!-- Card 2 — Medical Imaging -->
-      <div class="focus-card">
+      <div class="focus-card mo-hover-glow">
         <div class="focus-icon">
           <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="6" y="10" width="36" height="28" rx="4" stroke="url(#g2)" stroke-width="2"/>
@@ -243,7 +483,7 @@
       </div>
 
       <!-- Card 3 — AI in Healthcare -->
-      <div class="focus-card">
+      <div class="focus-card mo-hover-glow">
         <div class="focus-icon">
           <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="24" cy="24" r="8" stroke="url(#g3)" stroke-width="2"/>
@@ -265,7 +505,7 @@
       </div>
 
       <!-- Card 4 — Wearable Health Technology -->
-      <div class="focus-card">
+      <div class="focus-card mo-hover-glow">
         <div class="focus-icon">
           <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="14" y="12" width="20" height="24" rx="5" stroke="url(#g4)" stroke-width="2"/>
@@ -283,119 +523,215 @@
     </div>
   </div>
 </section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     JOURNEY — from founding to today. Milestones come from the CMS.
+     ════════════════════════════════════════════════════════════ -->
 <section id="chapter-history" class="timeline-section">
+  <div class="xp-grid ab-journey-grid" aria-hidden="true"></div>
+
   <div class="timeline-container">
 
     <div class="timeline-header">
       <span class="timeline-label">Our Journey</span>
       <h2 class="timeline-title">Chapter Timeline</h2>
+      <p class="ab-journey-intro">From the chapter's founding to the work it does today.</p>
     </div>
 
     <div class="timeline-layout">
+      <span class="ab-journey-track" aria-hidden="true"><span class="ab-journey-fill"></span></span>
 
-      <!-- Left: Scrollable timeline box -->
+      <div class="ab-milestone ab-milestone--origin">
+        <span class="ab-milestone-dot" aria-hidden="true"></span>
+        <span class="ab-milestone-year" data-ab-est>&mdash;</span>
+        <h3 class="ab-milestone-title">Chapter established</h3>
+        <p class="ab-milestone-desc">The IEEE EMBS Student Chapter is founded at KPR Institute of Engineering and Technology.</p>
+      </div>
+
+      <!-- CMS milestones (GET /api/timeline) render here -->
       <div class="timeline-box">
         <div class="timeline" id="timelineContainer">
           <!-- Timeline entries are populated dynamically by about-timeline.js -->
-          <!-- Hardcoded entries removed; data comes from GET /api/timeline     -->
         </div>
       </div>
 
-      <!-- Right: Core team org chart -->
-      <div id="core-team" class="timeline-right-panel">
-        <span class="timeline-right-label">Leadership</span>
-        <h3 class="timeline-right-heading">Organizational Structure</h3>
-
-        <div class="org-chart">
-
-          <!-- Faculty Advisor -->
-          <div class="org-level">
-            <div class="org-card org-card--advisor">
-              <span class="org-role">Faculty Advisor</span>
-              <span class="org-name org-name--vacant">To be added</span>
-              <span class="org-dept"></span>
-            </div>
-          </div>
-
-          <div class="org-connector"></div>
-
-          <!-- Chair -->
-          <div class="org-level">
-            <div class="org-card org-card--chair">
-              <span class="org-role">Chapter Chair</span>
-              <span class="org-name org-name--vacant">To be added</span>
-            </div>
-          </div>
-
-          <div class="org-connector"></div>
-
-          <!-- Row: Vice Chair + Secretary -->
-          <div class="org-level org-level--row">
-            <div class="org-card org-card--member">
-              <span class="org-role">Vice Chair</span>
-              <span class="org-name org-name--vacant">To be added</span>
-            </div>
-            <div class="org-card org-card--member">
-              <span class="org-role">Secretary</span>
-              <span class="org-name org-name--vacant">To be added</span>
-            </div>
-          </div>
-
-          <div class="org-connector"></div>
-
-          <!-- Row: Treasurer + Joint Treasurer -->
-          <div class="org-level org-level--row">
-            <div class="org-card org-card--member">
-              <span class="org-role">Treasurer</span>
-              <span class="org-name org-name--vacant">To be added</span>
-            </div>
-            <div class="org-card org-card--member">
-              <span class="org-role">Joint Treasurer</span>
-              <span class="org-name org-name--vacant">To be added</span>
-            </div>
-          </div>
-
-        </div>
+      <div class="ab-milestone ab-milestone--now">
+        <span class="ab-milestone-dot" aria-hidden="true"></span>
+        <span class="ab-milestone-year">Today</span>
+        <h3 class="ab-milestone-title">An active student chapter</h3>
+        <p class="ab-milestone-desc">Events, projects, articles and the EMBS Podcast — see what is happening now on <a href="activities.html">Activities</a>.</p>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- Join EMBS Section -->
-<section id="join-embs" class="join-section">
-  <div class="join-container">
-    <span class="join-label">Be Part of Something Bigger</span>
-    <h2 class="join-title">Join IEEE EMBS</h2>
-    <p class="join-desc">Whether you are passionate about biomedical research, healthcare technology, or simply want to grow as an engineer — IEEE EMBS is your community. Connect, learn, and lead.</p>
-    <div class="join-actions">
-      <a href="contact.html" class="join-btn">Become a Member</a>
-      <!-- Brochure button — shown/hidden and href populated by about-brochure.js -->
-      <a id="brochureBtn"
-         href="#"
-         class="join-btn join-btn--outline"
-         target="_blank"
-         rel="noopener"
-         aria-label="Download chapter brochure"
-         style="display:none;">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-             style="vertical-align:middle;margin-right:6px;" aria-hidden="true">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
-                stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-          <polyline points="7,10 12,15 17,10"
-                    stroke="currentColor" stroke-width="1.7"
-                    stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="12" y1="15" x2="12" y2="3"
-                stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-        </svg>
-        Download Brochure
+
+<!-- ════════════════════════════════════════════════════════════
+     PEOPLE — faculty guidance and student leadership (CMS)
+     ════════════════════════════════════════════════════════════ -->
+<section id="people" class="ab-people" aria-labelledby="abPeopleTitle">
+  <div class="xp-grid xp-grid--ink ab-people-grid" aria-hidden="true"></div>
+
+  <div class="ab-people-inner">
+    <header class="ab-people-head">
+      <span class="ab-eyebrow ab-eyebrow--ink">People</span>
+      <h2 class="ab-people-title" id="abPeopleTitle">The people<br>who drive it.</h2>
+      <p class="ab-people-sub">Guided by faculty of the Department of Biomedical Engineering, and led by the chapter's student office-bearers.</p>
+    </header>
+
+    <div class="ab-faculty" id="abFaculty">
+      <span class="ab-people-kicker">Faculty Advisors</span>
+      <div class="ab-faculty-grid" id="abFacultyGrid" aria-live="polite">
+        <!-- Rendered by about-people.js from GET /api/members?advisor=true -->
+      </div>
+    </div>
+
+    <div id="core-team" class="timeline-right-panel">
+      <span class="timeline-right-label">Leadership</span>
+      <h3 class="timeline-right-heading">Organizational Structure</h3>
+
+      <div class="org-chart">
+
+        <!-- Faculty Advisor -->
+        <div class="org-level">
+          <div class="org-card org-card--advisor">
+            <span class="org-role">Faculty Advisor</span>
+            <span class="org-name org-name--vacant">To be added</span>
+            <span class="org-dept"></span>
+          </div>
+        </div>
+
+        <div class="org-connector"></div>
+
+        <!-- Chair -->
+        <div class="org-level">
+          <div class="org-card org-card--chair">
+            <span class="org-role">Chapter Chair</span>
+            <span class="org-name org-name--vacant">To be added</span>
+          </div>
+        </div>
+
+        <div class="org-connector"></div>
+
+        <!-- Row: Vice Chair + Secretary -->
+        <div class="org-level org-level--row">
+          <div class="org-card org-card--member">
+            <span class="org-role">Vice Chair</span>
+            <span class="org-name org-name--vacant">To be added</span>
+          </div>
+          <div class="org-card org-card--member">
+            <span class="org-role">Secretary</span>
+            <span class="org-name org-name--vacant">To be added</span>
+          </div>
+        </div>
+
+        <div class="org-connector"></div>
+
+        <!-- Row: Treasurer + Joint Treasurer -->
+        <div class="org-level org-level--row">
+          <div class="org-card org-card--member">
+            <span class="org-role">Treasurer</span>
+            <span class="org-name org-name--vacant">To be added</span>
+          </div>
+          <div class="org-card org-card--member">
+            <span class="org-role">Joint Treasurer</span>
+            <span class="org-name org-name--vacant">To be added</span>
+          </div>
+        </div>
+
+      </div>
+      <a class="ab-people-more" href="members.html">Meet the full team <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     COMMUNITY — live figures from the chapter's own records
+     (home-stats.js fills the numbers; no figure is hardcoded)
+     ════════════════════════════════════════════════════════════ -->
+<section id="community" class="ab-impact" aria-labelledby="abImpactTitle">
+  <div class="mo-aurora ab-impact-aurora xp-aurora-free" aria-hidden="true"></div>
+  <div class="xp-grid ab-impact-grid-bg" aria-hidden="true"></div>
+
+  <div class="ab-impact-inner">
+    <header class="ab-impact-head">
+      <span class="ab-eyebrow">Community</span>
+      <h2 class="ab-impact-title" id="abImpactTitle">A chapter in motion.</h2>
+      <p class="ab-impact-sub">Live figures from the chapter's own records — the members, events, projects and achievements published on this site.</p>
+    </header>
+
+    <div class="ab-impact-grid">
+      <a class="ab-stat mo-hover-glow" href="members.html">
+        <span class="ab-stat-num stat-number" id="heroStatMembers">&mdash;</span>
+        <span class="ab-stat-label">Members</span>
+        <span class="ab-stat-go">Meet the team <span aria-hidden="true">&rarr;</span></span>
       </a>
-      <!-- Shown only when API returns no brochure -->
-      <span id="brochureSoon"
-            style="display:none;font-size:0.78rem;color:rgba(200,210,230,0.35);
-                   font-family:'DM Sans',sans-serif;letter-spacing:0.02em;">
-        Brochure coming soon
-      </span>
+      <a class="ab-stat mo-hover-glow" href="events.html">
+        <span class="ab-stat-num stat-number" id="heroStatActivities">&mdash;</span>
+        <span class="ab-stat-label">Events</span>
+        <span class="ab-stat-go">See events <span aria-hidden="true">&rarr;</span></span>
+      </a>
+      <a class="ab-stat mo-hover-glow" href="projects.html">
+        <span class="ab-stat-num stat-number" id="heroStatProjects">&mdash;</span>
+        <span class="ab-stat-label">Projects</span>
+        <span class="ab-stat-go">View projects <span aria-hidden="true">&rarr;</span></span>
+      </a>
+      <a class="ab-stat mo-hover-glow" href="achievements.html">
+        <span class="ab-stat-num stat-number" id="heroStatAwards">&mdash;</span>
+        <span class="ab-stat-label">Achievements</span>
+        <span class="ab-stat-go">Recognition <span aria-hidden="true">&rarr;</span></span>
+      </a>
+      <div class="ab-stat ab-stat--since">
+        <span class="ab-stat-num" data-ab-est>&mdash;</span>
+        <span class="ab-stat-label">Year established</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     JOIN — the closing invitation. Reprises the opening light.
+     ════════════════════════════════════════════════════════════ -->
+<section id="join-embs" class="join-section xp-cta">
+  <div class="xp-cta-panel">
+    <div class="mo-aurora" aria-hidden="true"></div>
+    <div class="xp-grid xp-grid--cta" aria-hidden="true"></div>
+    <div class="join-container xp-cta-inner">
+      <span class="join-label">Be Part of Something Bigger</span>
+      <h2 class="join-title xp-cta-title">Join<br>IEEE EMBS</h2>
+      <p class="join-desc xp-cta-sub">Whether you are passionate about biomedical research, healthcare technology, or simply want to grow as an engineer — IEEE EMBS is your community. Connect, learn, and lead.</p>
+      <div class="join-actions">
+        <a href="contact.html" class="join-btn mo-sheen xp-magnetic">Become a Member</a>
+        <!-- Brochure button — shown/hidden and href populated by about-brochure.js -->
+        <a id="brochureBtn"
+           href="#"
+           class="join-btn join-btn--outline mo-sheen"
+           target="_blank"
+           rel="noopener"
+           aria-label="Download chapter brochure"
+           style="display:none;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+               style="vertical-align:middle;margin-right:6px;" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                  stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            <polyline points="7,10 12,15 17,10"
+                      stroke="currentColor" stroke-width="1.7"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="12" y1="15" x2="12" y2="3"
+                  stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+          Download Brochure
+        </a>
+        <!-- Shown only when API returns no brochure -->
+        <span id="brochureSoon"
+              style="display:none;font-size:0.78rem;color:rgba(200,210,230,0.35);
+                     font-family:'DM Sans',sans-serif;letter-spacing:0.02em;">
+          Brochure coming soon
+        </span>
+      </div>
     </div>
   </div>
 </section>
@@ -478,29 +814,14 @@
 <script src="about-info.js" defer></script>
 <script src="about-brochure.js" defer></script>
 <script src="page-hero-image.js" defer></script>
-<script>
-  /* ── About page animation config ── */
-  window.EMBS_ANIM_CONFIG = {
-    hero: {
-      /* about.html has no true hero; the first section IS the content.
-         Treat .about-embs-heading as a page-entry heading with a
-         gentle delayed reveal (no word split — too short to benefit). */
-      heading:   '.about-embs-heading',
-      sub:       '.about-embs-desc',
-      baseDelay: 100
-    },
-    sections: [
-      { label: '.focus-label',    heading: '.focus-title' },
-      { label: '.timeline-label', heading: '.timeline-title' },
-      { label: '.join-label',     heading: '.join-title' }
-    ],
-    stagger: [
-      { container: '.focus-grid',   child: '.focus-card' },
-      { container: '.about-vm-cards', child: '.about-vm-card' }
-    ]
-  };
-</script>
-<script src="animations.js" defer></script>
+<script src="home-stats.js" defer></script>
+<script src="about-people.js" defer></script>
+<!-- About motion engine. GSAP + ScrollTrigger own every animation on this
+     page; animations.js and motion.js are intentionally not loaded here. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+<script src="experience-core.js" defer></script>
+<script src="about-experience.js" defer></script>
 </body>
 </html>
 

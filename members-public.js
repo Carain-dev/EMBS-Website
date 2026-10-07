@@ -60,6 +60,21 @@
 
   /* ─── Helpers ─────────────────────────────────────────────────────── */
 
+  /* CMS fields are plain text: escape them before they go into HTML, and
+     only allow http(s)/mailto/tel or same-site links (never javascript:). */
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function safeUrl(u, fallback) {
+    var s = String(u == null ? '' : u).trim();
+    var probe = s.replace(/[\u0000-\u0020\u007f]/g, '');
+    if (!s) return fallback || '';
+    if (/^[a-z][a-z0-9+.-]*:/i.test(probe) && !/^(https?|mailto|tel):/i.test(probe)) return fallback || '';
+    return s;
+  }
+
   function safeText(value, fallback) {
     if (fallback === undefined) fallback = '';
     const text = String(value != null ? value : '').trim();
@@ -211,17 +226,17 @@
     article.innerHTML = '\n' +
       '      <div class="cteam-card-top">\n' +
       '        <div class="cteam-avatar-wrap">\n' +
-      (member && member.photo ? '          <img src="' + member.photo + '" alt="' + name + '" class="cteam-avatar-img" />\n' : '') +
-      '          <div class="cteam-avatar-placeholder" aria-hidden="true">' + initials(name) + '</div>\n' +
+      (member && member.photo ? '          <img src="' + esc(member.photo) + '" alt="' + esc(name) + '" class="cteam-avatar-img" />\n' : '') +
+      '          <div class="cteam-avatar-placeholder" aria-hidden="true">' + esc(initials(name)) + '</div>\n' +
       '        </div>\n' +
-      '        <div class="' + badgeClass + '">' + role + '</div>\n' +
+      '        <div class="' + badgeClass + '">' + esc(role) + '</div>\n' +
       '      </div>\n' +
       '      <div class="cteam-card-body">\n' +
-      '        <h3 class="cteam-name">' + name + '</h3>\n' +
-      '        <p class="cteam-position">' + role + '</p>\n' +
-      (member && member.batch ? '        <p class="cteam-dept">' + member.batch + '</p>\n' : '') +
-      (member && member.linkedin
-        ? '        <div class="cteam-actions"><a href="' + member.linkedin + '" target="_blank" rel="noopener" class="cteam-btn cteam-btn--linkedin" aria-label="LinkedIn">' + LI_SVG + ' LinkedIn</a></div>\n'
+      '        <h3 class="cteam-name">' + esc(name) + '</h3>\n' +
+      '        <p class="cteam-position">' + esc(role) + '</p>\n' +
+      (member && member.batch ? '        <p class="cteam-dept">' + esc(member.batch) + '</p>\n' : '') +
+      (member && safeUrl(member.linkedin)
+        ? '        <div class="cteam-actions"><a href="' + esc(safeUrl(member.linkedin)) + '" target="_blank" rel="noopener" class="cteam-btn cteam-btn--linkedin" aria-label="LinkedIn">' + LI_SVG + ' LinkedIn</a></div>\n'
         : '') +
       '      </div>';
     return article;
@@ -244,15 +259,15 @@
 
     article.innerHTML =
       '<div class="smem-avatar-wrap">' +
-        (member && member.photo ? '<img src="' + member.photo + '" alt="' + name + '" class="smem-avatar-img" />' : '') +
-        '<div class="smem-avatar-placeholder" aria-hidden="true">' + initials(name) + '</div>' +
+        (member && member.photo ? '<img src="' + esc(member.photo) + '" alt="' + esc(name) + '" class="smem-avatar-img" />' : '') +
+        '<div class="smem-avatar-placeholder" aria-hidden="true">' + esc(initials(name)) + '</div>' +
       '</div>' +
       '<div class="smem-card-body">' +
-        '<h3 class="smem-name">' + name + '</h3>' +
-        '<p class="smem-dept">' + role + '</p>' +
-        (batch ? '<p class="smem-meta"><span class="smem-year">' + batch + '</span></p>' : '') +
+        '<h3 class="smem-name">' + esc(name) + '</h3>' +
+        '<p class="smem-dept">' + esc(role) + '</p>' +
+        (batch ? '<p class="smem-meta"><span class="smem-year">' + esc(batch) + '</span></p>' : '') +
         (id
-          ? '<a href="student-profile.html?id=' + id + '" class="smem-connect-btn" aria-label="View profile of ' + name + '">' + PROFILE_SVG + ' View Profile</a>'
+          ? '<a href="student-profile.html?id=' + encodeURIComponent(id) + '" class="smem-connect-btn" aria-label="View profile of ' + esc(name) + '">' + PROFILE_SVG + ' View Profile</a>'
           : '') +
       '</div>';
     return article;
@@ -349,12 +364,12 @@
     var inits  = initials(name);
 
     var photoHTML = member.photo
-      ? '<img src="' + member.photo + '" alt="' + name + '" class="fac-adv-avatar-img" />'
+      ? '<img src="' + esc(member.photo) + '" alt="' + esc(name) + '" class="fac-adv-avatar-img" />'
       : '';
 
-    var deptLine  = dept  ? '<p class="fac-adv-dept">' + dept  + '</p>' : '';
-    var bioBlock  = bio   ? '<p class="fac-adv-research"><span class="fac-adv-research-label">Research Area</span>' + bio + '</p>' : '';
-    var emailBtn  = email ? '<div class="fac-adv-actions"><a href="mailto:' + email + '" class="fac-adv-btn fac-adv-btn--email">' + EMAIL_SVG + ' Email</a></div>' : '';
+    var deptLine  = dept  ? '<p class="fac-adv-dept">' + esc(dept)  + '</p>' : '';
+    var bioBlock  = bio   ? '<p class="fac-adv-research"><span class="fac-adv-research-label">Research Area</span>' + esc(bio) + '</p>' : '';
+    var emailBtn  = email ? '<div class="fac-adv-actions"><a href="mailto:' + esc(email) + '" class="fac-adv-btn fac-adv-btn--email">' + EMAIL_SVG + ' Email</a></div>' : '';
 
     var article = document.createElement('article');
     article.className = 'fac-adv-card';
@@ -362,13 +377,13 @@
       '<div class="fac-adv-card-left">' +
         '<div class="fac-adv-avatar-wrap">' +
           photoHTML +
-          '<div class="fac-adv-avatar-placeholder" aria-hidden="true">' + inits + '</div>' +
+          '<div class="fac-adv-avatar-placeholder" aria-hidden="true">' + esc(inits) + '</div>' +
         '</div>' +
       '</div>' +
       '<div class="fac-adv-card-body">' +
-        '<span class="' + fadRoleTagClass(role) + '">' + role + '</span>' +
-        '<h3 class="fac-adv-name">' + name + '</h3>' +
-        (desig ? '<p class="fac-adv-designation">' + desig + '</p>' : '') +
+        '<span class="' + fadRoleTagClass(role) + '">' + esc(role) + '</span>' +
+        '<h3 class="fac-adv-name">' + esc(name) + '</h3>' +
+        (desig ? '<p class="fac-adv-designation">' + esc(desig) + '</p>' : '') +
         deptLine +
         bioBlock +
         emailBtn +

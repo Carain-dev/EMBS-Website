@@ -1,4 +1,12 @@
 if (localStorage.getItem('embs_admin_auth') !== 'true') window.location.href = 'index.html';
+
+/* CMS values are plain text typed by editors (and subscriber emails come from
+   the public form): escape them before they go into innerHTML, and only allow
+   http(s) links, so stored markup cannot run script in an admin's session. */
+function admEsc(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function admHref(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? admEsc(String(u).trim()) : ''; }
 'use strict';
 
 const API    = window.EMBS_API_BASE;
@@ -137,20 +145,20 @@ function renderTable() {
     const toggleClass  = ep.published ? 'action-btn--unpublish' : 'action-btn--publish-quick';
 
     tr.innerHTML = `
-      <td><span class="td-ep-num">${ep.episodeNumber}</span></td>
+      <td><span class="td-ep-num">${admEsc(ep.episodeNumber)}</span></td>
       <td>
-        <div class="td-title">${ep.title}</div>
-        ${ep.spotifyUrl ? `<a class="td-spotify-link" href="${ep.spotifyUrl}" target="_blank" rel="noopener">Spotify ↗</a>` : ''}
+        <div class="td-title">${admEsc(ep.title)}</div>
+        ${ep.spotifyUrl ? `<a class="td-spotify-link" href="${admHref(ep.spotifyUrl)}" target="_blank" rel="noopener">Spotify ↗</a>` : ''}
       </td>
       <td>
-        <div class="td-guest-name">${ep.guestName || ''}</div>
-        <div class="td-guest-desig">${ep.guestDesignation || ''}</div>
+        <div class="td-guest-name">${admEsc(ep.guestName || '')}</div>
+        <div class="td-guest-desig">${admEsc(ep.guestDesignation || '')}</div>
       </td>
-      <td><span class="td-duration">${ep.duration || ''}</span></td>
+      <td><span class="td-duration">${admEsc(ep.duration || '')}</span></td>
       <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
       <td>
         <div class="action-btns">
-          <button class="action-btn ${toggleClass}" data-id="${ep._id}" data-published="${ep.published}">
+          <button class="action-btn ${toggleClass}" data-id="${admEsc(ep._id)}" data-published="${admEsc(ep.published)}">
             <svg viewBox="0 0 24 24" fill="none" width="12" height="12">
               ${ep.published
                 ? '<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><line x1="15" y1="9" x2="9" y2="15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="9" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>'
@@ -158,11 +166,11 @@ function renderTable() {
             </svg>
             ${toggleLabel}
           </button>
-          <button class="action-btn action-btn--edit" data-id="${ep._id}">
+          <button class="action-btn action-btn--edit" data-id="${admEsc(ep._id)}">
             <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Edit
           </button>
-          <button class="action-btn action-btn--delete" data-id="${ep._id}">
+          <button class="action-btn action-btn--delete" data-id="${admEsc(ep._id)}">
             <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
             Delete
           </button>

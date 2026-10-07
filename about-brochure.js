@@ -29,7 +29,7 @@
       var brochure = docs.find(function (d) {
         return d && d.category &&
                d.category.trim().toLowerCase() === 'brochure' &&
-               d.fileUrl;
+               /^https?:\/\//i.test(String(d.fileUrl).trim());
       });
 
       if (brochure) {

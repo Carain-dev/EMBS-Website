@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const mongoose = require('mongoose');
 const Document = require('../models/Document');
 const { sendResponse, sendError } = require('../utils/sendResponse');
+const { resolveAdminView, denyMessage } = require('../utils/requestAuth');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
@@ -11,7 +12,9 @@ exports.getPublicDocuments = asyncHandler(async (req, res) => {
 });
 
 exports.getAll = asyncHandler(async (req, res) => {
-  const filter = req.query.all === 'true' ? {} : { published: true, public: true };
+  const view = await resolveAdminView(req, { flags: ['all'], header: false });
+  if (view.deny) return sendError(res, view.deny, denyMessage(view.deny));
+  const filter = view.admin ? {} : { published: true, public: true };
   const documents = await Document.find(filter).sort({ order: 1, createdAt: -1 });
   sendResponse(res, 200, documents);
 });
@@ -20,6 +23,8 @@ exports.getOne = asyncHandler(async (req, res) => {
   if (!isValidId(req.params.id)) return sendError(res, 400, 'Invalid document ID');
   const document = await Document.findById(req.params.id);
   if (!document) return sendError(res, 404, 'Document not found');
+  if (!(document.published && document.public) && !(await resolveAdminView(req, { flags: ['all'] })).admin)
+    return sendError(res, 404, 'Document not found');
   sendResponse(res, 200, document);
 });
 

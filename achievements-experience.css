@@ -1,0 +1,369 @@
+/* ================================================================
+   achievements-experience.css — IEEE EMBS KPRIET (achievements.html)
+
+   ACHIEVEMENTS = PROGRESS. The site's signal motif rises here: the
+   hero is an ascending line of milestones, and the record below is a
+   single progress spine — every achievement achievements-public.js
+   renders becomes a node on it, newest first. Figures only appear
+   when there is something to count; until the first achievement is
+   published the page says so plainly and leads to "Share your win".
+
+   GROUND   hero night · record cool paper · figures paper ·
+            share panel dark
+   ================================================================ */
+
+:root {
+  --akx-paper: #eef1f6;
+  --akx-ink:   #0d1030;
+  --akx-soft:  #4f5675;
+  --akx-rule:  rgba(13, 16, 48, 0.12);
+}
+
+/* achievements-public.js replaces the markup's sample cards — they are
+   held back while it runs so they never flash as real records */
+html.akx-pending .ach-cards-grid > .ach-card { visibility: hidden; }
+
+
+/* ── 1. HERO — the ascent ──────────────────────────────────────── */
+
+.ach-hero.akx-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  background:
+    radial-gradient(ellipse 50% 60% at 80% 30%, rgba(0, 169, 157, 0.16) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 10% 90%, rgba(107, 45, 139, 0.24) 0%, transparent 70%),
+    linear-gradient(170deg, #0a0e1a 0%, #0d1530 60%, #081a1d 100%);
+  color: var(--pg-text);
+}
+
+.akx-hero .ach-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: min(92svh, 860px);
+  padding: calc(var(--pg-nav) + 4rem) var(--pg-gutter) 4.4rem;
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 3rem;
+  align-items: center;
+}
+
+.akx-hero .ach-hero-label {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pg-teal-hi);
+}
+
+.akx-hero .ach-hero-heading {
+  margin: 1.4rem 0 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(2.8rem, 6vw, 5.4rem);
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+  color: #eef0fa;
+}
+
+.akx-hero .ach-hero-desc {
+  margin: 1.8rem 0 0;
+  max-width: 480px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--pg-text-soft);
+}
+
+/* the clip-art trophy stays in the markup but gives way to the ascent */
+.akx-hero .ach-hero-illus { display: none; }
+
+.akx-hero .ach-hero-right { position: relative; align-self: stretch; min-height: 380px; }
+
+.akx-climb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.akx-climb-axis { stroke: rgba(170, 185, 230, 0.12); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.akx-climb-tick { stroke: rgba(170, 185, 230, 0.22); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.akx-climb-path { fill: none; stroke: url(#akxGrad); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.akx-climb-area { fill: url(#akxArea); }
+.akx-climb-node { fill: #0d1530; stroke: #2fd3c6; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.akx-climb-node--top { fill: #2fd3c6; }
+
+@media (prefers-reduced-motion: no-preference) {
+  html.embs-motion .akx-climb-path { stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: akx-draw 2.6s cubic-bezier(0.65, 0, 0.35, 1) 0.4s forwards; }
+  html.embs-motion .akx-climb-area { opacity: 0; animation: akx-fade 1.6s ease 1.6s forwards; }
+  html.embs-motion .akx-climb-node { opacity: 0; animation: akx-fade 0.8s ease forwards; animation-delay: calc(0.8s + var(--i, 0) * 0.35s); }
+}
+
+@keyframes akx-draw { to { stroke-dashoffset: 0; } }
+@keyframes akx-fade { to { opacity: 1; } }
+
+.akx-climb-cap {
+  position: absolute;
+  right: 0;
+  top: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(200, 210, 230, 0.45);
+}
+
+
+/* ── 2. FILTERS — categories ───────────────────────────────────── */
+
+.ach-filters-section.akx-filters {
+  padding: 0;
+  background: var(--akx-paper);
+  border-bottom: 1px solid var(--akx-rule);
+}
+
+.akx-filters .ach-filters-inner { max-width: 1200px; margin: 0 auto; padding: 1.3rem var(--pg-gutter); }
+.akx-filters .ach-filters { justify-content: flex-start; gap: 0.4rem; margin: 0; }
+
+.akx-filters .ach-chip {
+  min-height: 40px;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(13, 16, 48, 0.16);
+  background: transparent;
+  color: var(--akx-soft);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  box-shadow: none;
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.akx-filters .ach-chip:hover { color: var(--akx-ink); border-color: var(--pg-teal); background: rgba(0, 169, 157, 0.06); transform: none; }
+.akx-filters .ach-chip.active { color: #fff; background: var(--akx-ink); border-color: var(--akx-ink); }
+.akx-filters .ach-chip:focus-visible { outline: 2px solid var(--pg-teal); outline-offset: 2px; }
+
+
+/* ── 3. THE RECORD — a progress spine ──────────────────────────── */
+
+.ach-cards-section.akx-record {
+  position: relative;
+  padding: 6rem 0 6rem;
+  background: linear-gradient(180deg, var(--akx-paper) 0%, #e8ecf3 100%);
+  color: var(--akx-ink);
+}
+
+.akx-record .ach-cards-inner { max-width: 1000px; margin: 0 auto; padding: 0 var(--pg-gutter); }
+
+.akx-record-head { margin-bottom: 3rem; }
+.akx-record-head .pg-title { color: var(--akx-ink); font-size: clamp(2rem, 4vw, 3.3rem); }
+.akx-record-head .pg-sub { color: var(--akx-soft); margin-top: 1rem; }
+
+.akx-record .ach-cards-grid {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-left: 3rem;
+}
+
+/* the spine itself */
+.akx-record .ach-cards-grid::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #00A99D, #6B2D8B);
+  opacity: 0.6;
+}
+
+.akx-record .ach-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  grid-template-areas: "icon top" "icon body";
+  column-gap: 1.4rem;
+  padding: 1.6rem 1.6rem 1.7rem;
+  margin-bottom: 1.2rem;
+  border-radius: 18px;
+  border: 1px solid var(--akx-rule);
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: none;
+  transform: none;
+  overflow: visible;                 /* the spine node sits outside the card */
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease;
+}
+
+.akx-record .ach-card::before { display: none; }
+
+/* each record is a node on the spine */
+.akx-record .ach-card::after {
+  content: '';
+  position: absolute;
+  left: calc(-3rem + 3px);
+  top: 2rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--akx-paper);
+  border: 2px solid #00A99D;
+  box-shadow: 0 0 0 5px rgba(0, 169, 157, 0.12);
+}
+
+.akx-record .ach-card:first-of-type::after { background: #00A99D; }
+.akx-record .ach-card:hover { transform: none; border-color: rgba(0, 169, 157, 0.45); background: #fff; box-shadow: 0 24px 60px rgba(13, 16, 48, 0.08); }
+
+.akx-record .ach-card-top { grid-area: icon; display: block; margin: 0; }
+.akx-record .ach-card-icon { width: 56px; height: 56px; border-radius: 16px; background: rgba(0, 169, 157, 0.08); border: 1px solid rgba(0, 169, 157, 0.2); display: grid; place-items: center; margin: 0; }
+.akx-record .ach-card-badge { display: inline-block; margin-top: 0.7rem; font-size: 0.56rem; padding: 0.2rem 0.5rem; }
+.akx-record .ach-card-img-wrap { grid-column: 2; margin: 0 0 1rem; border-radius: 12px; overflow: hidden; max-height: 280px; }
+.akx-record .ach-card-img { width: 100%; height: 100%; object-fit: cover; }
+.akx-record .ach-card-body { grid-area: body; gap: 0.55rem; }
+.akx-record .ach-card-title { margin: 0; font-family: var(--font-heading); font-weight: 700; font-size: clamp(1.15rem, 1.9vw, 1.5rem); line-height: 1.2; letter-spacing: -0.012em; color: var(--akx-ink); }
+.akx-record .ach-card-desc { margin: 0; font-family: var(--font-body); font-size: 0.9rem; line-height: 1.7; color: var(--akx-soft); }
+.akx-record .ach-card-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; margin-top: 0.3rem; color: var(--akx-soft); font-family: var(--font-body); font-size: 0.78rem; }
+.akx-record .ach-card-recipient, .akx-record .ach-card-date { display: inline-flex; align-items: center; gap: 0.4rem; color: inherit; }
+
+/* nothing published yet: the spine waits at its first node */
+.akx-record.is-empty .ach-cards-grid { padding-left: 3rem; min-height: 0; }
+.akx-record.is-empty .ach-cards-grid::before { bottom: auto; height: 3.4rem; opacity: 0.35; }
+
+.akx-record .embs-empty {
+  position: relative;
+  margin: 0;
+  padding: 1.4rem 1.6rem;
+  border: 1px dashed rgba(13, 16, 48, 0.2);
+  border-radius: 16px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--akx-soft);
+}
+
+.akx-record .embs-empty::after {
+  content: '';
+  position: absolute;
+  left: calc(-3rem + 3px);
+  top: 1.55rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--akx-paper);
+  border: 2px dashed rgba(0, 169, 157, 0.7);
+}
+
+.akx-empty-next { display: none; }
+.akx-record.is-empty .akx-empty-next {
+  display: block;
+  margin: 1.2rem 0 0 3rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--akx-soft);
+}
+
+
+/* ── 4. FIGURES — only when there is something to count ────────── */
+
+.ach-stats-section.akx-figures {
+  padding: 5rem 0;
+  background: #e8ecf3;
+  border-top: 1px solid var(--akx-rule);
+}
+
+.ach-stats-section.akx-figures.is-zero { display: none; }
+
+.akx-figures .ach-stats-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 var(--pg-gutter);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--akx-rule);
+}
+
+.akx-figures .ach-stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 1.5rem 1.2rem 0 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  text-align: left;
+}
+
+.akx-figures .ach-stat-card:hover { transform: none; }
+.akx-figures .ach-stat-icon { display: none; }
+.akx-figures .ach-stat-number { font-family: var(--font-heading); font-weight: 700; font-size: clamp(2.4rem, 4.4vw, 3.6rem); line-height: 0.95; letter-spacing: -0.04em; color: var(--akx-ink); background: none; -webkit-text-fill-color: currentColor; }
+.akx-figures .ach-stat-label { font-family: var(--font-body); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--akx-soft); }
+
+/* proportion of the total (set by achievements-experience.js) */
+.akx-bar { display: block; width: 100%; height: 3px; border-radius: 3px; background: var(--akx-rule); overflow: hidden; }
+.akx-bar i { display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: linear-gradient(90deg, #6B2D8B, #00A99D); }
+
+
+/* ── 5. SHARE YOUR WIN — the closing step ──────────────────────── */
+
+.ach-submit-section.akx-share {
+  position: relative;
+  overflow: hidden;
+  padding: 8rem 0 6rem;
+  background:
+    radial-gradient(ellipse 50% 60% at 50% 100%, rgba(0, 169, 157, 0.16) 0%, transparent 70%),
+    linear-gradient(170deg, #0a0e1a 0%, #0d1530 70%, #0a1a1c 100%);
+  color: var(--pg-text);
+}
+
+.akx-share .ach-submit-inner { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding: 0 var(--pg-gutter); text-align: left; }
+.akx-share .ach-submit-label { display: inline-block; margin: 0; padding: 0; background: none; border: 0; font-family: var(--font-body); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--pg-teal-hi); }
+.akx-share .ach-submit-heading { margin: 1.2rem 0 0; font-family: var(--font-heading); font-weight: 700; font-size: clamp(2.3rem, 5vw, 4.4rem); line-height: 1; letter-spacing: -0.035em; color: #eef0fa; }
+.akx-share .ach-submit-label,
+.akx-share .ach-submit-heading,
+.akx-share .ach-submit-desc { text-align: left; }
+.akx-share .ach-submit-desc { margin: 1.6rem 0 0; max-width: 560px; font-family: var(--font-body); font-size: 1rem; line-height: 1.8; color: var(--pg-text-soft); }
+.akx-share .ach-submit-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: flex-start; margin-top: 2.4rem; }
+.akx-share .ach-submit-btn--primary { display: inline-flex; align-items: center; min-height: 48px; padding: 0.8rem 1.8rem; border-radius: 999px; background: linear-gradient(90deg, #6B2D8B, #00A99D); color: #fff; border: 0; box-shadow: 0 12px 34px rgba(107, 45, 139, 0.3); text-decoration: none; font-family: var(--font-body); font-weight: 600; }
+
+
+/* ── 6. RESPONSIVE ─────────────────────────────────────────────── */
+
+@media (max-width: 1023px) {
+  .akx-hero .ach-hero-inner { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .akx-hero .ach-hero-right { min-height: 260px; }
+  .akx-figures .ach-stats-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .akx-figures .ach-stat-card { padding-bottom: 1.4rem; }
+}
+
+@media (max-width: 767px) {
+  .akx-hero .ach-hero-inner { padding-top: calc(var(--pg-nav) + 2.4rem); padding-bottom: 3rem; gap: 2rem; }
+  .akx-hero .ach-hero-heading { font-size: clamp(2.6rem, 13vw, 4rem); }
+  .akx-hero .ach-hero-right { min-height: 200px; }
+  .akx-filters .ach-filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .akx-filters .ach-filters::-webkit-scrollbar { display: none; }
+  .akx-filters .ach-chip { flex: 0 0 auto; }
+  .ach-cards-section.akx-record { padding: 4.5rem 0; }
+  .akx-record .ach-cards-grid { padding-left: 2.2rem; }
+  .akx-record .ach-card { grid-template-columns: minmax(0, 1fr); grid-template-areas: "top" "body"; padding: 1.3rem; }
+  .akx-record .ach-card::after, .akx-record .embs-empty::after { left: calc(-2.2rem + 3px); }
+  .akx-record .ach-card-top { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem; }
+  .akx-record .ach-card-icon { width: 44px; height: 44px; }
+  .akx-record .ach-card-badge { margin-top: 0; }
+  .akx-record.is-empty .akx-empty-next { margin-left: 2.2rem; }
+  .ach-submit-section.akx-share { padding: 5.5rem 0 4.5rem; }
+}

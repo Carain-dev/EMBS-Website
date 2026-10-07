@@ -30,6 +30,14 @@
   <link rel="stylesheet" href="blog.css" />
   <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
+  <!-- Shared motion + visual language (as on Home, About, Activities).
+       motion.js must run in <head>: it only sets a class now and does
+       its DOM work on DOMContentLoaded. -->
+  <link rel="stylesheet" href="motion.css" />
+  <link rel="stylesheet" href="experience.css" />
+  <link rel="stylesheet" href="pages-experience.css" />
+  <link rel="stylesheet" href="blog-experience.css" />
+  <script src="motion.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#blog-main">Skip to main content</a>
@@ -113,6 +121,8 @@
   <div class="announce-track-wrap">
     <div class="announce-track"></div>
   </div>
+  <!-- Page progress hairline (pages-kit.js) -->
+  <span class="xp-progress" aria-hidden="true"></span>
 </div>
 
 <!-- ═══════════════════════════════════════
@@ -123,27 +133,38 @@
 <!-- ═══════════════════════════════════════
      HERO SECTION
 ════════════════════════════════════════ -->
-<section class="blog-hero">
+<section class="blog-hero bgx-masthead" aria-labelledby="bgxTitle">
   <div class="blog-hero-inner">
-
     <div class="blog-hero-left">
-      <span class="blog-hero-label">Articles</span>
-      <h1 class="blog-hero-heading">Blog &amp; Articles</h1>
-      <p class="blog-hero-desc">The IEEE EMBS Student Chapter shares biomedical engineering knowledge through tutorials, research highlights, technology trends, event reports, and student-written articles. Explore insights that bridge medicine, engineering, AI, and healthcare innovation.</p>
+      <div class="bgx-dateline">
+        <span class="blog-hero-label">Articles</span>
+        <time class="bgx-today" id="bgxToday"></time>
+        <span>IEEE EMBS KPRIET</span>
+      </div>
+      <h1 class="blog-hero-heading" id="bgxTitle">Blog <span class="bgx-amp">&amp;</span> Articles</h1>
+      <div class="bgx-lede">
+        <div class="bgx-lede-text">
+          <p class="bgx-kicker">Knowledge from the chapter, written by its members.</p>
+          <p class="blog-hero-desc">The IEEE EMBS Student Chapter shares biomedical engineering knowledge through tutorials, research highlights, technology trends, event reports, and student-written articles. Explore insights that bridge medicine, engineering, AI, and healthcare innovation.</p>
+        </div>
+        <div class="blog-hero-right">
+          <figure class="bgx-cover">
+            <div class="bgx-cover-frame">
+              <!-- Edit src to change the hero image (page-hero-image.js applies the CMS image) -->
+              <img src="bg-image-embs/network.jpeg" alt="IEEE EMBS Blog and Articles" class="blog-hero-img" />
+            </div>
+            <figcaption><span>Cover</span><span>Blog &amp; Articles</span></figcaption>
+          </figure>
+        </div>
+      </div>
     </div>
-
-    <div class="blog-hero-right">
-      <!-- Edit src to change the hero image -->
-      <img src="bg-image-embs/network.jpeg" alt="IEEE EMBS Blog and Articles" class="blog-hero-img" />
-    </div>
-
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════
      ARTICLE CATEGORIES
 ════════════════════════════════════════ -->
-<section class="blog-filters-section">
+<section class="blog-filters-section bgx-sections" aria-label="Article categories">
   <div class="blog-filters-inner">
     <span class="blog-filters-label">Article Categories</span>
     <div class="blog-filters" role="group" aria-label="Filter articles by category">
@@ -164,16 +185,66 @@
 <!-- ═══════════════════════════════════════
      ARTICLES GRID
 ════════════════════════════════════════ -->
-<section class="blog-grid-section">
+<section class="blog-grid-section bgx-stories" id="bgxStories" aria-labelledby="bgxStoriesTitle">
   <div class="blog-grid-inner">
 
     <div class="blog-grid-header">
-      <span class="blog-grid-label">Latest Posts</span>
-      <h2 class="blog-grid-title">Featured Articles</h2>
+      <div>
+        <span class="blog-grid-label">Latest Posts</span>
+        <h2 class="blog-grid-title" id="bgxStoriesTitle">Featured Articles</h2>
+      </div>
+      <span class="bgx-count" id="bgxCount" aria-live="polite"></span>
     </div>
 
     <div class="blog-grid" id="articlesGrid">
 
+    </div>
+
+    <!-- Shown only while no article is published: what the blog covers,
+         taken from its own section list -->
+    <div class="bgx-contents" id="bgxContents">
+      <div>
+        <p class="bgx-contents-k">The first articles<br><em>are on their way.</em></p>
+        <p class="bgx-contents-note">Nothing has been published yet. When it is, the newest article will lead this page, followed by the rest in order.</p>
+      </div>
+      <ol class="bgx-toc" id="bgxToc" aria-label="Sections this blog covers"></ol>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     KNOWLEDGE BREAK (words from the page's own description)
+════════════════════════════════════════ -->
+<section class="bgx-break" aria-labelledby="bgxBreakTitle">
+  <div class="xp-grid bgx-break-grid" aria-hidden="true"></div>
+  <div class="pg-wrap">
+    <span class="pg-eyebrow">What we write about</span>
+    <h2 class="bgx-quote" id="bgxBreakTitle">Insights that bridge <span>medicine</span>, <span>engineering</span>, <span>AI</span> and <span>healthcare innovation</span>.</h2>
+    <p class="bgx-quote-src">From the chapter&rsquo;s description of this blog</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CLOSING — keep exploring
+════════════════════════════════════════ -->
+<section class="xp-cta pg-cta bgx-cta" aria-labelledby="bgxCtaTitle">
+  <div class="xp-cta-panel">
+    <div class="mo-aurora" aria-hidden="true"></div>
+    <div class="xp-grid xp-grid--cta" aria-hidden="true"></div>
+    <div class="xp-cta-inner">
+      <span class="pg-eyebrow">Keep exploring</span>
+      <h2 class="xp-cta-title" id="bgxCtaTitle">Have something<br>worth writing?</h2>
+      <p class="xp-cta-sub">Tutorials, research summaries and event reports from members are welcome. Get in touch with the chapter to contribute.</p>
+      <div class="xp-cta-actions">
+        <a href="contact.html" class="pg-btn pg-btn--primary mo-sheen xp-magnetic">Write for the blog</a>
+        <a href="podcast.html" class="pg-btn mo-sheen">Listen to the podcast</a>
+      </div>
+      <nav class="pg-onward" aria-label="Continue exploring">
+        <a href="events.html"><small>Energy</small>Events <i aria-hidden="true">&rarr;</i></a>
+        <a href="projects.html"><small>Discovery</small>Projects &amp; Research <i aria-hidden="true">&rarr;</i></a>
+        <a href="podcast.html"><small>Voice</small>EMBS Podcast <i aria-hidden="true">&rarr;</i></a>
+        <a href="gallery.html"><small>Memory</small>Gallery <i aria-hidden="true">&rarr;</i></a>
+      </nav>
     </div>
   </div>
 </section>
@@ -262,8 +333,11 @@
 <script src="newsletter.js" defer></script>
 <script type="module" src="blog.js"></script>
 <script src="page-hero-image.js" defer></script>
+<script src="pages-kit.js" defer></script>
+<script src="blog-experience.js" defer></script>
 <script>
-  /* ── Blog page animation config — editorial treatment ── */
+  /* ── Blog page animation config — editorial treatment
+        (animations.js owns headings; motion.js the stories) ── */
   window.EMBS_ANIM_CONFIG = {
     hero: {
       heading:   '.blog-hero-heading',
@@ -271,9 +345,11 @@
       baseDelay: 50   /* snappier stagger for the editorial feel */
     },
     sections: [
-      { label: '.blog-grid-label', heading: '.blog-grid-title' }
+      { label: '.blog-grid-label', heading: '.blog-grid-title' },
+      { label: '.bgx-break .pg-eyebrow', heading: '.bgx-quote', desc: '.bgx-quote-src' },
+      { label: '.bgx-cta .pg-eyebrow', heading: '#bgxCtaTitle', desc: '.bgx-cta .xp-cta-sub' }
     ],
-    reveal: ['.blog-hero-label', '.blog-filters-label']
+    reveal: ['.blog-hero-label', '.bgx-kicker', '.bgx-cover', '.blog-filters-label', '.bgx-cta .xp-cta-actions', '.bgx-cta .pg-onward']
   };
 </script>
 <script src="animations.js" defer></script>

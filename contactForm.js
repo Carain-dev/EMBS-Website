@@ -55,6 +55,8 @@
     }
     el.textContent = msg;
     el.style.color = type === 'success' ? '#00A99D' : '#e05555';
-    setTimeout(() => { el.textContent = ''; }, 5000);
+    /* Restart the timer so an earlier message's timeout cannot wipe a newer one. */
+    clearTimeout(showStatus.timer);
+    showStatus.timer = setTimeout(() => { el.textContent = ''; }, 5000);
   }
 })();

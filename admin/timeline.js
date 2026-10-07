@@ -1,4 +1,12 @@
 if (localStorage.getItem('embs_admin_auth') !== 'true') window.location.href = 'index.html';
+
+/* CMS values are plain text typed by editors (and subscriber emails come from
+   the public form): escape them before they go into innerHTML, and only allow
+   http(s) links, so stored markup cannot run script in an admin's session. */
+function admEsc(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function admHref(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? admEsc(String(u).trim()) : ''; }
 'use strict';
 
 const API    = window.EMBS_API_BASE;
@@ -69,17 +77,17 @@ function renderTable() {
     const shortDesc = (e.description || '').length > 80
       ? (e.description || '').slice(0, 80) + '…'
       : (e.description || '');
-    return `<tr data-id="${e._id}">
-      <td><strong style="font-family:'Syne',sans-serif;color:var(--purple-light)">${e.year || ''}</strong></td>
-      <td><div class="td-title">${e.title || ''}</div></td>
-      <td><div class="td-sub" style="max-width:280px;">${shortDesc}</div></td>
-      <td><span style="font-size:0.78rem;color:var(--text-muted)">${e.order ?? 0}</span></td>
+    return `<tr data-id="${admEsc(e._id)}">
+      <td><strong style="font-family:'Syne',sans-serif;color:var(--purple-light)">${admEsc(e.year || '')}</strong></td>
+      <td><div class="td-title">${admEsc(e.title || '')}</div></td>
+      <td><div class="td-sub" style="max-width:280px;">${admEsc(shortDesc)}</div></td>
+      <td><span style="font-size:0.78rem;color:var(--text-muted)">${admEsc(e.order ?? 0)}</span></td>
       <td><span class="status-badge status-badge--${status}">${status === 'active' ? 'Visible' : 'Hidden'}</span></td>
       <td><div class="action-btns">
-        <button class="action-btn action-btn--edit" onclick="editEntry('${e._id}')">
+        <button class="action-btn action-btn--edit" onclick="editEntry('${admEsc(e._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Edit
         </button>
-        <button class="action-btn action-btn--delete" onclick="openDeleteModal('${e._id}')">
+        <button class="action-btn action-btn--delete" onclick="openDeleteModal('${admEsc(e._id)}')">
           <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Delete
         </button>
       </div></td>

@@ -29,6 +29,25 @@
   <script src="config.js"></script>
   <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
+  <link rel="stylesheet" href="motion.css" />
+  <link rel="stylesheet" href="home-motion.css" />
+  <link rel="stylesheet" href="experience.css" />
+  <link rel="stylesheet" href="home-experience.css" />
+  <!-- Home motion bootstrap: enables the motion CSS layer and, when motion
+       is allowed, holds the hero's first frame for home-experience.js.
+       A 3s failsafe guarantees the page is never left hidden. -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('embs-motion');
+      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      d.classList.add('xp-pending');
+      window.__xpFailsafe = setTimeout(function () {
+        d.classList.remove('xp-pending');
+        window.__xpFailed = true;
+      }, 3000);
+    })();
+  </script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -96,58 +115,78 @@
   <div class="announce-track-wrap">
     <div class="announce-track"></div>
   </div>
+  <!-- Page progress hairline (home-experience.js) -->
+  <span class="xp-progress" aria-hidden="true"></span>
+</div>
+
+<!-- Journey rail: one thread through the page (wide desktop only, decorative) -->
+<div class="xp-rail" aria-hidden="true">
+  <span class="xp-rail-track"></span>
+  <span class="xp-rail-fill"></span>
+  <span class="xp-rail-node"></span>
 </div>
 
 <main id="main-content" tabindex="-1">
 
 <section class="hero" id="hero">
 
-  <!-- Heart image left -->
-  <img class="hero-heart" src="bg-image-embs/heart.jpeg" alt="" />
+  <!-- Depth layers (decorative). Far: ambient light, grid, swirl.
+       Near: the original heart image and medical motifs. -->
+  <div class="xp-depth xp-depth--far" aria-hidden="true">
+    <div class="mo-aurora"></div>
+    <div class="xp-grid xp-grid--hero"></div>
+    <div class="mo-swirl mo-hero-swirl"></div>
+    <div class="mo-blob mo-hero-orb-b"></div>
+  </div>
 
+  <div class="xp-depth xp-depth--near" aria-hidden="true">
+    <div class="mo-blob mo-hero-orb-a"></div>
 
+    <!-- Heart image left -->
+    <img class="hero-heart" src="bg-image-embs/heart.jpeg" alt="" />
 
+    <!-- Heartbeat pulse dot -->
+    <div class="deco-pulse"></div>
 
+    <!-- Cross medical symbol -->
+    <svg class="deco-icon deco-cross" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <rect x="15" y="2" width="10" height="36" rx="2" fill="rgba(107,45,139,0.12)" stroke="rgba(107,45,139,0.28)" stroke-width="1"/>
+      <rect x="2" y="15" width="36" height="10" rx="2" fill="rgba(107,45,139,0.12)" stroke="rgba(107,45,139,0.28)" stroke-width="1"/>
+    </svg>
+  </div>
 
-
-  <!-- Heartbeat pulse dot -->  
-  <div class="deco-pulse"></div>
-
-  <!-- Cross medical symbol -->
-  <svg class="deco-icon deco-cross" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-    <rect x="15" y="2" width="10" height="36" rx="2" fill="rgba(107,45,139,0.12)" stroke="rgba(107,45,139,0.28)" stroke-width="1"/>
-    <rect x="2" y="15" width="36" height="10" rx="2" fill="rgba(107,45,139,0.12)" stroke="rgba(107,45,139,0.28)" stroke-width="1"/>
-  </svg>
+  <!-- Cursor light (fine pointers only) -->
+  <div class="xp-hero-light" aria-hidden="true"></div>
 
   <div class="hero-container">
     <div class="hero-badge">
       <span class="badge-dot"></span>
       IEEE Engineering in Medicine &amp; Biology Society
     </div>
-    <h1 class="hero-heading">Where<br><span class="heading-gradient">Engineering</span><br>Meets<br>Medicine</h1>
+    <h1 class="hero-heading">Where<br><span class="heading-gradient mo-gradient-text">Engineering</span><br>Meets<br>Medicine</h1>
     <p class="hero-sub">A student-driven community at the intersection of biomedical engineering and innovation — building the future of healthcare technology.</p>
     <div class="hero-buttons">
-      <a href="events.html" class="btn-primary">Explore Events</a>
-      <a href="podcast.html" class="btn-secondary"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:6px"><rect x="9" y="2" width="6" height="11" rx="3" stroke="rgba(220,225,245,0.85)" stroke-width="1.8"/><path d="M5 10a7 7 0 0 0 14 0" stroke="rgba(220,225,245,0.85)" stroke-width="1.8" stroke-linecap="round"/><line x1="12" y1="17" x2="12" y2="22" stroke="rgba(220,225,245,0.85)" stroke-width="1.8" stroke-linecap="round"/></svg>Our Podcast</a>
+      <a href="events.html" class="btn-primary mo-sheen xp-magnetic">Explore Events</a>
+      <a href="podcast.html" class="btn-secondary mo-sheen"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:6px"><rect x="9" y="2" width="6" height="11" rx="3" stroke="rgba(220,225,245,0.85)" stroke-width="1.8"/><path d="M5 10a7 7 0 0 0 14 0" stroke="rgba(220,225,245,0.85)" stroke-width="1.8" stroke-linecap="round"/><line x1="12" y1="17" x2="12" y2="22" stroke="rgba(220,225,245,0.85)" stroke-width="1.8" stroke-linecap="round"/></svg>Our Podcast</a>
     </div>
 
     <div class="hero-stats">
-      <div class="stat-item">
+      <div class="stat-item mo-hover-glow">
         <span class="stat-number" id="heroStatMembers">—</span>
         <span class="stat-label">Members</span>
       </div>
       <div class="stat-divider"></div>
-      <div class="stat-item">
+      <div class="stat-item mo-hover-glow">
         <span class="stat-number" id="heroStatActivities">—</span>
         <span class="stat-label">Activities</span>
       </div>
       <div class="stat-divider"></div>
-      <div class="stat-item">
+      <div class="stat-item mo-hover-glow">
         <span class="stat-number" id="heroStatProjects">—</span>
         <span class="stat-label">Projects</span>
       </div>
       <div class="stat-divider"></div>
-      <div class="stat-item">
+      <div class="stat-item mo-hover-glow">
         <span class="stat-number" id="heroStatAwards">—</span>
         <span class="stat-label">Awards</span>
       </div>
@@ -157,6 +196,25 @@
 
 <!-- Featured Activities Section -->
 <section class="activities">
+  <div class="xp-seam" aria-hidden="true"></div>
+  <div class="xp-grid xp-grid--research" aria-hidden="true"></div>
+  <!-- Abstract signal-flow line work (decorative, not data) -->
+  <svg class="xp-signal" viewBox="0 0 1440 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="xpSignalGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0"    stop-color="#6B2D8B" stop-opacity="0"/>
+        <stop offset="0.22" stop-color="#6B2D8B" stop-opacity="0.75"/>
+        <stop offset="0.78" stop-color="#00A99D" stop-opacity="0.75"/>
+        <stop offset="1"    stop-color="#00A99D" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <path class="xp-signal-path" d="M-20 232 C 140 232, 230 150, 360 150 S 580 250, 720 210 S 950 120, 1080 140 S 1300 222, 1460 196"/>
+    <path class="xp-signal-path xp-signal-path--faint" d="M-20 280 C 210 268, 310 206, 490 222 S 770 292, 960 254 S 1250 196, 1460 236"/>
+    <circle class="xp-signal-node xp-signal-node--purple" cx="360" cy="150" r="4"/>
+    <circle class="xp-signal-node" cx="720" cy="210" r="4"/>
+    <circle class="xp-signal-node" cx="1080" cy="140" r="4"/>
+  </svg>
+  <div class="mo-blob mo-home-orb mo-home-orb--activities" aria-hidden="true"></div>
   <div class="activities-container">
 
     <div class="activities-header">
@@ -167,10 +225,18 @@
       <a href="events.html" class="activities-viewall">View All &rarr;</a>
     </div>
 
-    <div class="activities-grid">
-      <!-- Populated dynamically by featuredEventsService.js
-           Shows featured events, or latest published events, or an empty state.
-           No hardcoded placeholder cards. -->
+    <div class="hx-feature">
+      <div class="activities-grid">
+        <!-- Populated dynamically by featuredEventsService.js
+             Shows featured events, or latest published events, or an empty state.
+             No hardcoded placeholder cards. -->
+      </div>
+      <!-- Recently held: other published events (home-feed.js, GET /api/events) -->
+      <aside class="hx-recent" aria-labelledby="hxRecentTitle" hidden>
+        <h3 class="hx-recent-title" id="hxRecentTitle">Recently held</h3>
+        <ol class="hx-recent-list" id="hxRecent"></ol>
+        <a class="hx-recent-all" href="events.html">The full programme <span aria-hidden="true">&rarr;</span></a>
+      </aside>
     </div>
   </div>
 </section>
@@ -192,7 +258,7 @@
         <span class="podcast-label">New Episodes</span>
         <h2 class="podcast-title">EMBS Podcast</h2>
         <p class="podcast-desc">Conversations at the crossroads of engineering and medicine. Each episode features student researchers, faculty, and industry guests exploring the future of biomedical technology.</p>
-        <a href="podcast.html" class="podcast-spotify-btn">
+        <a href="podcast.html" class="podcast-spotify-btn mo-sheen">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.076-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257C14.1 12.235 10.539 11.75 7.2 12.68a.78.78 0 0 1-.963-.52.78.78 0 0 1 .52-.963c3.779-1.045 7.768-.538 10.794 1.433a.78.78 0 0 1 .258 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
           Listen on Spotify
         </a>
@@ -208,6 +274,7 @@
 
 <!-- Why Join Section -->
 <section class="whyjoin">
+  <div class="mo-blob mo-home-orb mo-home-orb--whyjoin" aria-hidden="true"></div>
   <div class="whyjoin-container">
 
     <div class="whyjoin-header">
@@ -218,7 +285,7 @@
     <div class="whyjoin-grid">
 
       <!-- Card 1 — edit here -->
-      <div class="wj-card">
+      <div class="wj-card mo-hover-glow">
         <div class="wj-icon">
           <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="20" cy="12" r="6" stroke="#6B2D8B" stroke-width="1.8"/>
@@ -231,7 +298,7 @@
       </div>
 
       <!-- Card 2 — edit here -->
-      <div class="wj-card">
+      <div class="wj-card mo-hover-glow">
         <div class="wj-icon">
           <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="6" y="10" width="28" height="22" rx="3" stroke="#6B2D8B" stroke-width="1.8"/>
@@ -247,7 +314,7 @@
       </div>
 
       <!-- Card 3 — edit here -->
-      <div class="wj-card">
+      <div class="wj-card mo-hover-glow">
         <div class="wj-icon">
           <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="12" cy="20" r="5" stroke="#6B2D8B" stroke-width="1.8"/>
@@ -262,7 +329,7 @@
       </div>
 
       <!-- Card 4 — edit here -->
-      <div class="wj-card">
+      <div class="wj-card mo-hover-glow">
         <div class="wj-icon">
           <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="9" y="8" width="14" height="18" rx="7" stroke="#6B2D8B" stroke-width="1.8"/>
@@ -283,6 +350,7 @@
 
 <!-- Recent Achievements Section -->
 <section class="achievements">
+  <div class="mo-blob mo-home-orb mo-home-orb--achievements" aria-hidden="true"></div>
   <div class="achievements-container">
 
     <div class="achievements-header">
@@ -312,6 +380,33 @@
     <div class="faculty-grid" id="facultyCoordinatorsGrid">
       <!-- Populated dynamically by faculty-coordinators.js -->
     </div>
+    <!-- Shown only while no coordinators are listed -->
+    <a class="hx-empty-link" href="about.html#people">Meet the people behind the chapter <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</section>
+
+<!-- Final call to action — reprises the hero's light, ground and grid -->
+<section class="xp-cta" aria-labelledby="xpCtaTitle">
+  <div class="xp-cta-panel">
+    <div class="mo-aurora" aria-hidden="true"></div>
+    <div class="xp-grid xp-grid--cta" aria-hidden="true"></div>
+    <div class="xp-cta-inner">
+      <span class="activities-label xp-cta-label">Join the Chapter</span>
+      <h2 class="activities-title xp-cta-title" id="xpCtaTitle">Shape the future of<br>healthcare technology</h2>
+      <p class="xp-cta-sub">Join a student community working where engineering meets medicine — through events, research projects and the EMBS podcast.</p>
+      <div class="xp-cta-actions">
+        <a href="about.html#join-embs" class="btn-primary mo-sheen xp-magnetic">Join IEEE EMBS</a>
+        <a href="contact.html" class="btn-secondary mo-sheen">Contact the Chapter</a>
+      </div>
+      <!-- The beginning of exploration: one step into each part of the site -->
+      <nav class="hx-onward" aria-label="Start exploring">
+        <a href="activities.html"><small>Momentum</small>Activities <i aria-hidden="true">&rarr;</i></a>
+        <a href="projects.html"><small>Discovery</small>Projects <i aria-hidden="true">&rarr;</i></a>
+        <a href="events.html"><small>Energy</small>Events <i aria-hidden="true">&rarr;</i></a>
+        <a href="members.html"><small>People</small>Members <i aria-hidden="true">&rarr;</i></a>
+        <a href="contact.html"><small>Connection</small>Contact <i aria-hidden="true">&rarr;</i></a>
+      </nav>
+    </div>
   </div>
 </section>
 
@@ -331,19 +426,19 @@
         <p class="footer-desc">Advancing innovation at the intersection of engineering and medicine. A student-driven community committed to biomedical research, technology, and impact.</p>
         <div class="footer-socials">
           <!-- LinkedIn -->
-          <a href="#" class="footer-social-icon" aria-label="LinkedIn">
+          <a href="#" class="footer-social-icon mo-hover-lift" aria-label="LinkedIn">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" stroke-width="1.5"/><line x1="7" y1="10" x2="7" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="7" r="1" fill="currentColor"/><path d="M11 17v-4a2 2 0 0 1 4 0v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="11" y1="10" x2="11" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </a>
           <!-- Instagram -->
-          <a href="#" class="footer-social-icon" aria-label="Instagram">
+          <a href="#" class="footer-social-icon mo-hover-lift" aria-label="Instagram">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
           </a>
           <!-- Twitter/X -->
-          <a href="#" class="footer-social-icon" aria-label="Twitter">
+          <a href="#" class="footer-social-icon mo-hover-lift" aria-label="Twitter">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l16 16M4 20L20 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </a>
           <!-- YouTube -->
-          <a href="#" class="footer-social-icon" aria-label="YouTube">
+          <a href="#" class="footer-social-icon mo-hover-lift" aria-label="YouTube">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="5" width="20" height="14" rx="4" stroke="currentColor" stroke-width="1.5"/><polygon points="10,9 16,12 10,15" fill="currentColor"/></svg>
           </a>
         </div>
@@ -379,7 +474,7 @@
         <p class="footer-newsletter-desc">Get updates on events, research, and podcast drops.</p>
         <form class="footer-newsletter-form" onsubmit="return false;">
           <input type="email" class="footer-email-input" placeholder="Your email address" />
-          <button type="submit" class="footer-email-btn">Subscribe</button>
+          <button type="submit" class="footer-email-btn mo-sheen">Subscribe</button>
         </form>
       </div>
 
@@ -399,32 +494,12 @@
 <script src="newsletter.js" defer></script>
 <script src="featuredEventsService.js" defer></script>
 <script src="faculty-coordinators.js" defer></script>
+<script src="home-feed.js" defer></script>
 <script src="home-stats.js" defer></script>
-<script>
-  /* ── Homepage animation config ── */
-  window.EMBS_ANIM_CONFIG = {
-    hero: {
-      heading:   '.hero-heading',
-      sub:       '.hero-sub',
-      cta:       '.hero-buttons',
-      baseDelay: 60
-    },
-    sections: [
-      { label: '.activities-label',   heading: '.activities-title' },
-      { label: '.podcast-label',      heading: '.podcast-title' },
-      { label: '.whyjoin-label',      heading: '.whyjoin-title' },
-      { label: '.achievements-label', heading: '.achievements-title' },
-      { label: '.faculty-label',      heading: '.faculty-title' }
-    ],
-    stagger: [
-      { container: '.whyjoin-grid',   child: '.wj-card' }
-    ],
-    reveal: [
-      '.hero-stats',
-      '.hero-badge'
-    ]
-  };
-</script>
-<script src="animations.js" defer></script>
+<!-- Home motion engine. GSAP + ScrollTrigger own every Home animation;
+     animations.js and motion.js are intentionally not loaded on this page. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+<script src="home-experience.js" defer></script>
 </body>
 </html>

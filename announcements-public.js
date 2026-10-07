@@ -15,6 +15,21 @@
   };
   const DEFAULT_CAT = { badgeClass: 'ann-card-badge--workshop', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#6B2D8B" stroke-width="1.5"/><line x1="12" y1="8" x2="12" y2="12" stroke="#6B2D8B" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="16" r="1" fill="#6B2D8B"/></svg>` };
 
+  /* CMS fields are plain text: escape them before they go into HTML, and
+     only allow http(s)/mailto/tel or same-site links (never javascript:). */
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function safeUrl(u, fallback) {
+    var s = String(u == null ? '' : u).trim();
+    var probe = s.replace(/[\u0000-\u0020\u007f]/g, '');
+    if (!s) return fallback || '';
+    if (/^[a-z][a-z0-9+.-]*:/i.test(probe) && !/^(https?|mailto|tel):/i.test(probe)) return fallback || '';
+    return s;
+  }
+
   function fmtDate(d) {
     if (!d) return '';
     return new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -30,14 +45,14 @@
     article.innerHTML = `
       <div class="ann-card-top">
         <div class="ann-card-icon">${cat.icon}</div>
-        <span class="ann-card-badge ${cat.badgeClass}">${label}</span>
+        <span class="ann-card-badge ${cat.badgeClass}">${esc(label)}</span>
       </div>
       <div class="ann-card-body">
-        <h3 class="ann-card-title">${item.title}</h3>
-        <p class="ann-card-desc">${item.body}</p>
+        <h3 class="ann-card-title">${esc(item.title)}</h3>
+        <p class="ann-card-desc">${esc(item.body)}</p>
         ${item.expiresAt ? `<span class="ann-card-deadline">${CLOCK_SVG} Deadline: ${fmtDate(item.expiresAt)}</span>` : ''}
       </div>
-      ${item.attachmentUrl ? `<div class="ann-card-footer"><a href="${item.attachmentUrl}" target="_blank" rel="noopener" class="ann-card-apply">View Attachment</a></div>` : (item.link ? `<div class="ann-card-footer"><a href="${item.link}" target="_blank" rel="noopener" class="ann-card-apply">Learn More</a></div>` : '')}`;
+      ${safeUrl(item.attachmentUrl) ? `<div class="ann-card-footer"><a href="${esc(safeUrl(item.attachmentUrl))}" target="_blank" rel="noopener" class="ann-card-apply">View Attachment</a></div>` : (safeUrl(item.link) ? `<div class="ann-card-footer"><a href="${esc(safeUrl(item.link))}" target="_blank" rel="noopener" class="ann-card-apply">Learn More</a></div>` : '')}`;
     return article;
   }
 
@@ -100,7 +115,7 @@
            an interested reader. */
         const applyBtn = featSection.querySelector('.ann-featured-apply');
         if (applyBtn) {
-          const target = featured.link || 'contact.html';
+          const target = safeUrl(featured.link) || 'contact.html';
           applyBtn.href = target;
           const external = /^https?:\/\//i.test(target);
           if (external) {

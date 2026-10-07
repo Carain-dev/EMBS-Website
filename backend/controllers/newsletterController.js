@@ -1,17 +1,22 @@
 const asyncHandler = require('express-async-handler');
 const Subscriber   = require('../models/Subscriber');
 const sendEmail    = require('../utils/sendEmail');
+const { escapeHtml } = require('../utils/escapeHtml');
+const { isEmail } = require('../utils/validators');
 const { sendResponse, sendError } = require('../utils/sendResponse');
 
 /* ── Subscribe ───────────────────────────────────────────────────────────── */
 exports.subscribe = asyncHandler(async (req, res) => {
-  const { email } = req.body;
-  if (!email) return sendError(res, 400, 'Email is required');
+  const { email: rawEmail } = req.body;
+  if (!rawEmail) return sendError(res, 400, 'Email is required');
 
   /* Basic format guard — reject obviously malformed addresses */
-  if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
+  if (typeof rawEmail !== 'string' || !isEmail(rawEmail.trim()))
     return sendError(res, 400, 'Invalid email address');
 
+  /* Stored lowercase by the schema, so look it up the same way; otherwise a
+     differently-cased duplicate hit the unique index as a generic 400. */
+  const email = rawEmail.trim().toLowerCase();
   const existing = await Subscriber.findOne({ email });
   if (existing) return sendError(res, 409, 'Email already subscribed');
 
@@ -30,7 +35,12 @@ exports.remove = asyncHandler(async (req, res) => {
   const { email } = req.body;
   if (!email) return sendError(res, 400, 'Email is required');
 
-  const sub = await Subscriber.findOneAndDelete({ email });
+  /* Reject non-string input. Without this, a body like {"email":{"$ne":null}}
+     reaches Mongo as a query operator and deletes an arbitrary subscriber. */
+  if (typeof email !== 'string')
+    return sendError(res, 400, 'Invalid email address');
+
+  const sub = await Subscriber.findOneAndDelete({ email: email.trim().toLowerCase() });
   if (!sub) return sendError(res, 404, 'Subscriber not found');
   sendResponse(res, 200, null, 'Unsubscribed successfully');
 });
@@ -61,7 +71,7 @@ exports.sendNewsletter = asyncHandler(async (req, res) => {
       await sendEmail({
         to:      sub.email,
         subject: subject.trim(),
-        html:    html   || `<p>${(text || '').replace(/\n/g, '<br>')}</p>`,
+        html:    html   || `<p>${escapeHtml(text || '').replace(/\n/g, '<br>')}</p>`,
         text:    text   || subject.trim(),
       });
       results.sent++;

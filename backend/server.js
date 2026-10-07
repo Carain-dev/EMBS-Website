@@ -30,12 +30,15 @@ const updatesRoutes      = require('./routes/updatesRoutes');
 const app = express();
 
 /* ── CORS ────────────────────────────────────── */
-// Hosts we always trust: the preview/production domains of our static hosts,
-// plus anything explicitly listed in CLIENT_URL (comma-separated).
-const ALLOWED_SUFFIXES = ['.vercel.app', '.netlify.app'];
+// Origins we trust with credentialed requests: the production site, plus
+// anything explicitly listed in CLIENT_URL (comma-separated, e.g. a preview
+// deployment URL). Whole host suffixes such as `.vercel.app` / `.netlify.app`
+// are deliberately NOT trusted: anyone can deploy a site there, and with
+// credentials allowed it could make cookie-authenticated admin requests.
+const PRODUCTION_ORIGINS = ['https://embs-website.vercel.app'];
+const ALLOWED_SUFFIXES = [];
 
-const ALLOWED_ORIGINS = (process.env.CLIENT_URL || '')
-  .split(',')
+const ALLOWED_ORIGINS = [...PRODUCTION_ORIGINS, ...(process.env.CLIENT_URL || '').split(',')]
   .map(url => url.trim().replace(/\/$/, ''))
   .filter(Boolean);
 

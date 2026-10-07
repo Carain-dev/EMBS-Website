@@ -21,16 +21,19 @@ const createStorage = (folder, resourceType) =>
     },
   });
 
+/* A rejected file is the client's mistake: 400, not a 500. */
+const badFile = (message) => Object.assign(new Error(message), { statusCode: 400 });
+
 const imageFilter = (req, file, cb) => {
   IMAGE_MIMES.includes(file.mimetype)
     ? cb(null, true)
-    : cb(new Error('Only jpg, jpeg, png, webp images are allowed'));
+    : cb(badFile('Only jpg, jpeg, png, webp images are allowed'));
 };
 
 const attachmentFilter = (req, file, cb) => {
   IMAGE_MIMES.includes(file.mimetype) || DOC_MIMES.includes(file.mimetype)
     ? cb(null, true)
-    : cb(new Error('Only images and PDF/DOC documents are allowed'));
+    : cb(badFile('Only images and PDF/DOC documents are allowed'));
 };
 
 // createUpload(folder)          — images only (existing behaviour)

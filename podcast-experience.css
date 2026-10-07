@@ -1,0 +1,452 @@
+/* ================================================================
+   podcast-experience.css — IEEE EMBS KPRIET (podcast.html only)
+
+   EMBS PODCAST = VOICE. The atmospheric page: low light, the real
+   cover art held in slow pulse rings, a "now playing" stage, an
+   archive of episode rows, the people behind the conversations set
+   as names, and a closing invitation to listen. podcast-public.js
+   still renders every episode, the guests, the topic filter and the
+   Spotify player; this file only composes them.
+
+   Hidden (kept in the markup): placeholder statistics, fixed topic
+   pills and the fake playback time/progress — none of them came from
+   the CMS. The empty "Why Listen?" stub is hidden too.
+
+   GROUND   one continuous night, lit differently per section
+   ================================================================ */
+
+.pdx-page {
+  --pdx-night: #0b0a1c;
+  --pdx-deep:  #0f0d26;
+  --pdx-glow:  rgba(155, 92, 196, 0.32);
+  --pdx-teal:  #2fd3c6;
+  background: var(--pdx-night);
+}
+
+
+/* ── 1. HERO — listen ──────────────────────────────────────────── */
+
+.pdx-page .pod-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: min(100svh, 940px);
+  padding: 0;
+  display: flex;
+  align-items: flex-start;            /* top-aligned: a font swap never re-centres the block */
+  background:
+    radial-gradient(ellipse 45% 60% at 74% 50%, var(--pdx-glow) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 50% at 10% 90%, rgba(0, 169, 157, 0.12) 0%, transparent 70%),
+    linear-gradient(180deg, #08071a 0%, var(--pdx-night) 60%, var(--pdx-deep) 100%);
+}
+
+/* the oversized word behind everything */
+.pdx-listen {
+  position: absolute;
+  right: -2vw;
+  bottom: -0.16em;
+  pointer-events: none;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(8rem, 24vw, 24rem);
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(200, 170, 230, 0.12);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.pdx-page .pod-hero-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: calc(var(--pg-nav) + 3.4rem) var(--pg-gutter) 4.4rem;
+  display: grid;
+  grid-template-columns: minmax(0, 7.4fr) minmax(0, 4.6fr);
+  gap: 3rem 3.5rem;
+  align-items: start;
+}
+
+.pdx-page .pod-hero-heading {
+  font-size: clamp(2.3rem, 4.1vw, 3.75rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+.pdx-page .pod-hero-desc { max-width: 500px; }
+
+/* placeholder statistics were never CMS data: only the episode count
+   (written by podcast-public.js) and the guest count (counted from the
+   rendered guest list) are shown */
+.pdx-page .pod-hero-meta-divider,
+.pdx-page .pod-hero-meta-item:nth-of-type(n+2) { display: none; }
+.pdx-page .pod-hero-meta-item.is-real { display: flex; padding-left: 1.6rem; border-left: 1px solid rgba(200, 210, 230, 0.16); }
+
+/* the cover in its rings */
+.pdx-page .pod-hero-right {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  height: auto;                       /* podcast.css fixes 420px */
+  width: 100%;
+  max-width: 460px;
+  justify-self: center;
+}
+
+.pdx-page .pod-hero-ring {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  margin: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(200, 170, 230, 0.16);
+  animation: none;
+  transform: none;
+  left: auto;
+  top: auto;
+}
+
+.pdx-page .pod-hero-ring--outer { inset: -6%; }
+.pdx-page .pod-hero-ring--inner { inset: 9%; border-style: dashed; border-color: rgba(47, 211, 198, 0.22); }
+
+/* slow outward pulses (one element, two pseudo rings) */
+.pdx-pulse,
+.pdx-pulse::before,
+.pdx-pulse::after {
+  position: absolute;
+  inset: 16%;
+  border-radius: 50%;
+  border: 1px solid rgba(47, 211, 198, 0.45);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pdx-pulse::before, .pdx-pulse::after { content: ''; inset: 0; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .pdx-pulse { animation: pdx-pulse 5.4s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+  .pdx-pulse::before { animation: pdx-pulse 5.4s cubic-bezier(0.22, 1, 0.36, 1) 1.8s infinite; }
+  .pdx-pulse::after { animation: pdx-pulse 5.4s cubic-bezier(0.22, 1, 0.36, 1) 3.6s infinite; }
+  .pod-hero.mo-paused .pdx-pulse,
+  .pod-hero.mo-paused .pdx-pulse::before,
+  .pod-hero.mo-paused .pdx-pulse::after { animation-play-state: paused; }
+}
+
+@keyframes pdx-pulse {
+  0%   { transform: scale(0.9); opacity: 0; }
+  20%  { opacity: 0.7; }
+  100% { transform: scale(1.55); opacity: 0; }
+}
+
+.pdx-page .pod-hero-illus {
+  position: absolute;
+  z-index: 1;
+  left: 16%;
+  top: 14%;
+  width: 68%;
+  height: 68%;
+  display: grid;
+  place-items: center;
+  border-radius: 26px;
+  background: radial-gradient(closest-side, rgba(155, 92, 196, 0.25), transparent);
+  border: 0;
+  box-shadow: none;
+  animation: none;
+}
+
+.pdx-cover-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 26px;
+  box-shadow: 0 50px 120px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(200, 170, 230, 0.18);
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.pod-hero-illus.has-art .pdx-cover-art { opacity: 1; }
+.pod-hero-illus.has-art .pod-hero-mic,
+.pod-hero-illus.has-art .pod-particle { display: none; }
+
+/* the existing hero bars sit under the cover as a decorative waveform */
+.pdx-page .pod-hero-illus .pod-hero-wave {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -22%;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  z-index: 2;
+}
+
+.pdx-page .pod-hero-wave span { width: 4px; border-radius: 2px; background: linear-gradient(180deg, var(--pdx-teal), #9b5cc4); }
+
+
+/* ── 2. NOW PLAYING (featured episode) ─────────────────────────── */
+
+.pdx-page .pod-featured {
+  position: relative;
+  padding: 7.5rem 0 7rem;
+  background:
+    radial-gradient(ellipse 45% 55% at 20% 50%, rgba(155, 92, 196, 0.18) 0%, transparent 70%),
+    var(--pdx-deep);
+}
+
+.pdx-page .pod-featured-inner { max-width: 1200px; margin: 0 auto; padding: 0 var(--pg-gutter); }
+
+.pdx-page .pod-feat-card {
+  border-radius: 28px;
+  border: 1px solid rgba(200, 170, 230, 0.14);
+  background: linear-gradient(150deg, rgba(25, 20, 56, 0.92), rgba(12, 11, 30, 0.96));
+  box-shadow: 0 60px 140px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.pdx-page .pod-feat-card-accent { display: none; }
+
+.pdx-page .pod-feat-card-body {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 3rem;
+  padding: 2.6rem;
+  align-items: center;
+}
+
+.pdx-page .pod-feat-thumb-col { width: auto; max-width: none; }
+.pdx-page .pod-feat-thumb-wrap { width: 100%; aspect-ratio: 1; height: auto; border-radius: 20px; box-shadow: 0 40px 90px rgba(0, 0, 0, 0.5); }
+.pdx-page .pod-feat-thumb-img { width: 100%; height: 100%; object-fit: cover; }
+
+.pdx-now {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pdx-teal);
+}
+
+.pdx-page .pod-feat-ep-title { font-size: clamp(1.9rem, 3.4vw, 3rem); line-height: 1.04; letter-spacing: -0.025em; }
+
+.pdx-page .pod-feat-summary {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* not CMS data */
+.pdx-page .pod-feat-pills,
+.pdx-page .pod-feat-waveform-track,
+.pdx-page .pod-feat-waveform-times { display: none !important; }
+
+/* decorative oscillation — it does not represent the audio */
+.pdx-page .pod-feat-waveform { padding: 0 2.6rem 2.2rem; border: 0; background: none; }
+
+.pdx-page .pod-feat-waveform-bars {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 56px;
+}
+
+.pdx-page .pod-feat-waveform-bars span {
+  flex: 1;
+  min-width: 0;
+  height: var(--h, 50%);
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(47, 211, 198, 0.85), rgba(155, 92, 196, 0.85));
+  opacity: 0.55;
+  transform-origin: 50% 50%;
+  animation: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pdx-page .pod-feat-waveform-bars span { animation: pdx-osc 2.2s ease-in-out infinite alternate; }
+  .pdx-page .pod-feat-waveform-bars span:nth-child(3n)   { animation-delay: -0.6s; animation-duration: 1.8s; }
+  .pdx-page .pod-feat-waveform-bars span:nth-child(3n+1) { animation-delay: -1.3s; }
+  .pdx-page .pod-feat-waveform-bars span:nth-child(4n)   { animation-delay: -0.2s; animation-duration: 2.6s; }
+  .pdx-page .pod-featured.mo-paused .pod-feat-waveform-bars span { animation-play-state: paused; }
+}
+
+@keyframes pdx-osc {
+  from { transform: scaleY(1); }
+  to   { transform: scaleY(0.35); }
+}
+
+
+/* ── 3. ARCHIVE — episode rows ─────────────────────────────────── */
+
+.pdx-page .pod-latest {
+  position: relative;
+  padding: 7rem 0 7rem;
+  background: var(--pdx-night);
+}
+
+.pdx-page .pod-latest-inner { max-width: 1200px; margin: 0 auto; padding: 0 var(--pg-gutter); }
+
+.pdx-page .pod-ep-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid rgba(200, 210, 230, 0.14);
+}
+
+.pdx-page .pod-ep-card {
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  align-items: center;
+  gap: 0 2rem;
+  padding: 1.5rem 0.6rem;
+  border: 0;
+  border-bottom: 1px solid rgba(200, 210, 230, 0.14);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+  transition: background-color 0.4s ease;
+}
+
+.pdx-page .pod-ep-card:hover { transform: none; box-shadow: none; background-color: rgba(155, 92, 196, 0.07); }
+.pdx-page .pod-ep-card.pod-ep-card--playing { background-color: rgba(47, 211, 198, 0.07); }
+
+.pdx-page .pod-ep-thumb-wrap { width: 132px; height: 132px; aspect-ratio: 1; border-radius: 16px; overflow: hidden; }
+.pdx-page .pod-ep-thumb { width: 100%; height: 100%; object-fit: cover; transform: none !important; transition: scale 1s var(--pg-ease); }
+.pdx-page .pod-ep-card:hover .pod-ep-thumb { scale: 1.06; }
+.pdx-page .pod-ep-badge { display: none; }
+
+.pdx-page .pod-ep-num {
+  left: 0.6rem;
+  bottom: 0.6rem;
+  top: auto;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+}
+
+/* the actions live inside the body, so the body is the two-column grid */
+.pdx-page .pod-ep-body {
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 2.2rem;
+  row-gap: 0.45rem;
+  align-items: center;
+  min-width: 0;
+}
+.pdx-page .pod-ep-body > :not(.pod-ep-actions) { grid-column: 1; }
+.pdx-page .pod-ep-title { font-size: clamp(1.15rem, 1.8vw, 1.5rem); line-height: 1.2; margin: 0; }
+.pdx-page .pod-ep-meta { margin: 0; }
+.pdx-page .pod-ep-desc { margin: 0; max-width: 640px; -webkit-line-clamp: 2; }
+.pdx-page .pod-ep-card .pod-ep-waveform { display: none; }
+.pdx-page .pod-ep-card .pod-ep-actions { grid-column: 2; grid-row: 1 / span 4; display: flex; flex-direction: column; align-items: stretch; gap: 0.5rem; margin: 0; padding: 0; border: 0; }
+.pdx-page .pod-ep-card .pod-ep-btn { width: auto; justify-content: center; white-space: nowrap; }
+
+
+/* ── 4. TOPICS — frequency bands ───────────────────────────────── */
+
+.pdx-page .pod-topics { padding: 6rem 0; background: linear-gradient(180deg, var(--pdx-night), var(--pdx-deep)); }
+
+.pdx-page .pod-topic-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(200, 170, 230, 0.2);
+  background: rgba(255, 255, 255, 0.02);
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.pdx-page .pod-topic-chip:hover { transform: none; border-color: rgba(47, 211, 198, 0.6); background: rgba(47, 211, 198, 0.06); }
+.pdx-page .pod-topic-chip[aria-pressed="true"] { border-color: var(--pdx-teal); background: rgba(47, 211, 198, 0.12); color: #fff; }
+
+
+/* ── 5. VOICES (guests, rendered by podcast-public.js) ─────────── */
+
+.pdx-page .pod-guests { padding: 7rem 0; background: var(--pdx-deep); }
+
+.pdx-page .pod-guests-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid rgba(200, 210, 230, 0.14);
+}
+
+.pdx-page .pod-guest-card {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  align-items: center;
+  gap: 0 1.6rem;
+  padding: 1.8rem 0;
+  border: 0;
+  border-bottom: 1px solid rgba(200, 210, 230, 0.14);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  text-align: left;
+  transform: none;
+}
+
+.pdx-page .pod-guest-card:hover { transform: none; box-shadow: none; }
+.pdx-page .pod-guest-avatar-wrap { width: 72px; height: 72px; margin: 0; border-radius: 50%; border: 1px solid rgba(47, 211, 198, 0.35); background: rgba(47, 211, 198, 0.05); }
+.pdx-page .pod-guest-info { display: flex; flex-direction: column; align-items: flex-start; gap: 0.35rem; padding: 0; text-align: left; }
+.pdx-page .pod-guest-name { margin: 0; font-size: clamp(1.6rem, 3.2vw, 2.7rem); line-height: 1.05; letter-spacing: -0.025em; }
+.pdx-page .pod-guest-designation { font-size: 0.86rem; }
+.pdx-page .pod-guest-spotify-badge { margin-top: 0.3rem; }
+
+.pdx-page #pod-why { display: none; }
+
+
+/* ── 6. SUBSCRIBE + GUEST CALL ─────────────────────────────────── */
+
+.pdx-page .pod-subscribe { position: relative; overflow: hidden; background: var(--pdx-night); }
+.pdx-page .pod-become { background: linear-gradient(180deg, var(--pdx-deep), #090818); }
+
+.pdx-onward-wrap { padding: 0 0 5rem; background: #090818; }
+
+
+/* ── 7. RESPONSIVE ─────────────────────────────────────────────── */
+
+@media (max-width: 1023px) {
+  .pdx-page .pod-hero-inner { grid-template-columns: minmax(0, 1fr); }
+  .pdx-page .pod-hero-right { max-width: 380px; margin: 1rem auto 3rem; }
+  .pdx-page .pod-feat-card-body { grid-template-columns: minmax(0, 1fr); }
+  .pdx-page .pod-feat-thumb-wrap { max-width: 420px; }
+}
+
+@media (max-width: 767px) {
+  .pdx-listen { font-size: 42vw; }
+  .pdx-page .pod-hero-inner { padding-top: calc(var(--pg-nav) + 2.2rem); padding-bottom: 3rem; }
+  .pdx-page .pod-hero-heading { font-size: clamp(2.2rem, 10vw, 3rem); }
+  .pdx-page .pod-hero-right { max-width: 300px; }
+  .pdx-page .pod-featured, .pdx-page .pod-latest, .pdx-page .pod-guests { padding: 5rem 0; }
+  .pdx-page .pod-feat-card-body { padding: 1.4rem; gap: 1.6rem; }
+  .pdx-page .pod-feat-waveform { padding: 0 1.4rem 1.6rem; }
+  .pdx-page .pod-ep-card { grid-template-columns: 84px minmax(0, 1fr); gap: 0.9rem 1rem; padding: 1.3rem 0; }
+  .pdx-page .pod-ep-thumb-wrap { width: 84px; height: 84px; border-radius: 12px; }
+  .pdx-page .pod-ep-desc { display: none; }
+  .pdx-page .pod-ep-body { grid-template-columns: minmax(0, 1fr); }
+  .pdx-page .pod-ep-card .pod-ep-actions { grid-column: 1; grid-row: auto; flex-direction: row; flex-wrap: wrap; margin-top: 0.4rem; }
+  .pdx-page .pod-guest-card { grid-template-columns: 52px minmax(0, 1fr); gap: 0 1rem; }
+  .pdx-page .pod-guest-avatar-wrap { width: 52px; height: 52px; }
+}
+
+
+/* ── 8. PLAYER — show the Spotify embed's play button ──────────── */
+/* podcast.css clips the 152px Spotify embed to an 80px window, which
+   cut off the embed's bottom row (its play button). The window now
+   reaches that row; the title and artwork keep their positions. */
+.pod-player .pod-player-embed-wrap { height: 112px; }
+body.pod-player-open main { padding-bottom: 142px; }
+
+@media (max-width: 480px) {
+  .pod-player .pod-player-embed-wrap { height: 104px; }
+}

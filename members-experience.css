@@ -1,0 +1,142 @@
+/* ================================================================
+   members-experience.css — IEEE EMBS KPRIET (members.html only)
+
+   MEMBERS = CONNECTED PEOPLE. The page keeps its light, warm
+   composition; the site's node motif becomes the structure of the
+   team: the chairperson leads, a connector bus links them to the rest
+   of the core team, and every member is a node on it. members-public.js
+   still renders every advisor and member; this file composes them and
+   fixes two rendering gaps:
+     • every second role badge is rendered with only the modifier class
+       (cteam-role-badge--teal, without the base) — it gets the full
+       badge style here
+     • advisor departments had no font family (fell back to serif)
+   ================================================================ */
+
+/* ── 1. HERO — the heartbeat line becomes a line of connected nodes ── */
+
+#members-hero::after {
+  height: 40px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='40' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 20 H1200' stroke='rgba(107,45,139,0.12)' stroke-width='1'/%3E%3Cg fill='%23f6f7fb' stroke='rgba(0,169,157,0.45)' stroke-width='1.5'%3E%3Ccircle cx='150' cy='20' r='4'/%3E%3Ccircle cx='390' cy='20' r='4'/%3E%3Ccircle cx='600' cy='20' r='5'/%3E%3Ccircle cx='810' cy='20' r='4'/%3E%3Ccircle cx='1050' cy='20' r='4'/%3E%3C/g%3E%3C/svg%3E")
+    no-repeat center bottom;
+  background-size: 100% 40px;
+}
+
+.mx .mhero-img-wrap { position: relative; }
+
+.mx .mhero-img-wrap::before,
+.mx .mhero-img-wrap::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  border: 0 solid rgba(0, 169, 157, 0.7);
+}
+
+.mx .mhero-img-wrap::before { top: -8px; left: -8px; border-top-width: 1.5px; border-left-width: 1.5px; }
+.mx .mhero-img-wrap::after { right: -8px; bottom: -8px; border-right-width: 1.5px; border-bottom-width: 1.5px; }
+
+
+/* ── 2. FACULTY ADVISORS — centred, as a pair ──────────────────── */
+
+.mx .fac-adv-grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 340px));
+  justify-content: center;
+}
+
+.mx .fac-adv-dept {
+  font-family: var(--font-body);
+  letter-spacing: 0.02em;
+  color: #6a7090;                     /* legible on the white card */
+}
+
+
+/* ── 3. CORE TEAM — connected ──────────────────────────────────── */
+
+/* the badge the data script renders without its base class */
+.cteam-role-badge--teal {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 169, 157, 0.4);
+}
+
+.mx .cteam-grid { position: relative; }
+
+/* the lead (first card, as members-public.js orders the team) */
+@media (min-width: 900px) {
+  .mx .cteam-grid > .cteam-card:first-of-type {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: min(420px, 100%);
+  }
+}
+
+/* the bus that connects the lead to everyone (inserted by members-experience.js) */
+.mx-bus {
+  grid-column: 1 / -1;
+  position: relative;
+  height: 44px;
+  margin: -0.4rem 0 -0.2rem;
+  pointer-events: none;
+}
+
+.mx-bus::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(107, 45, 139, 0.6), rgba(0, 169, 157, 0.6));
+}
+
+.mx-bus::after {
+  content: '';
+  position: absolute;
+  left: 12.5%;
+  right: 12.5%;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0, 169, 157, 0), rgba(0, 169, 157, 0.55) 15%, rgba(107, 45, 139, 0.55) 85%, rgba(107, 45, 139, 0));
+}
+
+/* every member below the bus is a node on it */
+.mx .cteam-grid > .cteam-card:not(:first-of-type) { position: relative; overflow: visible; }
+
+.mx .cteam-grid > .cteam-card:not(:first-of-type)::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -1.2rem;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 50%;
+  background: #f6f7fb;
+  border: 1.5px solid rgba(0, 169, 157, 0.7);
+  z-index: 1;
+}
+
+.mx .cteam-card { transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease, border-color 0.45s ease; }
+
+@media (hover: hover) and (pointer: fine) {
+  .mx .cteam-grid > .cteam-card:hover::before { background: #00A99D; }
+}
+
+@media (max-width: 899px) {
+  .mx-bus { display: none; }
+  .mx .cteam-grid > .cteam-card:not(:first-of-type)::before { display: none; }
+}
+
+
+/* ── 4. JOIN — onward ──────────────────────────────────────────── */
+
+.mx #become-member .pg-onward { max-width: 860px; margin-left: auto; margin-right: auto; text-align: left; }

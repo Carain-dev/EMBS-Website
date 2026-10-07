@@ -1,0 +1,382 @@
+/* ================================================================
+   home-experience.css — IEEE EMBS KPRIET (index.html only)
+
+   Home-specific composition for the experience driven by
+   home-experience.js. Shared primitives (line masks, grid, cursor
+   light, signal line, rail, progress, closing panel, footer) live in
+   experience.css, which loads first.
+   ================================================================ */
+
+
+/* ── 0. PRE-ENTRANCE (hero text, in addition to experience.css) ── */
+
+html.xp-pending .hero-badge,
+html.xp-pending .hero-heading,
+html.xp-pending .hero-sub,
+html.xp-pending .hero-buttons,
+html.xp-pending .hero-stats {
+  opacity: 0;
+}
+
+
+/* ── 1. HERO ───────────────────────────────────────────────────── */
+
+/* Hairline that connects the stat cards into one system */
+.hero-stats {
+  position: relative;
+}
+
+.hero-stats::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1.4rem;
+  height: 1px;
+  background: linear-gradient(90deg,
+    rgba(107, 45, 139, 0), rgba(107, 45, 139, 0.55) 18%,
+    rgba(0, 169, 157, 0.55) 82%, rgba(0, 169, 157, 0));
+  transform: scaleX(var(--xp-line, 1));
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+.stat-number {
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ── 2. SECTION TRANSITIONS (light seams) ──────────────────────── */
+
+/* Hero light carried into the research section */
+.xp-seam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 340px;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 45% 100% at 30% 0%, rgba(107, 45, 139, 0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 90% at 72% 0%, rgba(0, 169, 157, 0.14) 0%, transparent 70%);
+}
+
+.xp-grid--research {
+  z-index: 0;
+  -webkit-mask-image: radial-gradient(ellipse 60% 70% at 50% 60%, #000 0%, transparent 70%);
+          mask-image: radial-gradient(ellipse 60% 70% at 50% 60%, #000 0%, transparent 70%);
+  opacity: 0.8;
+}
+
+/* Research → Podcast: soften the step between the two dark grounds */
+.podcast {
+  position: relative;
+}
+
+.podcast::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 200px;
+  pointer-events: none;
+  background: linear-gradient(180deg, #152035 0%, rgba(13, 10, 31, 0) 100%);
+}
+
+.podcast-container,
+.faculty-container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Podcast cover image is driven by the engine (entrance + depth) */
+.podcast-cover-img {
+  transform-origin: 50% 50%;
+}
+
+
+/* ── 3. SIGNAL FLOW (research section) ─────────────────────────── */
+
+.xp-signal {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 38%;
+  height: 360px;
+  pointer-events: none;
+  z-index: 0;
+  overflow: visible;
+}
+
+.xp-signal .xp-signal-path {
+  stroke: url(#xpSignalGrad);
+}
+
+
+/* ── 4. WHY JOIN ───────────────────────────────────────────────── */
+
+.wj-icon svg {
+  overflow: visible;
+}
+
+
+/* ── 5. RESPONSIVE ─────────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+  .xp-signal {
+    display: none;
+  }
+
+  .hero-stats::after {
+    bottom: -1rem;
+  }
+}
+
+
+/* ================================================================
+   POLISH PASS — refinements over the existing Home design
+   ================================================================ */
+
+/* ── P1. Hero figures ──────────────────────────────────────────── */
+/* navbar.css tints the tiles by :nth-child, but dividers sit between
+   them, so only the first two were styled. Alternate by tile order. */
+.hero-stats .stat-item:nth-child(4n+1) {
+  background: linear-gradient(135deg, rgba(107,45,139,0.32), rgba(107,45,139,0.12));
+  border: 1px solid rgba(107,45,139,0.5);
+  box-shadow: 0 0 24px rgba(107,45,139,0.16);
+}
+
+.hero-stats .stat-item:nth-child(4n+3) {
+  background: linear-gradient(135deg, rgba(0,169,157,0.26), rgba(0,169,157,0.1));
+  border: 1px solid rgba(0,169,157,0.45);
+  box-shadow: 0 0 24px rgba(0,169,157,0.14);
+}
+
+/* a zero is never presented as a figure (home-experience.js) */
+.hero-stats .stat-item[hidden],
+.hero-stats .stat-divider[hidden] { display: none !important; }
+
+
+/* ── P2. Featured activity + recently held ─────────────────────── */
+
+.hx-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.6rem;
+}
+
+/* every card keeps a readable length (the CMS text can be long) */
+.activities .act-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (min-width: 900px) {
+  /* one featured event: a wide feature beside the recent list */
+  .activities[data-featured="1"] .hx-feature {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: stretch;
+  }
+  .activities[data-featured="1"] .activities-grid { grid-template-columns: minmax(0, 1fr); height: 100%; }
+  .activities[data-featured="1"] .act-card {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+    height: 100%;
+  }
+  .activities[data-featured="1"] .act-card-top { height: auto; min-height: 260px; }
+  .activities[data-featured="1"] .act-card-top .act-icon { width: 72px; height: 72px; }
+  .activities[data-featured="1"] .act-card-body { display: flex; flex-direction: column; justify-content: center; padding: 2rem 2.1rem; }
+  .activities[data-featured="1"] .act-title { font-size: clamp(1.35rem, 2vw, 1.75rem); line-height: 1.15; -webkit-line-clamp: 3; }
+  .activities[data-featured="1"] .act-desc { -webkit-line-clamp: 5; font-size: 0.86rem; }
+
+  /* several featured events: the recent list runs beneath, in two columns */
+  .activities:not([data-featured="1"]) .hx-recent-list { columns: 2; column-gap: 2rem; }
+  .activities:not([data-featured="1"]) .hx-row { break-inside: avoid; }
+}
+
+.hx-recent {
+  display: flex;
+  flex-direction: column;
+  padding: 1.7rem 1.8rem 1.5rem;
+  border-radius: 18px;
+  border: 1px solid rgba(170, 185, 230, 0.14);
+  background: linear-gradient(160deg, rgba(16, 22, 50, 0.72), rgba(10, 14, 32, 0.6));
+}
+
+.hx-recent[hidden] { display: none; }
+
+.hx-recent-title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #00A99D;
+}
+
+.hx-recent-list { list-style: none; margin: 1rem 0 0; padding: 0; flex: 1; }
+
+.hx-row a {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.95rem 0;
+  border-top: 1px solid rgba(170, 185, 230, 0.12);
+  color: #e8eaf6;
+  text-decoration: none;
+}
+
+.hx-row time {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(200, 210, 230, 0.5);
+}
+
+.hx-row time b {
+  font-family: var(--font-heading);
+  font-size: 1.55rem;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #e8eaf6;
+}
+
+.hx-row-main { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+.hx-row-type { font-family: var(--font-body); font-size: 0.6rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #00A99D; }
+.hx-row-title { font-family: var(--font-heading); font-weight: 600; font-size: 0.92rem; line-height: 1.3; transition: color 0.3s ease; }
+.hx-row-go { color: rgba(0, 169, 157, 0.8); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+.hx-row a:hover .hx-row-title, .hx-row a:focus-visible .hx-row-title { color: #fff; }
+.hx-row a:hover .hx-row-go, .hx-row a:focus-visible .hx-row-go { transform: translateX(4px); }
+.hx-row a:focus-visible { outline: 2px solid #00A99D; outline-offset: 2px; border-radius: 6px; }
+
+.hx-recent-all {
+  margin-top: 1rem;
+  align-self: flex-start;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #2fd3c6;
+  text-decoration: none;
+  background-image: linear-gradient(90deg, #00A99D, #6B2D8B);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  padding: 0.25rem 0;
+  transition: background-size 0.5s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease;
+}
+
+.hx-recent-all:hover, .hx-recent-all:focus-visible { color: #eef0fa; background-size: 100% 1px; }
+
+
+/* ── P3. Podcast: no invented listening progress ───────────────── */
+/* featuredEventsService.js sizes these fills from the episode number,
+   not from playback, yet they read as real progress, so the fill is
+   removed and the track stays as a quiet rule. */
+.ep-progress { height: 1px; background: rgba(170, 185, 230, 0.18); }
+.ep-progress-fill { display: none; }
+
+
+/* ── P4. Honest empty sections (marked by home-feed.js) ────────── */
+
+.achievements.is-empty,
+.faculty.is-empty { padding-top: 3.6rem; padding-bottom: 3.6rem; }
+
+.achievements.is-empty .achievements-header { margin-bottom: 1.4rem; }
+.faculty.is-empty .faculty-header { margin-bottom: 1.2rem; }
+
+/* the data scripts style their notes for a dark ground */
+.achievements.is-empty .achievements-grid,
+.faculty.is-empty .faculty-grid { display: block; }
+
+.achievements.is-empty .achievements-grid > p,
+.faculty.is-empty .faculty-grid > p {
+  margin: 0;
+  padding: 1.1rem 1.4rem !important;
+  border: 1px dashed rgba(13, 16, 48, 0.2);
+  border-radius: 14px;
+  font-family: var(--font-body);
+  font-size: 0.9rem !important;
+  color: #4f5675 !important;
+  text-align: left !important;
+}
+
+.faculty.is-empty .faculty-grid > p { max-width: 520px; margin: 0 auto; text-align: center !important; }
+
+.hx-empty-link { display: none; }
+
+.faculty.is-empty .hx-empty-link {
+  display: table;
+  margin: 1.2rem auto 0;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #6B2D8B;
+  text-decoration: none;
+  background-image: linear-gradient(90deg, #6B2D8B, #00A99D);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  padding: 0.3rem 0;
+  transition: background-size 0.5s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease;
+}
+
+.faculty.is-empty .hx-empty-link:hover,
+.faculty.is-empty .hx-empty-link:focus-visible { color: #0d1030; background-size: 100% 1px; }
+
+
+/* ── P5. Closing: the beginning of exploration ─────────────────── */
+
+.hx-onward {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  max-width: 920px;
+  margin: 4.2rem auto 0;
+  border-top: 1px solid rgba(170, 185, 230, 0.16);
+  text-align: left;
+}
+
+.hx-onward a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.3rem 1rem 0.3rem 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+  color: #e8eaf6;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.hx-onward a small {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #00A99D;
+}
+
+.hx-onward a i { font-style: normal; display: inline-block; transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+.hx-onward a:hover, .hx-onward a:focus-visible { color: #fff; }
+.hx-onward a:hover i, .hx-onward a:focus-visible i { transform: translateX(5px); }
+
+@media (max-width: 767px) {
+  .hx-onward { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 3rem; }
+  .hx-onward a:last-child { grid-column: 1 / -1; }
+  .hx-row a { grid-template-columns: 46px minmax(0, 1fr) auto; gap: 0.8rem; }
+  .hx-recent { padding: 1.4rem 1.3rem 1.2rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hx-row-go, .hx-onward a i, .hx-recent-all { transition: none; }
+}

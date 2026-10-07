@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Members GÇô IEEE EMBS</title>
+  <title>Members â€“ IEEE EMBS</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="manifest" href="site.webmanifest" />
   <meta name="description" content="Meet the core team and student members of the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
-  <meta name="author" content="IEEE EMBS Student Chapter GÇô KPR Institute of Engineering and Technology" />
+  <meta name="author" content="IEEE EMBS Student Chapter â€“ KPR Institute of Engineering and Technology" />
   <meta name="theme-color" content="#0a0e1a" />
 
   <!-- Open Graph / link previews. Set og:url and og:image to the full
        https://<your-domain>/... form once the site has its final URL. -->
-  <meta property="og:site_name" content="IEEE EMBS Student Chapter GÇô KPR Institute of Engineering and Technology" />
-  <meta property="og:title" content="Members GÇô IEEE EMBS KPRIET" />
+  <meta property="og:site_name" content="IEEE EMBS Student Chapter â€“ KPR Institute of Engineering and Technology" />
+  <meta property="og:title" content="Members â€“ IEEE EMBS KPRIET" />
   <meta property="og:description" content="Meet the core team and student members of the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="logo-cropped.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Members GÇô IEEE EMBS KPRIET" />
+  <meta name="twitter:title" content="Members â€“ IEEE EMBS KPRIET" />
   <meta name="twitter:description" content="Meet the core team and student members of the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -30,6 +30,12 @@
   <link rel="stylesheet" href="members.css" />
   <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
+  <!-- Shared visual language (pages-experience.css) + Members layer.
+       motion.js is not loaded: this page keeps its own .mem-fade-in
+       reveal and animations.js config. -->
+  <link rel="stylesheet" href="experience.css" />
+  <link rel="stylesheet" href="pages-experience.css" />
+  <link rel="stylesheet" href="members-experience.css" />
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -98,9 +104,11 @@
   <div class="announce-track-wrap">
     <div class="announce-track"></div>
   </div>
+  <!-- Page progress hairline (pages-kit.js) -->
+  <span class="xp-progress" aria-hidden="true"></span>
 </div>
 
-<main id="main-content" tabindex="-1">
+<main id="main-content" class="mx" tabindex="-1">
 
 <section id="members-hero">
   <!-- Decorative blobs -->
@@ -288,6 +296,12 @@
         <a href="#" id="brochureBtn" target="_blank" rel="noopener" class="join-mem-btn join-mem-btn--ghost" style="display:none;">Download Brochure</a>
         <span id="brochureSoon" class="join-mem-btn join-mem-btn--ghost" style="display:none;">Brochure Coming Soon</span>
       </div>
+      <nav class="pg-onward" aria-label="Continue exploring">
+        <a href="about.html#people"><small>Identity</small>About the chapter <i aria-hidden="true">&rarr;</i></a>
+        <a href="achievements.html"><small>Progress</small>Achievements <i aria-hidden="true">&rarr;</i></a>
+        <a href="announcements.html"><small>Live</small>Announcements <i aria-hidden="true">&rarr;</i></a>
+        <a href="contact.html"><small>Connection</small>Contact <i aria-hidden="true">&rarr;</i></a>
+      </nav>
     </div>
   </div>
 </section>
@@ -364,6 +378,8 @@
 <script src="members-public.js" defer></script>
 <script src="page-hero-image.js" defer></script>
 <script src="about-brochure.js" defer></script>
+<script src="pages-kit.js" defer></script>
+<script src="members-experience.js" defer></script>
 
 <script>
 /* Members page visual enhancements: stat strip + scroll fade-in */
@@ -384,8 +400,8 @@
       var fac = res[1].data || [];
       var core = all.filter(function(m){ return CORE_RE.test(m.role||""); });
       if (elM) elM.textContent = all.length + "+";
-      if (elC) elC.textContent = core.length || "—";
-      if (elF) elF.textContent = fac.length  || "—";
+      if (elC) elC.textContent = core.length || "â€”";
+      if (elF) elF.textContent = fac.length  || "â€”";
     }).catch(function(){});
   }
   function initFadeIn() {

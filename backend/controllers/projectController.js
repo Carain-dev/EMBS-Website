@@ -6,7 +6,7 @@ const { sendResponse, sendError } = require('../utils/sendResponse');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 const normalizeBoolean = (value) => value === true || value === 'true' || value === 1 || value === '1' || value === 'yes' || value === 'on';
-const isAdminRequest = (req) => /^Bearer /i.test(String(req.headers.authorization || '')) || req.query.all === 'true';
+const { resolveAdminView, denyMessage } = require('../utils/requestAuth');
 
 const parseStringList = (value) => {
   if (Array.isArray(value)) {
@@ -25,7 +25,7 @@ const parseStringList = (value) => {
   return [];
 };
 
-const normalizeProjectPayload = (payload = {}) => {
+const normalizeProjectPayload = (payload = {}, { isCreate = false } = {}) => {
   const next = { ...payload };
 
   if (typeof next.title === 'string') next.title = next.title.trim();
@@ -47,11 +47,15 @@ const normalizeProjectPayload = (payload = {}) => {
     next.featured = normalizeBoolean(next.featured);
   }
 
-  if (!next.status) next.status = next.featured ? 'published' : 'ongoing';
+  /* Defaults are derived only when creating, or from fields the request
+     actually sends. A partial update (e.g. just the mentor) used to reset
+     status to 'ongoing' and visibility to 'hidden', unpublishing the project. */
+  if (!next.status && isCreate) next.status = next.featured ? 'published' : 'ongoing';
+  if (!next.status) delete next.status;
 
   if (Object.prototype.hasOwnProperty.call(next, 'visibility')) {
     next.visibility = next.visibility === 'hidden' ? 'hidden' : 'visible';
-  } else {
+  } else if (isCreate || Object.prototype.hasOwnProperty.call(next, 'featured')) {
     next.visibility = next.featured ? 'visible' : 'hidden';
   }
 
@@ -59,7 +63,9 @@ const normalizeProjectPayload = (payload = {}) => {
 };
 
 exports.getAll = asyncHandler(async (req, res) => {
-  const filter = isAdminRequest(req)
+  const view = await resolveAdminView(req, { flags: ['all'] });
+  if (view.deny) return sendError(res, view.deny, denyMessage(view.deny));
+  const filter = view.admin
     ? {}
     : { featured: true, visibility: { $ne: 'hidden' } };
 
@@ -73,8 +79,7 @@ exports.getOne = asyncHandler(async (req, res) => {
   const project = await Project.findById(req.params.id).populate('members', 'name role photo');
   if (!project) return sendError(res, 404, 'Project not found');
 
-  const isAdmin = isAdminRequest(req);
-  if (!isAdmin && (!project.featured || project.visibility === 'hidden')) {
+  if ((!project.featured || project.visibility === 'hidden') && !(await resolveAdminView(req, { flags: ['all'] })).admin) {
     return sendError(res, 404, 'Project not found');
   }
 
@@ -82,7 +87,7 @@ exports.getOne = asyncHandler(async (req, res) => {
 });
 
 exports.create = asyncHandler(async (req, res) => {
-  const payload = normalizeProjectPayload(req.body);
+  const payload = normalizeProjectPayload(req.body, { isCreate: true });
   if (!payload.title) return sendError(res, 400, 'Title is required');
 
   if (req.file) payload.thumbnail = req.file.path;

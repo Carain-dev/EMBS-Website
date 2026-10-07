@@ -1,4 +1,12 @@
 if (localStorage.getItem('embs_admin_auth') !== 'true') window.location.href = 'index.html';
+
+/* CMS values are plain text typed by editors (and subscriber emails come from
+   the public form): escape them before they go into innerHTML, and only allow
+   http(s) links, so stored markup cannot run script in an admin's session. */
+function admEsc(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function admHref(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? admEsc(String(u).trim()) : ''; }
 'use strict';
 
 const API   = window.EMBS_API_BASE;
@@ -53,9 +61,9 @@ function renderTable() {
       ? new Date(s.createdAt).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
       : '—';
     return `<tr>
-      <td style="font-size:0.85rem;">${s.email}</td>
+      <td style="font-size:0.85rem;">${admEsc(s.email)}</td>
       <td style="font-size:0.8rem;color:var(--text-muted);">${date}</td>
-      <td><button class="action-btn action-btn--delete" onclick="openUnsubModal('${s.email}')">
+      <td><button class="action-btn action-btn--delete" onclick="openUnsubModal(${admEsc(JSON.stringify(String(s.email)))})">
         <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         Remove
       </button></td>

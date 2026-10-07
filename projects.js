@@ -49,8 +49,10 @@ import { apiGet } from './api.js';
       : (project.teamMembers || '');
 
     // The admin panel stores these as repoUrl / liveUrl / paperUrl.
-    const repo  = project.repoUrl  || project.githubLink || '';
-    const paper = project.paperUrl || project.paperLink  || project.liveUrl || '';
+    /* Web links only: esc() alone would still let a javascript: URL through. */
+    const web   = u => (/^https?:\/\//i.test(String(u || '').trim()) ? String(u).trim() : '');
+    const repo  = web(project.repoUrl  || project.githubLink);
+    const paper = web(project.paperUrl || project.paperLink  || project.liveUrl);
 
     const links = [];
     if (repo)  links.push(`<a href="${esc(repo)}"  target="_blank" rel="noopener" class="proj-btn" style="margin-right:0.5rem;">GitHub</a>`);

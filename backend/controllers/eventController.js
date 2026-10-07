@@ -2,14 +2,17 @@ const Event           = require('../models/Event');
 const { paginate }    = require('../utils/paginate');
 const mongoose        = require('mongoose');
 const notifySubscribers = require('../utils/notifySubscribers');
+const { resolveAdminView, denyMessage } = require('../utils/requestAuth');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 const normalizeBoolean = (value) => value === true || value === 'true' || value === 1 || value === '1';
-const hasAdminHeader = (req) => /^Bearer /i.test(String(req.headers.authorization || '')) || req.query.all === 'true';
 
 exports.getEvents = async (req, res, next) => {
   try {
-    const filter = req.query.all === 'true' ? {} : { published: true };
+    /* ?all=true is the admin panel's request for drafts; it now needs a valid staff token. */
+    const view = await resolveAdminView(req, { flags: ['all'], header: false });
+    if (view.deny) return res.status(view.deny).json({ success: false, message: denyMessage(view.deny) });
+    const filter = view.admin ? {} : { published: true };
     const { rows, meta } = await paginate(Event, filter, { createdAt: -1 }, req.query);
     res.status(200).json({ success: true, data: rows, ...(meta && { meta }) });
   } catch (err) { next(err); }
@@ -23,8 +26,8 @@ exports.getEvent = async (req, res, next) => {
     const event = await Event.findById(req.params.id);
     if (!event) return res.status(404).json({ success: false, message: 'Event not found' });
 
-    const isAdminRequest = hasAdminHeader(req);
-    if (!isAdminRequest && !event.published)
+    const view = await resolveAdminView(req, { flags: ['all'] });
+    if (!view.admin && !event.published)
       return res.status(404).json({ success: false, message: 'Event not found' });
 
     res.status(200).json({ success: true, data: event });

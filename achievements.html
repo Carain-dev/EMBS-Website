@@ -30,6 +30,22 @@
   <link rel="stylesheet" href="achievements.css" />
   <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
+  <!-- Shared motion + visual language (as on every redesigned page).
+       motion.js must run in <head>: it only sets a class now. -->
+  <link rel="stylesheet" href="motion.css" />
+  <link rel="stylesheet" href="experience.css" />
+  <link rel="stylesheet" href="pages-experience.css" />
+  <link rel="stylesheet" href="achievements-experience.css" />
+  <script src="motion.js"></script>
+  <!-- achievements-public.js replaces the sample cards in the markup;
+       hold them back (JS only) so they never flash as real records. -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('akx-pending');
+      setTimeout(function () { d.classList.remove('akx-pending'); }, 4000);
+    })();
+  </script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -98,11 +114,13 @@
   <div class="announce-track-wrap">
     <div class="announce-track"></div>
   </div>
+  <!-- Page progress hairline (pages-kit.js) -->
+  <span class="xp-progress" aria-hidden="true"></span>
 </div>
 
 <main id="main-content" tabindex="-1">
 
-<section id="achievements-hero" class="ach-hero">
+<section id="achievements-hero" class="ach-hero akx-hero">
   <div class="ach-hero-inner">
 
     <div class="ach-hero-left">
@@ -112,6 +130,32 @@
     </div>
 
     <div class="ach-hero-right">
+      <!-- The ascent: an abstract line of milestones (decorative, not data) -->
+      <svg class="akx-climb" viewBox="0 0 600 400" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="akxGrad" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#6B2D8B" stop-opacity="0.2"/>
+            <stop offset="0.5" stop-color="#9b5cc4"/>
+            <stop offset="1" stop-color="#2fd3c6"/>
+          </linearGradient>
+          <linearGradient id="akxArea" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#2fd3c6" stop-opacity="0.16"/>
+            <stop offset="1" stop-color="#2fd3c6" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <line class="akx-climb-axis" x1="0" y1="380" x2="600" y2="380"/>
+        <line class="akx-climb-tick" x1="120" y1="374" x2="120" y2="386"/>
+        <line class="akx-climb-tick" x1="240" y1="374" x2="240" y2="386"/>
+        <line class="akx-climb-tick" x1="360" y1="374" x2="360" y2="386"/>
+        <line class="akx-climb-tick" x1="480" y1="374" x2="480" y2="386"/>
+        <path class="akx-climb-area" d="M0 360 C 60 352, 90 330, 120 318 S 200 300, 240 262 S 320 236, 360 196 S 440 150, 480 112 S 560 50, 600 30 L600 380 L0 380 Z"/>
+        <path class="akx-climb-path" d="M0 360 C 60 352, 90 330, 120 318 S 200 300, 240 262 S 320 236, 360 196 S 440 150, 480 112 S 560 50, 600 30"/>
+        <circle class="akx-climb-node" style="--i:0" cx="120" cy="318" r="6"/>
+        <circle class="akx-climb-node" style="--i:1" cx="240" cy="262" r="6"/>
+        <circle class="akx-climb-node" style="--i:2" cx="360" cy="196" r="6"/>
+        <circle class="akx-climb-node" style="--i:3" cx="480" cy="112" r="6"/>
+        <circle class="akx-climb-node akx-climb-node--top" style="--i:4" cx="600" cy="30" r="7"/>
+      </svg>
       <div class="ach-hero-illus">
         <svg class="ach-hero-trophy" viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="75" y="195" width="50" height="10" rx="5" fill="rgba(0,169,157,0.4)"/>
@@ -140,7 +184,7 @@
   </div>
 </section>
 
-<section id="achievement-filters" class="ach-filters-section">
+<section id="achievement-filters" class="ach-filters-section akx-filters">
   <div class="ach-filters-inner">
     <div class="ach-filters" role="group" aria-label="Filter achievements by category">
       <button class="ach-chip active" data-filter="all">All</button>
@@ -153,8 +197,12 @@
   </div>
 </section>
 
-<section id="achievement-cards" class="ach-cards-section" data-replaced="true">
+<section id="achievement-cards" class="ach-cards-section akx-record" data-replaced="true" aria-labelledby="akxRecordTitle">
   <div class="ach-cards-inner">
+    <div class="akx-record-head">
+      <span class="pg-eyebrow pg-eyebrow--ink">The record</span>
+      <h2 class="pg-title" id="akxRecordTitle">Every milestone,<br>newest first.</h2>
+    </div>
     <div class="ach-cards-grid">
 
       <!-- Card 1 -->
@@ -305,7 +353,7 @@
   </div>
 </section>
 
-<section id="achievement-stats" class="ach-stats-section">
+<section id="achievement-stats" class="ach-stats-section akx-figures" aria-label="Achievements by category">
   <div class="ach-stats-inner">
 
     <article class="ach-stat-card">
@@ -343,14 +391,20 @@
   </div>
 </section>
 
-<section id="submit-achievement" class="ach-submit-section">
+<section id="submit-achievement" class="ach-submit-section akx-share">
   <div class="ach-submit-inner">
     <span class="ach-submit-label">Share Your Win</span>
     <h2 class="ach-submit-heading">Got an Achievement to Share?</h2>
     <p class="ach-submit-desc">Did you win an award, publish a paper, or place in a competition? Submit your achievement to be featured on the IEEE EMBS chapter wall and inspire fellow members.</p>
     <div class="ach-submit-actions">
-      <a href="contact.html" class="ach-submit-btn ach-submit-btn--primary">Submit Achievement</a>
+      <a href="contact.html" class="ach-submit-btn ach-submit-btn--primary mo-sheen xp-magnetic">Submit Achievement</a>
     </div>
+    <nav class="pg-onward" aria-label="Continue exploring">
+      <a href="members.html"><small>People</small>Members <i aria-hidden="true">&rarr;</i></a>
+      <a href="projects.html"><small>Discovery</small>Projects &amp; Research <i aria-hidden="true">&rarr;</i></a>
+      <a href="events.html"><small>Energy</small>Events <i aria-hidden="true">&rarr;</i></a>
+      <a href="announcements.html"><small>Live</small>Announcements <i aria-hidden="true">&rarr;</i></a>
+    </nav>
   </div>
 </section>
 
@@ -426,15 +480,17 @@
       baseDelay: 60
     },
     sections: [
+      { label: '.akx-record-head .pg-eyebrow', heading: '#akxRecordTitle' },
       { label: '.ach-submit-label', heading: '.ach-submit-heading' }
     ],
     stagger: [
-      { container: '.ach-cards-grid', child: '.ach-card' },
       { container: '.ach-stats-inner', child: '.ach-stat-card' }
     ],
-    reveal: ['.ach-hero-label']
+    reveal: ['.ach-hero-label', '.akx-share .pg-onward']
   };
 </script>
+<script src="pages-kit.js" defer></script>
+<script src="achievements-experience.js" defer></script>
 <script src="animations.js" defer></script>
 </body>
 </html>

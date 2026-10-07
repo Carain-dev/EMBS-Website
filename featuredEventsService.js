@@ -5,24 +5,40 @@
 
   /* ── Helpers ─────────────────────────────────── */
 
+  /* CMS fields are plain text: escape them before they go into HTML, and
+     only allow http(s)/mailto/tel or same-site links (never javascript:). */
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function safeUrl(u, fallback) {
+    var s = String(u == null ? '' : u).trim();
+    var probe = s.replace(/[\u0000-\u0020\u007f]/g, '');
+    if (!s) return fallback || '';
+    if (/^[a-z][a-z0-9+.-]*:/i.test(probe) && !/^(https?|mailto|tel):/i.test(probe)) return fallback || '';
+    return s;
+  }
+
+
   function formatDate(dateStr) {
     if (!dateStr) return '';
     const d = new Date(dateStr);
-    return isNaN(d) ? dateStr : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return isNaN(d) ? esc(dateStr) : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 
   function statusTag(status) {
     if (status === 'upcoming') return '<span class="act-tag act-tag--upcoming">Upcoming</span>';
     if (status === 'completed') return '<span class="act-tag act-tag--completed">Completed</span>';
-    return `<span class="act-tag act-tag--hackathon">${status || ''}</span>`;
+    return `<span class="act-tag act-tag--hackathon">${esc(status)}</span>`;
   }
 
   function actionBtn(event) {
     if (event.status === 'completed') {
       return `<a href="events.html" class="act-btn act-btn--ghost">View</a>`;
     }
-    if (event.registrationLink) {
-      return `<a href="${event.registrationLink}" target="_blank" rel="noopener" class="act-btn act-btn--primary">Register</a>`;
+    if (safeUrl(event.registrationLink)) {
+      return `<a href="${esc(safeUrl(event.registrationLink))}" target="_blank" rel="noopener" class="act-btn act-btn--primary">Register</a>`;
     }
     return `<a href="events.html" class="act-btn act-btn--primary">Details</a>`;
   }
@@ -53,13 +69,13 @@
         </div>
         <div class="act-card-body">
           <div class="act-meta">
-            <span class="act-type">${event.type || 'Event'}</span>
+            <span class="act-type">${esc(event.type || 'Event')}</span>
             <span class="act-date">${formatDate(event.date)}</span>
           </div>
-          <h3 class="act-title">${event.title}</h3>
-          <p class="act-desc">${event.description || ''}</p>
+          <h3 class="act-title">${esc(event.title)}</h3>
+          <p class="act-desc">${esc(event.description)}</p>
           <div class="act-footer">
-            <span class="act-location">${LOC_SVG} ${event.venue || event.mode || ''}</span>
+            <span class="act-location">${LOC_SVG} ${esc(event.venue || event.mode || '')}</span>
             ${actionBtn(event)}
           </div>
         </div>
@@ -122,21 +138,22 @@
   const PLAY_SVG = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>`;
 
   function buildEpCard(ep) {
-    const num = String(ep.episodeNumber).padStart(2, '0');
+    const num = esc(String(ep.episodeNumber).padStart(2, '0'));
+    const link = safeUrl(ep.audioUrl) || safeUrl(ep.spotifyUrl);
     const pct = Math.min(100, Math.max(5, ((ep.episodeNumber * 17) % 80) + 20));
     return `
       <div class="ep-card">
         <div class="ep-num">EP ${num}</div>
         <div class="ep-info">
-          <h4 class="ep-title">${ep.title}</h4>
-          <span class="ep-speaker">${ep.guestName || ''}${ep.guestDesignation ? ' &mdash; ' + ep.guestDesignation : ''}</span>
+          <h4 class="ep-title">${esc(ep.title)}</h4>
+          <span class="ep-speaker">${esc(ep.guestName)}${ep.guestDesignation ? ' &mdash; ' + esc(ep.guestDesignation) : ''}</span>
         </div>
         <div class="ep-controls">
-          <a href="${ep.audioUrl || ep.spotifyUrl || 'podcast.html'}" ${ep.audioUrl || ep.spotifyUrl ? 'target="_blank" rel="noopener"' : ''} class="ep-play" aria-label="Play">
+          <a href="${esc(link || 'podcast.html')}" ${link ? 'target="_blank" rel="noopener"' : ''} class="ep-play" aria-label="Play">
             ${PLAY_SVG}
           </a>
           <div class="ep-progress"><div class="ep-progress-fill" style="width:${pct}%"></div></div>
-          <span class="ep-duration">${ep.duration || ''}</span>
+          <span class="ep-duration">${esc(ep.duration)}</span>
         </div>
       </div>`;
   }
@@ -185,8 +202,8 @@
       }
 
       // Update Spotify button link
-      if (spotifyBtn && episodes[0].spotifyUrl) {
-        spotifyBtn.href = episodes[0].spotifyUrl;
+      if (spotifyBtn && safeUrl(episodes[0].spotifyUrl)) {
+        spotifyBtn.href = safeUrl(episodes[0].spotifyUrl);
       }
     } catch {
       // keep hardcoded fallback
@@ -214,8 +231,8 @@
           <div class="ach-icon">${STAR_SVG}</div>
           <span class="ach-tag ${cat.cls}">${cat.label}</span>
         </div>
-        <h3 class="ach-title">${item.title}</h3>
-        <p class="ach-meta">${item.description || ''}</p>
+        <h3 class="ach-title">${esc(item.title)}</h3>
+        <p class="ach-meta">${esc(item.description)}</p>
       </div>`;
   }
 

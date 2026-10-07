@@ -30,6 +30,14 @@
   <link rel="stylesheet" href="podcast.css" />
   <link rel="stylesheet" href="animations.css" />
   <link rel="stylesheet" href="responsive.css" />
+  <!-- Shared motion + visual language (as on Home, About, Activities).
+       motion.js must run in <head>: it only sets a class now and does
+       its DOM work on DOMContentLoaded. -->
+  <link rel="stylesheet" href="motion.css" />
+  <link rel="stylesheet" href="experience.css" />
+  <link rel="stylesheet" href="pages-experience.css" />
+  <link rel="stylesheet" href="podcast-experience.css" />
+  <script src="motion.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#podcast-main">Skip to main content</a>
@@ -113,17 +121,20 @@
   <div class="announce-track-wrap">
     <div class="announce-track"></div>
   </div>
+  <!-- Page progress hairline (pages-kit.js) -->
+  <span class="xp-progress" aria-hidden="true"></span>
 </div>
 
 <!-- ═══════════════════════════════════════
      MAIN CONTENT
 ════════════════════════════════════════ -->
-<main id="podcast-main" tabindex="-1">
+<main id="podcast-main" class="pdx-page" tabindex="-1">
 
   <!-- ═══════════════════════════════════════
        SECTION 1 — HERO
   ════════════════════════════════════════ -->
   <section id="pod-hero" class="pod-hero">
+    <span class="pdx-listen" aria-hidden="true">Listen</span>
     <div class="pod-hero-inner">
 
       <!-- ── Left: Text ── -->
@@ -180,6 +191,7 @@
         <!-- Outer glow ring -->
         <div class="pod-hero-ring pod-hero-ring--outer"></div>
         <div class="pod-hero-ring pod-hero-ring--inner"></div>
+        <span class="pdx-pulse" aria-hidden="true"></span>
 
         <!-- Main illustration box — replace contents with your image/SVG -->
         <div class="pod-hero-illus">
@@ -294,6 +306,7 @@
           <div class="pod-feat-content-col">
 
             <!-- Episode title -->
+            <span class="pdx-now"><span class="pg-live" aria-hidden="true"></span>Latest episode</span>
             <h3 class="pod-feat-ep-title">AI in Healthcare: From Research to Real Hospitals</h3>
 
             <!-- Guest -->
@@ -1049,7 +1062,86 @@
     </div>
   </section>
 
+  <!-- Continue the journey -->
+  <div class="pdx-onward-wrap">
+    <nav class="pg-wrap pg-onward" aria-label="Continue exploring">
+      <a href="events.html"><small>Energy</small>Events <i aria-hidden="true">&rarr;</i></a>
+      <a href="projects.html"><small>Discovery</small>Projects &amp; Research <i aria-hidden="true">&rarr;</i></a>
+      <a href="blog.html"><small>Knowledge</small>Blog &amp; Articles <i aria-hidden="true">&rarr;</i></a>
+      <a href="gallery.html"><small>Memory</small>Gallery <i aria-hidden="true">&rarr;</i></a>
+    </nav>
+  </div>
 </main>
+
+<!-- ═══════════════════════════════════════
+     FOOTER (the site footer, as on every other page)
+════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-main">
+    <div class="footer-grid">
+
+      <div class="footer-col footer-brand">
+        <div class="footer-brand-top">
+          <img src="embs-logo.png" alt="" class="footer-logo-img" width="38" height="38" />
+          <span class="footer-brand-name">IEEE EMBS Chapter</span>
+        </div>
+        <p class="footer-desc">Advancing innovation at the intersection of engineering and medicine. A student-driven community committed to biomedical research, technology, and impact.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-social-icon" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" stroke-width="1.5"/><line x1="7" y1="10" x2="7" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="7" r="1" fill="currentColor"/><path d="M11 17v-4a2 2 0 0 1 4 0v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="11" y1="10" x2="11" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </a>
+          <a href="#" class="footer-social-icon" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="footer-social-icon" aria-label="Twitter">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l16 16M4 20L20 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </a>
+          <a href="#" class="footer-social-icon" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="5" width="20" height="14" rx="4" stroke="currentColor" stroke-width="1.5"/><polygon points="10,9 16,12 10,15" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col-title">Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="about.html">About EMBS</a></li>
+          <li><a href="activities.html">Activities</a></li>
+          <li><a href="achievements.html">Achievements</a></li>
+          <li><a href="projects.html">Research</a></li>
+          <li><a href="podcast.html">Podcast</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col-title">Resources</h4>
+        <ul class="footer-links">
+          <li><a href="https://www.embs.org" target="_blank" rel="noopener">IEEE EMBS Global</a></li>
+          <li><a href="blog.html">Publications</a></li>
+          <li><a href="members.html">Members</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col-title">Newsletter</h4>
+        <p class="footer-newsletter-desc">Get updates on events, research, and podcast drops.</p>
+        <form class="footer-newsletter-form" onsubmit="return false;">
+          <input type="email" class="footer-email-input" placeholder="Your email address" />
+          <button type="submit" class="footer-email-btn">Subscribe</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <span class="footer-copy">&copy; 2025 IEEE EMBS &ndash; KPR Institute of Engineering and Technology Student Chapter. All rights reserved.</span>
+      <span class="footer-credit">Designed by EMBS Web Team</span>
+    </div>
+  </div>
+</footer>
 
 <!-- ═══════════════════════════════════════
      SPOTIFY EMBED PLAYER
@@ -1097,7 +1189,11 @@
 <script src="announceBar.js" defer></script>
 <script src="newsletter.js" defer></script>
 <script src="podcast-public.js" defer></script>
+<script src="pages-kit.js" defer></script>
+<script src="podcast-experience.js" defer></script>
 <script>
+  /* ── Podcast page animation config (animations.js owns headings;
+        motion.js reveals the episodes and guests podcast-public.js renders) ── */
   window.EMBS_ANIM_CONFIG = {
     hero: {
       heading:   '.pod-hero-heading',
@@ -1105,13 +1201,13 @@
       baseDelay: 55
     },
     sections: [
-      { label: '.pod-featured-label', heading: '.pod-featured-title' },
-      { label: '.pod-latest-label',   heading: '.pod-latest-title' }
+      { label: '.pod-featured-label', heading: '.pod-featured-title', desc: '.pod-featured-desc' },
+      { label: '.pod-latest-label',   heading: '.pod-latest-title',   desc: '.pod-latest-desc' },
+      { label: '.pod-topics-label',   heading: '.pod-topics-title',   desc: '.pod-topics-desc' },
+      { label: '.pod-guests-label',   heading: '.pod-guests-title',   desc: '.pod-guests-desc' },
+      { label: '.pod-subscribe-label', heading: '.pod-subscribe-title', desc: '.pod-subscribe-desc' }
     ],
-    stagger: [
-      { container: '.pod-ep-grid', child: '.pod-ep-card' }
-    ],
-    reveal: ['.pod-hero-label', '.pod-hero-meta']
+    reveal: ['.pod-hero-label', '.pod-hero-meta', '.pod-hero-btns', '.pod-feat-card', '.pdx-onward-wrap .pg-onward']
   };
 </script>
 <script src="animations.js" defer></script>

@@ -1,0 +1,306 @@
+/* ================================================================
+   contact-experience.css — IEEE EMBS KPRIET (contact.html only)
+
+   CONTACT = CONNECTION. The site's signal lines converge here: the
+   hero draws every line toward one point, the contact details become
+   channels on a single connecting line, and the form is a calm panel.
+   contactForm.js (sending), navbar.js (CMS address / email / faculty,
+   social links, map URL) and the map fallback are untouched; this file
+   only restyles them.
+
+   GROUND   hero night · channels + form paper · FAQ paper
+   ================================================================ */
+
+:root {
+  --ctx-ink:  #0d1030;
+  --ctx-soft: #4f5675;
+  --ctx-rule: rgba(13, 16, 48, 0.12);
+}
+
+/* ── 1. HERO — lines converging ────────────────────────────────── */
+
+.contact-hero.ctx-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  background:
+    radial-gradient(ellipse 45% 60% at 72% 50%, rgba(0, 169, 157, 0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 10% 90%, rgba(107, 45, 139, 0.22) 0%, transparent 70%),
+    linear-gradient(170deg, #0a0e1a 0%, #0d1530 60%, #0a1a1c 100%);
+  color: var(--pg-text);
+}
+
+.ctx-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ctx-line { fill: none; stroke-width: 1.2; vector-effect: non-scaling-stroke; stroke-linecap: round; }
+.ctx-line--t { stroke: rgba(47, 211, 198, 0.45); }
+.ctx-line--p { stroke: rgba(155, 92, 196, 0.45); }
+.ctx-core { fill: #2fd3c6; }
+.ctx-core-ring { fill: none; stroke: rgba(47, 211, 198, 0.35); stroke-width: 1; vector-effect: non-scaling-stroke; transform-box: fill-box; transform-origin: center; }
+
+@media (prefers-reduced-motion: no-preference) {
+  html.embs-motion .ctx-line { stroke-dasharray: 1600; stroke-dashoffset: 1600; animation: ctx-draw 2.4s cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+  html.embs-motion .ctx-line:nth-of-type(2) { animation-delay: 0.2s; }
+  html.embs-motion .ctx-line:nth-of-type(3) { animation-delay: 0.4s; }
+  html.embs-motion .ctx-line:nth-of-type(4) { animation-delay: 0.6s; }
+  html.embs-motion .ctx-core-ring { animation: ctx-ring 3.6s cubic-bezier(0.22, 1, 0.36, 1) 2s infinite; }
+  .ctx-hero.mo-paused .ctx-core-ring { animation-play-state: paused; }
+}
+
+@keyframes ctx-draw { to { stroke-dashoffset: 0; } }
+@keyframes ctx-ring { 0% { transform: scale(0.6); opacity: 0.9; } 100% { transform: scale(2.4); opacity: 0; } }
+
+.ctx-hero .contact-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: min(70svh, 640px);
+  padding: calc(var(--pg-nav) + 4.4rem) var(--pg-gutter) 4.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  text-align: left;
+}
+
+.ctx-hero .contact-hero-label {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pg-teal-hi);
+}
+
+.ctx-hero .contact-hero-heading {
+  margin: 1.4rem 0 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(3rem, 8vw, 7.2rem);
+  line-height: 0.94;
+  letter-spacing: -0.05em;
+  color: #eef0fa;
+}
+
+.ctx-lede {
+  margin: 1.6rem 0 0;
+  max-width: 470px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--pg-text-soft);
+}
+
+
+/* ── 2. LAYOUT — form + channels ───────────────────────────────── */
+
+.contact-layout.ctx-layout {
+  padding: 6rem 0 6rem;
+  background: linear-gradient(180deg, var(--pg-paper), #e9ecf3);
+}
+
+.ctx-layout .contact-layout-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--pg-gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: 3rem 4.5rem;
+  align-items: start;
+}
+
+.ctx-layout .contact-col-heading {
+  margin: 0 0 1.8rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  letter-spacing: -0.02em;
+  color: var(--ctx-ink);
+}
+
+/* the form panel */
+.ctx-layout .contact-col--form {
+  padding: 2.6rem;
+  border-radius: 24px;
+  border: 1px solid var(--ctx-rule);
+  background: #fff;
+  box-shadow: 0 30px 80px rgba(13, 16, 48, 0.07);
+}
+
+.ctx-layout .contact-form { gap: 1.2rem; }
+.ctx-layout .contact-label { font-family: var(--font-body); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ctx-soft); }
+
+.ctx-layout .contact-input,
+.ctx-layout .contact-textarea {
+  border-radius: 12px;
+  border: 1px solid rgba(13, 16, 48, 0.14);
+  background: #f7f8fb;
+  color: var(--ctx-ink);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ctx-layout .contact-input::placeholder,
+.ctx-layout .contact-textarea::placeholder { color: #8a90a8; }
+
+.ctx-layout .contact-input:focus,
+.ctx-layout .contact-textarea:focus { outline: none; border-color: #00A99D; background: #fff; box-shadow: 0 0 0 4px rgba(0, 169, 157, 0.12); }
+
+.ctx-layout .contact-submit {
+  align-self: flex-start;
+  min-height: 48px;
+  padding: 0.8rem 1.8rem;
+  border-radius: 999px;
+  border: 0;
+  background: linear-gradient(90deg, #6B2D8B, #00A99D);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 600;
+  box-shadow: 0 12px 34px rgba(107, 45, 139, 0.25);
+}
+
+/* channels: every detail is a node on one connecting line */
+.ctx-layout .contact-info-list {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 2.4rem;
+}
+
+.ctx-layout .contact-info-list::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 0.9rem;
+  bottom: 0.9rem;
+  width: 1px;
+  background: linear-gradient(180deg, #00A99D, #6B2D8B);
+  opacity: 0.55;
+}
+
+.ctx-layout .contact-info-item {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--ctx-rule);
+  background: none;
+  box-shadow: none;
+}
+
+.ctx-layout .contact-info-item::before {
+  content: '';
+  position: absolute;
+  left: calc(-2.4rem + 2px);
+  top: 1.45rem;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--pg-paper);
+  border: 1.5px solid #00A99D;
+}
+
+.ctx-layout .contact-info-icon { display: none; }
+.ctx-layout .contact-info-body { display: flex; flex-direction: column; gap: 0.3rem; }
+.ctx-layout .contact-info-label { font-family: var(--font-body); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #00A99D; }
+.ctx-layout .contact-info-text { font-family: var(--font-heading); font-weight: 600; font-size: 1.02rem; line-height: 1.45; color: var(--ctx-ink); overflow-wrap: anywhere; }
+
+.ctx-layout .contact-map-card { margin-top: 1.8rem; border-radius: 20px; overflow: hidden; border: 1px solid var(--ctx-rule); box-shadow: 0 24px 60px rgba(13, 16, 48, 0.08); }
+
+.ctx-layout .contact-socials { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.6rem; }
+
+.ctx-layout .contact-social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 42px;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(13, 16, 48, 0.16);
+  background: transparent;
+  color: var(--ctx-ink);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.ctx-layout .contact-social-btn:hover,
+.ctx-layout .contact-social-btn:focus-visible { background: var(--ctx-ink); border-color: var(--ctx-ink); color: #fff; transform: none; }
+
+
+/* ── 3. FAQ ────────────────────────────────────────────────────── */
+
+.contact-faq.ctx-faq { padding: 6rem 0 5rem; background: #e9ecf3; border-top: 1px solid var(--ctx-rule); }
+.ctx-faq .contact-faq-inner { max-width: 900px; margin: 0 auto; padding: 0 var(--pg-gutter); }
+.ctx-faq .contact-faq-heading { margin: 0 0 2rem; font-family: var(--font-heading); font-weight: 700; font-size: clamp(1.8rem, 3.2vw, 2.6rem); letter-spacing: -0.02em; color: var(--ctx-ink); text-align: left; }
+.ctx-faq .faq-list { border-top: 1px solid var(--ctx-ink); }
+.ctx-faq .faq-item { border: 0; border-bottom: 1px solid var(--ctx-rule); border-radius: 0; background: none; box-shadow: none; }
+
+.ctx-faq .faq-question {
+  position: relative;
+  padding: 1.3rem 3rem 1.3rem 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--ctx-ink);
+  list-style: none;
+  cursor: pointer;
+}
+
+.ctx-faq .faq-question::-webkit-details-marker { display: none; }
+
+/* a plus that turns into a minus */
+.ctx-faq .faq-question::after {
+  content: '';
+  position: absolute;
+  right: 0.4rem;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  background:
+    linear-gradient(#00A99D, #00A99D) center / 14px 1.5px no-repeat,
+    linear-gradient(#00A99D, #00A99D) center / 1.5px 14px no-repeat;
+  transition: transform 0.4s var(--pg-ease);
+}
+
+.ctx-faq .faq-item[open] .faq-question::after { transform: rotate(180deg); background: linear-gradient(#6B2D8B, #6B2D8B) center / 14px 1.5px no-repeat; }
+.ctx-faq .faq-question:focus-visible { outline: 2px solid #00A99D; outline-offset: 4px; }
+.ctx-faq .faq-answer { padding: 0 3rem 1.4rem 0; font-family: var(--font-body); font-size: 0.92rem; line-height: 1.75; color: var(--ctx-soft); }
+.ctx-faq .faq-answer a { color: #6B2D8B; }
+
+.ctx-faq .pg-onward { border-top-color: var(--ctx-rule); }
+.ctx-faq .pg-onward a { color: var(--ctx-ink); }
+.ctx-faq .pg-onward a small { color: #6B2D8B; }
+.ctx-faq .pg-onward a:hover, .ctx-faq .pg-onward a:focus-visible { color: #6B2D8B; }
+
+
+/* ── 4. RESPONSIVE ─────────────────────────────────────────────── */
+
+@media (max-width: 1023px) {
+  .ctx-layout .contact-layout-inner { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 767px) {
+  .ctx-hero .contact-hero-inner { min-height: 0; padding-top: calc(var(--pg-nav) + 3rem); padding-bottom: 3rem; }
+  .ctx-hero .contact-hero-heading { font-size: clamp(2.7rem, 14vw, 4.2rem); }
+  .contact-layout.ctx-layout, .contact-faq.ctx-faq { padding: 4.5rem 0; }
+  .ctx-layout .contact-col--form { padding: 1.6rem 1.3rem; border-radius: 20px; }
+  .ctx-layout .contact-submit { align-self: stretch; justify-content: center; }
+  .ctx-faq .faq-question { padding-right: 2.4rem; }
+  .ctx-faq .faq-answer { padding-right: 0; }
+}

@@ -1,0 +1,440 @@
+/* ================================================================
+   gallery-experience.css — IEEE EMBS KPRIET (gallery.html only)
+
+   GALLERY = MEMORY. The most visual of the five, and the only one
+   where the photographs carry the colour: a graphite-black screening
+   room. The hero is lit by the chapter's own photograph; albums are
+   set as reels; the photo grid is composed according to how many
+   photographs the CMS holds (one becomes a cinematic plate, more
+   become an editorial mosaic); the closing panel is a last full-bleed
+   frame. gallery-public.js still renders everything and owns its
+   reveal (gal-will-animate → gal-reveal-in) and the lightbox; this
+   file restyles them — the reveal becomes a frame opening.
+
+   GROUND   graphite throughout, photographs as light
+   ================================================================ */
+
+.gallery-page.glx {
+  --glx-black: #08090d;
+  --glx-coal:  #0e1016;
+  --glx-line:  rgba(220, 225, 240, 0.12);
+  --glx-text:  #eceef4;
+  --glx-soft:  rgba(220, 225, 240, 0.62);
+  background: var(--glx-black);
+  color: var(--glx-text);
+}
+
+
+/* ── 1. HERO — lit by the chapter's own photograph ─────────────── */
+
+.glx #gal-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: min(100svh, 960px);
+  display: flex;
+  align-items: flex-end;
+  padding: 0;
+  background: var(--glx-black);
+}
+
+.glx #gal-hero::before { display: none; }
+.glx .gal-hero-dots { opacity: 0.25; }
+
+.glx-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.glx-backdrop img {
+  position: absolute;
+  inset: -4%;
+  width: 108%;
+  max-width: none;                    /* a global img rule caps it at 100% */
+  height: 108%;
+  object-fit: cover;
+  opacity: 0;
+  filter: saturate(0.9);
+  transition: opacity 1.6s ease;
+}
+
+.glx-backdrop.has-img img { opacity: 0.55; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .glx-backdrop.has-img img { animation: glx-drift 26s ease-in-out infinite alternate; }
+  #gal-hero.mo-paused .glx-backdrop img { animation-play-state: paused; }
+}
+
+@keyframes glx-drift {
+  from { transform: scale(1) translate3d(0, 0, 0); }
+  to   { transform: scale(1.08) translate3d(-1.5%, -1%, 0); }
+}
+
+/* a darkroom gradient keeps the type legible over any photograph */
+.glx-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(8, 9, 13, 0.85) 0%, rgba(8, 9, 13, 0.25) 35%, rgba(8, 9, 13, 0.55) 65%, var(--glx-black) 100%),
+    linear-gradient(90deg, rgba(8, 9, 13, 0.75) 0%, rgba(8, 9, 13, 0) 60%);
+}
+
+.glx .gal-hero-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: calc(var(--pg-nav) + 6rem) var(--pg-gutter) 4.2rem;
+  text-align: left;
+}
+
+.glx .gal-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pg-teal-hi);
+}
+
+.glx .gal-hero-title {
+  margin: 1.6rem 0 0;
+  max-width: 1000px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(2.8rem, 7.6vw, 7rem);
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+  color: #fff;
+}
+
+.glx .gal-hero-desc {
+  margin: 1.8rem 0 0;
+  max-width: 520px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--glx-soft);
+}
+
+/* the frame counter: real counts from gallery-public.js */
+.glx .gal-hero-stats {
+  display: flex;
+  gap: 0;
+  margin: 3rem 0 0;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid var(--glx-line);
+  max-width: 560px;
+}
+
+.glx .gal-hero-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding: 1.1rem 1.2rem 0 0;
+  background: none;
+  border: 0;
+}
+
+.glx .gal-hero-stat + .gal-hero-stat { padding-left: 1.2rem; border-left: 1px solid var(--glx-line); }
+.glx .gal-hero-stat-num { font-family: var(--font-heading); font-weight: 700; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1; letter-spacing: -0.03em; color: #fff; font-variant-numeric: tabular-nums; }
+.glx .gal-hero-stat-label { font-family: var(--font-body); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--glx-soft); }
+
+.glx-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 10px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.35;
+  background: repeating-linear-gradient(90deg, rgba(236, 238, 244, 0.5) 0 14px, transparent 14px 30px);
+}
+
+
+/* ── 2. FILTER BAR — a contact-sheet index ─────────────────────── */
+
+.glx #gal-filters {
+  background: rgba(8, 9, 13, 0.9);
+  border-top: 1px solid var(--glx-line);
+  border-bottom: 1px solid var(--glx-line);
+  box-shadow: none;
+  top: var(--pg-nav);
+}
+
+@supports (backdrop-filter: blur(8px)) {
+  .glx #gal-filters { background: rgba(8, 9, 13, 0.72); backdrop-filter: blur(8px); }
+}
+
+.glx .gal-filter-btn {
+  border-radius: 999px;
+  border: 1px solid var(--glx-line);
+  background: transparent;
+  color: var(--glx-soft);
+  box-shadow: none;
+  transition: border-color 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+}
+
+.glx .gal-filter-btn:hover { color: #fff; border-color: rgba(47, 211, 198, 0.5); background: rgba(47, 211, 198, 0.06); transform: none; }
+.glx .gal-filter-btn.active { color: var(--glx-black); background: #eceef4; border-color: #eceef4; }
+.glx .gal-filter-skeleton-chip { background: rgba(255, 255, 255, 0.06); }
+
+
+/* ── 3. SECTION HEADS (shared by albums / featured / videos) ───── */
+
+.glx .gal-section-badge {
+  display: inline-block;
+  padding: 0;
+  background: none;
+  border: 0;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pg-teal-hi);
+}
+
+.glx .gal-section-title { color: #fff; font-family: var(--font-heading); letter-spacing: -0.025em; }
+.glx .gal-section-desc { color: var(--glx-soft); }
+
+
+/* ── 4. ALBUMS — reels ─────────────────────────────────────────── */
+
+.glx #gal-albums { background: var(--glx-black); padding: 6rem 0 4rem; }
+
+.glx .gal-album-card {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--glx-line);
+  background: var(--glx-coal);
+  box-shadow: none;
+}
+
+.glx .gal-album-card:hover { box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5); border-color: rgba(236, 238, 244, 0.3); }
+.glx .gal-album-cover { aspect-ratio: 4 / 5; height: auto; }
+.glx .gal-album-cover img { width: 100%; height: 100%; object-fit: cover; transition: scale 1.2s var(--pg-ease); }
+.glx .gal-album-card:hover .gal-album-cover img { scale: 1.05; transform: none; }
+
+.glx .gal-album-body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 3.4rem 1.4rem 1.3rem;
+  background: linear-gradient(0deg, rgba(8, 9, 13, 0.92), rgba(8, 9, 13, 0));
+}
+
+.glx .gal-album-name { color: #fff; font-family: var(--font-heading); font-size: 1.35rem; letter-spacing: -0.015em; }
+.glx .gal-album-meta { color: var(--glx-soft); }
+.glx .gal-album-cta { color: var(--pg-teal-hi); background: none; border: 0; padding-left: 0; }
+.glx .gal-album-count-badge { background: rgba(8, 9, 13, 0.75); color: #fff; border: 1px solid var(--glx-line); }
+.glx .gal-album-skeleton { background: rgba(255, 255, 255, 0.05); }
+
+
+/* ── 5. FEATURED HEADER — a chapter card between reels and frames ─ */
+
+.glx #gal-featured-header {
+  padding: 6rem 0 2rem;
+  background: var(--glx-black);
+  border-top: 0;
+}
+
+.glx .gal-featured-header-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: end;
+  gap: 1rem 4rem;
+  text-align: left;
+  padding-top: 2.2rem;
+  border-top: 1px solid var(--glx-line);
+}
+
+.glx .gal-featured-header-inner .gal-section-badge { grid-column: 1 / -1; }
+.glx #galleryFeaturedHeading { margin: 0; font-size: clamp(2.3rem, 5vw, 4.4rem); line-height: 1; }
+.glx #galleryFeaturedDesc { margin: 0; }
+
+
+/* ── 6. PHOTOGRAPHS — composed by count ────────────────────────── */
+
+.glx #gal-grid { background: var(--glx-black); padding: 2rem 0 7rem; border: 0; }
+
+/* the grid's composition, chosen by how many photographs exist
+   (data-count set by gallery-experience.js) */
+.glx .gal-photo-grid[data-count] {
+  columns: auto;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: clamp(80px, 8.4vw, 124px);
+  grid-auto-flow: dense;
+  gap: 1rem;
+}
+
+.glx .gal-photo-grid[data-count] .gal-photo-item {
+  margin: 0;
+  grid-column: span 4;
+  grid-row: span 3;
+  border-radius: 16px;
+}
+
+.glx .gal-photo-grid[data-count] .gal-photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* a six-frame rhythm: wide · tall · small · small · tall · wide */
+.glx .gal-photo-grid[data-count] .gal-photo-item:nth-child(6n+1) { grid-column: span 8; grid-row: span 4; }
+.glx .gal-photo-grid[data-count] .gal-photo-item:nth-child(6n+2) { grid-column: span 4; grid-row: span 4; }
+.glx .gal-photo-grid[data-count] .gal-photo-item:nth-child(6n+3),
+.glx .gal-photo-grid[data-count] .gal-photo-item:nth-child(6n+4) { grid-column: span 3; grid-row: span 3; }
+.glx .gal-photo-grid[data-count] .gal-photo-item:nth-child(6n+5) { grid-column: span 6; grid-row: span 3; }
+.glx .gal-photo-grid[data-count] .gal-photo-item:nth-child(6n+6) { grid-column: span 12; grid-row: span 4; }
+
+/* small collections */
+.glx .gal-photo-grid[data-count="1"] { grid-auto-rows: auto; }
+.glx .gal-photo-grid[data-count="1"] .gal-photo-item:nth-child(n) { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 21 / 9; border-radius: 22px; }
+.glx .gal-photo-grid[data-count="2"] .gal-photo-item:nth-child(1) { grid-column: span 7; grid-row: span 5; }
+.glx .gal-photo-grid[data-count="2"] .gal-photo-item:nth-child(2) { grid-column: span 5; grid-row: span 5; }
+.glx .gal-photo-grid[data-count="3"] .gal-photo-item:nth-child(1) { grid-column: span 8; grid-row: span 6; }
+.glx .gal-photo-grid[data-count="3"] .gal-photo-item:nth-child(2),
+.glx .gal-photo-grid[data-count="3"] .gal-photo-item:nth-child(3) { grid-column: span 4; grid-row: span 3; }
+
+/* captions sit under a darkroom gradient; always readable on focus */
+.glx .gal-photo-overlay { background: linear-gradient(0deg, rgba(8, 9, 13, 0.85) 0%, rgba(8, 9, 13, 0) 55%); }
+.glx .gal-photo-grid[data-count="1"] .gal-photo-overlay { opacity: 1; padding: 2rem; }
+.glx .gal-photo-grid[data-count="1"] .gal-photo-title { font-size: clamp(1.3rem, 2.4vw, 2rem); }
+
+/* the reveal (classes owned by gallery-public.js), as a frame opening */
+@media (prefers-reduced-motion: no-preference) {
+  .glx .gal-photo-grid.gal-will-animate .gal-photo-item {
+    transform: none;
+    clip-path: inset(12% 8% 12% 8% round 16px);
+    transition: opacity 0.9s ease, clip-path 1.4s cubic-bezier(0.65, 0, 0.35, 1), box-shadow 0.3s ease;
+  }
+  .glx .gal-photo-grid.gal-will-animate .gal-photo-item img { scale: 1.18; transition: scale 1.8s cubic-bezier(0.22, 1, 0.36, 1); }
+  .glx .gal-photo-grid.gal-will-animate .gal-photo-item.gal-reveal-in { clip-path: inset(0% 0% 0% 0% round 16px); }
+  .glx .gal-photo-grid.gal-will-animate .gal-photo-item.gal-reveal-in img { scale: 1; }
+  .glx .gal-photo-grid.gal-will-animate .gal-photo-item.gal-reveal-in:hover img { scale: 1.04; }
+}
+
+.glx .gal-photo-item:hover img { transform: none; }
+.glx .gal-photo-item:hover { box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55); }
+
+.glx .gal-state { color: var(--glx-soft); }
+.glx .gal-skeleton-item { background: rgba(255, 255, 255, 0.05); }
+
+
+/* ── 7. VIDEOS ─────────────────────────────────────────────────── */
+
+.glx #gal-videos { background: var(--glx-coal); border-top: 1px solid var(--glx-line); padding: 6rem 0; }
+.glx .gal-video-card { background: var(--glx-black); border: 1px solid var(--glx-line); box-shadow: none; }
+.glx .gal-video-skeleton { background: rgba(255, 255, 255, 0.05); }
+.glx .gal-video-empty { border: 1px dashed var(--glx-line); border-radius: 18px; background: transparent; }
+
+
+/* ── 8. CLOSING — a last full-bleed frame ──────────────────────── */
+
+.glx #gal-cta {
+  position: relative;
+  overflow: hidden;
+  padding: 10rem 0 7rem;
+  background: var(--glx-black);
+  isolation: isolate;
+}
+
+.glx #gal-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--glx-final, none);
+  background-size: cover;
+  background-position: center 40%;
+  opacity: 0.4;
+  border-radius: 0;
+  width: auto;
+  height: auto;
+  transform: none;
+}
+
+.glx #gal-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, var(--glx-black) 0%, rgba(8, 9, 13, 0.55) 40%, rgba(8, 9, 13, 0.9) 100%);
+}
+
+.glx .gal-cta-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--pg-gutter);
+  text-align: left;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.glx .gal-cta-title {
+  margin: 0;
+  max-width: 760px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 6.4vw, 5.6rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.glx .gal-cta-desc { max-width: 520px; margin: 1.6rem 0 0; color: var(--glx-soft); }
+.glx .gal-cta-actions { justify-content: flex-start; margin-top: 2.4rem; }
+
+.glx .gal-btn--primary { background: linear-gradient(90deg, #6B2D8B, #00A99D); color: #fff; border: 0; box-shadow: 0 12px 34px rgba(0, 169, 157, 0.25); }
+.glx .gal-btn--ghost { background: transparent; color: #fff; border: 1px solid rgba(236, 238, 244, 0.35); }
+.glx .gal-btn--ghost:hover { border-color: #fff; background: rgba(255, 255, 255, 0.06); }
+
+.glx #gal-cta .pg-onward { margin-top: 5rem; }
+
+
+/* ── 9. RESPONSIVE ─────────────────────────────────────────────── */
+
+@media (max-width: 1023px) {
+  .glx .gal-featured-header-inner { grid-template-columns: minmax(0, 1fr); }
+  .glx .gal-photo-grid[data-count] .gal-photo-item:nth-child(n) { grid-column: span 6; grid-row: span 3; }
+  .glx .gal-photo-grid[data-count] .gal-photo-item:nth-child(3n+1) { grid-column: 1 / -1; grid-row: span 4; }
+  .glx .gal-photo-grid[data-count="1"] .gal-photo-item:nth-child(n) { grid-column: 1 / -1; grid-row: auto; }
+}
+
+@media (max-width: 767px) {
+  .glx #gal-hero { min-height: 88svh; }
+  .glx .gal-hero-inner { padding: calc(var(--pg-nav) + 4rem) var(--pg-gutter) 3rem; }
+  .glx .gal-hero-title { font-size: clamp(2.4rem, 11.5vw, 3.6rem); }
+  .glx .gal-hero-title .gal-hero-br { display: none; }
+  .glx #gal-albums, .glx #gal-videos { padding: 4.5rem 0 3rem; }
+  .glx #gal-featured-header { padding-top: 4rem; }
+  .glx .gal-photo-grid[data-count] { grid-auto-rows: auto; gap: 0.8rem; }
+  .glx .gal-photo-grid[data-count] .gal-photo-item:nth-child(n) { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 4 / 3; }
+  .glx .gal-photo-grid[data-count] .gal-photo-item:nth-child(3n+2),
+  .glx .gal-photo-grid[data-count] .gal-photo-item:nth-child(3n+3) { grid-column: span 6; aspect-ratio: 4 / 5; }
+  .glx .gal-photo-grid[data-count="1"] .gal-photo-item:nth-child(n) { aspect-ratio: 4 / 3; }
+  .glx .gal-photo-grid[data-count="2"] .gal-photo-item:nth-child(2) { grid-column: 1 / -1; aspect-ratio: 4 / 3; }
+  .glx .gal-photo-grid[data-count="1"] .gal-photo-overlay { padding: 1.2rem; }
+  .glx #gal-cta { padding: 7rem 0 5rem; }
+  .glx .gal-cta-actions { flex-direction: column; align-items: stretch; }
+}

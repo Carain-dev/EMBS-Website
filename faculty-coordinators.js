@@ -10,6 +10,21 @@
 
   var API_BASE = window.EMBS_API_BASE;
 
+  /* CMS fields are plain text: escape them before they go into HTML, and
+     only allow http(s)/mailto/tel or same-site links (never javascript:). */
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function safeUrl(u, fallback) {
+    var s = String(u == null ? '' : u).trim();
+    var probe = s.replace(/[\u0000-\u0020\u007f]/g, '');
+    if (!s) return fallback || '';
+    if (/^[a-z][a-z0-9+.-]*:/i.test(probe) && !/^(https?|mailto|tel):/i.test(probe)) return fallback || '';
+    return s;
+  }
+
   function initials(name) {
     return String(name || '?')
       .split(/\s+/)
@@ -26,10 +41,10 @@
     var photo       = coordinator.photo || '';
 
     var avatarHtml = photo
-      ? '<img src="' + photo + '" alt="' + name + '" '
+      ? '<img src="' + esc(photo) + '" alt="' + esc(name) + '" '
         + 'style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" '
         + 'loading="lazy" />'
-      : initials(name);
+      : esc(initials(name));
 
     var card = document.createElement('div');
     card.className = 'fac-card';
@@ -37,8 +52,8 @@
       '<div class="fac-avatar"' + (photo ? ' style="padding:0;overflow:hidden;"' : '') + '>'
         + avatarHtml
       + '</div>'
-      + '<h3 class="fac-name">' + name + '</h3>'
-      + '<span class="fac-role">' + designation + '</span>';
+      + '<h3 class="fac-name">' + esc(name) + '</h3>'
+      + '<span class="fac-role">' + esc(designation) + '</span>';
     return card;
   }
 

@@ -1,5 +1,13 @@
 if (localStorage.getItem('embs_admin_auth') !== 'true') window.location.href = 'index.html';
 
+/* CMS values are plain text typed by editors (and subscriber emails come from
+   the public form): escape them before they go into innerHTML, and only allow
+   http(s) links, so stored markup cannot run script in an admin's session. */
+function admEsc(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function admHref(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? admEsc(String(u).trim()) : ''; }
+
 /* ════════════════════════════════════════════════════════════════════════════
    admin/settings.js
    Fixes applied vs. previous version:
@@ -745,14 +753,14 @@ async function loadDocuments() {
 
     tbody.innerHTML = documents.map(doc => `
       <tr>
-        <td>${doc.title || 'Untitled'}</td>
-        <td>${doc.category || 'General'}</td>
+        <td>${admEsc(doc.title || 'Untitled')}</td>
+        <td>${admEsc(doc.category || 'General')}</td>
         <td>${doc.published && doc.public ? 'Published' : doc.published ? 'Draft' : 'Hidden'}</td>
-        <td>${doc.fileUrl ? `<a href="${doc.fileUrl}" target="_blank" rel="noreferrer">Open file</a>` : 'No file'}</td>
+        <td>${doc.fileUrl ? `<a href="${admHref(doc.fileUrl)}" target="_blank" rel="noreferrer">Open file</a>` : 'No file'}</td>
         <td>
           <div class="document-actions">
-            <button class="mini-action-btn" data-action="edit"   data-id="${doc._id}">Edit</button>
-            <button class="mini-action-btn danger-btn" data-action="delete" data-id="${doc._id}">Delete</button>
+            <button class="mini-action-btn" data-action="edit"   data-id="${admEsc(doc._id)}">Edit</button>
+            <button class="mini-action-btn danger-btn" data-action="delete" data-id="${admEsc(doc._id)}">Delete</button>
           </div>
         </td>
       </tr>`).join('');

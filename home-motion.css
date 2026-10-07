@@ -1,0 +1,193 @@
+/* ================================================================
+   home-motion.css — IEEE EMBS KPRIET (index.html only)
+   Home-page placement and tuning for the motion layer in motion.css.
+   Positions the decorative layers and adds a few Home-specific hover
+   details. It does not restyle any existing section: colours, type,
+   spacing and layout all still come from navbar.css / responsive.css.
+
+   Everything is scoped under html.embs-motion, so if motion.js does
+   not run, this file has no effect at all.
+   ================================================================ */
+
+
+/* ── 1. STACKING ───────────────────────────────────────────────── */
+/* Decorative layers are absolutely positioned, so they would paint
+   over in-flow content. Lift each content container above them.
+   position: relative with no offsets does not move anything. */
+
+html.embs-motion .activities-container,
+html.embs-motion .whyjoin-container,
+html.embs-motion .achievements-container {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ── 2. HERO ───────────────────────────────────────────────────── */
+/* Strongest motion on the page: aurora + swirl + two orbs, all behind
+   .hero-container (which is already z-index: 1). */
+
+html.embs-motion .mo-hero-swirl {
+  top: -14%;
+  right: -10%;
+  z-index: 0;
+  --mo-swirl-size: min(680px, 72vw);
+  --mo-swirl-opacity: 0.34;
+}
+
+html.embs-motion .mo-hero-orb-a {
+  right: 10%;
+  bottom: 12%;
+  z-index: 0;
+  --mo-blob-size: 340px;
+  --mo-blob-color: rgba(0, 169, 157, 0.22);
+}
+
+html.embs-motion .mo-hero-orb-b {
+  top: 16%;
+  left: 34%;
+  z-index: 0;
+  --mo-blob-size: 260px;
+  --mo-blob-color: rgba(107, 45, 139, 0.26);
+  --mo-float-delay: -6s;
+}
+
+/* "Engineering" — keep the original teal → purple pair, just let it
+   flow. Start and end colours match so the loop is seamless. */
+html.embs-motion .heading-gradient.mo-gradient-text {
+  background-image: linear-gradient(90deg,
+    #00A99D 0%, #6B2D8B 50%, #00A99D 100%);
+  background-size: 200% 100%;
+}
+
+@keyframes home-gradient-flow {
+  to { background-position: 200% 50%; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.embs-motion .heading-gradient.mo-gradient-text {
+    animation: home-gradient-flow 9s linear infinite;
+  }
+}
+
+/* CTA sheen on the dark pill buttons is a little softer */
+html.embs-motion .hero-buttons .mo-sheen::before {
+  background: linear-gradient(105deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(255, 255, 255, 0) 100%);
+}
+
+
+/* ── 3. SECTION AMBIENCE (subtle) ──────────────────────────────── */
+
+html.embs-motion .mo-home-orb {
+  z-index: 0;
+  animation-duration: 26s;
+}
+
+html.embs-motion .mo-home-orb--activities {
+  top: 8%;
+  right: -6%;
+  --mo-blob-size: 420px;
+  --mo-blob-color: rgba(0, 169, 157, 0.12);
+}
+
+html.embs-motion .mo-home-orb--whyjoin {
+  bottom: -12%;
+  left: -8%;
+  --mo-blob-size: 460px;
+  --mo-blob-color: rgba(107, 45, 139, 0.10);
+  --mo-float-delay: -8s;
+}
+
+html.embs-motion .mo-home-orb--achievements {
+  top: -10%;
+  right: 4%;
+  --mo-blob-size: 400px;
+  --mo-blob-color: rgba(0, 169, 157, 0.10);
+  --mo-float-delay: -4s;
+}
+
+
+/* ── 4. HOVER DETAILS (fine pointers only) ─────────────────────── */
+
+@media (hover: hover) and (pointer: fine) {
+
+  /* Event card: the icon drifts up slightly inside its banner */
+  html.embs-motion .act-card .act-icon {
+    transition: transform 0.5s var(--mo-ease);
+  }
+  html.embs-motion .act-card:hover .act-icon {
+    transform: translate3d(0, -3px, 0) scale(1.08);
+  }
+
+  /* (Podcast cover image transform is owned by home-experience.js) */
+
+  /* Faculty photo: gentle push-in (avatar clips when a photo is set) */
+  html.embs-motion .fac-avatar img {
+    transition: transform 0.6s var(--mo-ease);
+  }
+  html.embs-motion .fac-card:hover .fac-avatar img {
+    transform: scale(1.06);
+  }
+
+  /* Glow on light cards uses a softer tint */
+  html.embs-motion .wj-card.mo-hover-glow::after,
+  html.embs-motion .fac-card.mo-hover-glow::after {
+    background: radial-gradient(
+      280px circle at var(--mo-mx, 50%) var(--mo-my, 50%),
+      rgba(0, 169, 157, 0.10),
+      rgba(107, 45, 139, 0.06) 45%,
+      transparent 70%);
+  }
+
+  /* Footer */
+  html.embs-motion .footer-social-icon.mo-hover-lift {
+    --mo-lift: -2px;
+    --mo-shadow-lift: 0 6px 16px -6px rgba(0, 169, 157, 0.35);
+  }
+
+  html.embs-motion .footer-links a {
+    display: inline-block;
+    transition: color 0.2s ease, translate 0.25s var(--mo-ease);
+  }
+  html.embs-motion .footer-links a:hover {
+    translate: 3px 0;
+  }
+}
+
+
+/* ── 5. RESPONSIVE ─────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  html.embs-motion .mo-hero-swirl {
+    --mo-swirl-size: 480px;
+    --mo-swirl-opacity: 0.26;
+    right: -30%;
+  }
+  html.embs-motion .mo-hero-orb-a { --mo-blob-size: 260px; right: -4%; }
+  html.embs-motion .mo-hero-orb-b { display: none; }
+  html.embs-motion .mo-home-orb   { --mo-blob-size: 300px; }
+}
+
+@media (max-width: 480px) {
+  html.embs-motion .mo-hero-swirl { --mo-swirl-size: 360px; top: -6%; }
+  html.embs-motion .mo-hero-orb-a { display: none; }
+}
+
+
+/* ── 6. REDUCED MOTION ─────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  html.embs-motion .heading-gradient.mo-gradient-text {
+    animation: none !important;
+  }
+
+  html.embs-motion .act-card:hover .act-icon,
+  html.embs-motion .fac-card:hover .fac-avatar img,
+  html.embs-motion .footer-links a:hover {
+    transform: none !important;
+    translate: none !important;
+  }
+}

@@ -8,9 +8,7 @@ const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 const normalizeBoolean = (v) =>
   v === true || v === 'true' || v === 1 || v === '1' || v === 'on' || v === 'yes';
 
-const isAdminRequest = (req) =>
-  /^Bearer /i.test(String(req.headers.authorization || '')) ||
-  req.query.all === 'true';
+const { resolveAdminView, denyMessage } = require('../utils/requestAuth');
 
 /* ── Normalize payload ────────────────────────── */
 const normalizePayload = (body = {}) => {
@@ -27,7 +25,9 @@ const normalizePayload = (body = {}) => {
 
 /* ── GET all — public: active only; admin: all ── */
 exports.getAll = asyncHandler(async (req, res) => {
-  const filter = isAdminRequest(req) ? {} : { active: true };
+  const view = await resolveAdminView(req, { flags: ['all'] });
+  if (view.deny) return sendError(res, view.deny, denyMessage(view.deny));
+  const filter = view.admin ? {} : { active: true };
   const entries = await TimelineEntry.find(filter).sort({ order: 1, year: 1 });
   sendResponse(res, 200, entries, 'Success');
 });
@@ -40,7 +40,7 @@ exports.getOne = asyncHandler(async (req, res) => {
   const entry = await TimelineEntry.findById(req.params.id);
   if (!entry) return sendError(res, 404, 'Timeline entry not found');
 
-  if (!isAdminRequest(req) && !entry.active)
+  if (!entry.active && !(await resolveAdminView(req, { flags: ['all'] })).admin)
     return sendError(res, 404, 'Timeline entry not found');
 
   sendResponse(res, 200, entry);

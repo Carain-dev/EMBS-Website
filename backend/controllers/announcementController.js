@@ -3,6 +3,7 @@ const mongoose          = require('mongoose');
 const Announcement      = require('../models/Announcement');
 const { sendResponse, sendError } = require('../utils/sendResponse');
 const notifySubscribers = require('../utils/notifySubscribers');
+const { resolveAdminView, denyMessage } = require('../utils/requestAuth');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
@@ -17,6 +18,10 @@ exports.getOne = asyncHandler(async (req, res) => {
   if (!isValidId(req.params.id)) return sendError(res, 400, 'Invalid announcement ID');
   const item = await Announcement.findById(req.params.id);
   if (!item) return sendError(res, 404, 'Announcement not found');
+  /* Expired announcements are hidden from the public list; keep them hidden by id too. */
+  const expired = item.expiresAt && item.expiresAt <= new Date();
+  if (expired && !(await resolveAdminView(req, { flags: ['all'] })).admin)
+    return sendError(res, 404, 'Announcement not found');
   sendResponse(res, 200, item);
 });
 
