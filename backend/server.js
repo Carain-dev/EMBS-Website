@@ -35,7 +35,7 @@ const app = express();
 // deployment URL). Whole host suffixes such as `.vercel.app` / `.netlify.app`
 // are deliberately NOT trusted: anyone can deploy a site there, and with
 // credentials allowed it could make cookie-authenticated admin requests.
-const PRODUCTION_ORIGINS = ['https://embs-website.vercel.app'];
+const PRODUCTION_ORIGINS = ['https://embs-website.vercel.app', 'https://embs-website-carain.vercel.app'];
 const ALLOWED_SUFFIXES = [];
 
 const ALLOWED_ORIGINS = [...PRODUCTION_ORIGINS, ...(process.env.CLIENT_URL || '').split(',')]
