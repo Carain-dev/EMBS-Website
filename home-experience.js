@@ -383,6 +383,11 @@
   /* 01 + 02 + 03 — arrival, hero, numbers: one continuous sequence */
   function heroEntrance(tier) {
     if (entranceDone) return;
+    /* While the start-up overlay (loader.js) is up, play the entrance as it leaves. */
+    if (win.EMBSLoader && win.EMBSLoader.holding()) {
+      win.EMBSLoader.onReveal(function () { heroEntrance(tier); });
+      return;
+    }
     entranceDone = true;
 
     if (win.__xpFailed) {           /* failsafe already revealed the page */

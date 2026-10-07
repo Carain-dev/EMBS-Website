@@ -33,6 +33,10 @@
   <link rel="stylesheet" href="home-motion.css" />
   <link rel="stylesheet" href="experience.css" />
   <link rel="stylesheet" href="home-experience.css" />
+  <!-- Start-up overlay shown while the (possibly sleeping) API wakes;
+       preconnect so the wake-up request skips DNS/TLS setup -->
+  <link rel="preconnect" href="https://embs-website-b3de.onrender.com" crossorigin />
+  <link rel="stylesheet" href="loader.css" />
   <!-- Home motion bootstrap: enables the motion CSS layer and, when motion
        is allowed, holds the hero's first frame for home-experience.js.
        A 3s failsafe guarantees the page is never left hidden. -->
@@ -50,6 +54,8 @@
   </script>
 </head>
 <body>
+<!-- Must run first in <body>, after config.js: observes the home page's API requests -->
+<script src="loader.js"></script>
 <a class="skip-link" href="#main-content">Skip to main content</a>
 
 
