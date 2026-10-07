@@ -37,6 +37,8 @@
        preconnect so the wake-up request skips DNS/TLS setup -->
   <link rel="preconnect" href="https://embs-website-b3de.onrender.com" crossorigin />
   <link rel="stylesheet" href="loader.css" />
+  <!-- Loader type: site fonts (Syne, DM Sans) + IBM Plex Mono for the anatomical labels -->
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
   <!-- Home motion bootstrap: enables the motion CSS layer and, when motion
        is allowed, holds the hero's first frame for home-experience.js.
        A 3s failsafe guarantees the page is never left hidden. -->
@@ -55,6 +57,7 @@
 </head>
 <body>
 <!-- Must run first in <body>, after config.js: observes the home page's API requests -->
+<script src="loader/loader-facts.js"></script>
 <script src="loader.js"></script>
 <a class="skip-link" href="#main-content">Skip to main content</a>
 
