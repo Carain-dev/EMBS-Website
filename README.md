@@ -1,278 +1,352 @@
+<div align="center">
+
+<img src="embs-logo.png" alt="IEEE EMBS KPRIET logo" width="110" />
+
 # IEEE EMBS Student Chapter — KPRIET
 
-Website for the IEEE Engineering in Medicine and Biology Society student chapter at KPR Institute of Engineering and Technology.
+The official website and content management system for the IEEE Engineering in Medicine and Biology Society (EMBS) student chapter at KPR Institute of Engineering and Technology, Coimbatore.
 
-It is a multi-page website with a matching admin panel, so chapter content (events, members, projects, blogs, podcasts, gallery, achievements, announcements) can be updated from a browser without editing any code.
+**[Live site](https://embs-website-chi.vercel.app/)** · [Admin panel](https://embs-website-chi.vercel.app/admin) · [Report an issue](https://github.com/Carain-dev/EMBS-Website/issues)
 
-> **Taking over this project?** Start with [HANDOFF.md](HANDOFF.md) for the deploy steps and outstanding items, then come back here for the details.
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white)
+![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?logo=cloudinary&logoColor=white)
+![GSAP](https://img.shields.io/badge/GSAP-0AE448?logo=greensock&logoColor=black)
+![Three.js](https://img.shields.io/badge/Three.js-000000?logo=threedotjs&logoColor=white)
+![Vercel](https://img.shields.io/badge/Frontend-Vercel-000000?logo=vercel&logoColor=white)
+![Render](https://img.shields.io/badge/Backend-Render-46E3B7?logo=render&logoColor=black)
+
+</div>
 
 ---
 
-## Table of contents
+## About
 
-1. [What's in here](#whats-in-here)
-2. [How it fits together](#how-it-fits-together)
-3. [Running it locally](#running-it-locally)
-4. [Deploying the website to Vercel](#deploying-the-website-to-vercel)
-5. [The backend API on Render](#the-backend-api-on-render)
-6. [Using the admin panel](#using-the-admin-panel)
-7. [Adding demo content](#adding-demo-content)
-8. [Troubleshooting](#troubleshooting)
+The chapter needed a website that office bearers could keep up to date themselves, without touching code every time there's a new event, blog post or achievement.
+
+This project does that in two parts:
+
+- **A public website** where students and faculty can browse events, projects, blogs, podcasts, the gallery, members and announcements, with scroll-driven animations on every page and a 3D heart loader on the home page.
+- **An admin panel (CMS)** where logged-in team members add, edit and remove that content from the browser. Changes show up on the public site straight away.
+
+<!-- Add screenshots here, e.g.
+<p align="center">
+  <img src="docs/screenshots/home.png" width="49%" />
+  <img src="docs/screenshots/admin-dashboard.png" width="49%" />
+</p>
+-->
 
 ---
 
-## What's in here
+## Features
+
+### Public website
+
+- **Home** with a live announcement ticker, chapter stats and featured events
+- **Events** listing plus a detail page for each event
+- **Projects & research** with category filters and project detail pages
+- **Blog** with article pages and auto-calculated read time
+- **Podcast** episodes
+- **Gallery**, **Members** directory and **Achievements**
+- **Announcements**, including pinned and auto-expiring ones
+- **About** page with the chapter timeline and faculty coordinators
+- **Contact form** and **newsletter sign-up**
+- **Updates feed** that pulls the latest items from every section into one list
+- Responsive layout, a branded 404 page, SEO / Open Graph tags and basic accessibility (skip links, ARIA states, keyboard-friendly menu, reduced-motion support)
+
+### Motion and the 3D loader
+
+- **3D heart loader (home page):** a real anatomical heart model rendered with Three.js, with a heartbeat and a conduction wave in the site's teal and labelled electrode points (RA, RV …) that explain each chamber. Biomedical facts rotate while it loads.
+- **The loader does a real job, not just decoration.** The free Render backend sleeps when idle, so the loader:
+  - pings `/api/health` the moment the page opens to wake the API
+  - waits until the home page's key data (events, members) has actually arrived
+  - retries automatically if the API is still waking up, and offers *Try again* or *Continue* if it takes too long
+  - is skipped on repeat visits within 10 minutes, once the API is already awake
+- **Built to stay fast on any device:** the 3D layer loads only after the first paint, and it can never block or delay the site. It picks a quality tier from screen size, CPU cores and memory, uses a lighter model on phones, and falls back to a still image if WebGL fails.
+- **Page animations with GSAP + ScrollTrigger:** each page has its own animation engine (`*-experience.js`) built on a shared core (`experience-core.js`), so the whole site uses one motion style. This covers line-by-line text reveals, scroll-scrubbed sections, parallax depth, cursor-following light, magnetic buttons and glowing cards.
+- **Content from the CMS animates too:** a MutationObserver spots cards the API adds after the page loads and animates them in, with no changes needed to the data scripts.
+- **Responsive motion tiers:** full effects on desktop, lighter ones on tablets and simple reveals on phones.
+- **Accessible:** respects `prefers-reduced-motion` (including when the setting changes while the page is open), pauses off-screen animations and skips pointer effects on touch screens.
+
+### Admin panel (`/admin`)
+
+- Login with JWT auth and **role-based access** (`admin`, `editor`, `viewer`)
+- **Dashboard** with content stats
+- Full create / edit / delete for **events, projects, blogs, podcasts, gallery, members, achievements, announcements** and the **chapter timeline**
+- **Image uploads** to Cloudinary
+- **Newsletter** management: view subscribers and send emails
+- **Site settings**: branding (logo, favicon) and hero images for each page
+- A **"Show in updates"** toggle on content so it appears in the central updates feed
+- Subscribers are emailed automatically when new events, podcasts or announcements are published
+
+---
+
+## Tech stack
+
+| Layer | Tools |
+| --- | --- |
+| Frontend | HTML, CSS, vanilla JavaScript (no framework, no build step) |
+| Animation & 3D | GSAP 3 + ScrollTrigger, Three.js (r160, glTF + Meshopt), IntersectionObserver / MutationObserver |
+| Backend | Node.js, Express.js, REST API |
+| Database | MongoDB Atlas with Mongoose |
+| Auth | JSON Web Tokens, bcrypt password hashing, httpOnly cookies |
+| File storage | Cloudinary (via Multer) |
+| Email | Nodemailer (SMTP) |
+| Security | Helmet, express-rate-limit, CORS allowlist |
+| Hosting | Vercel (frontend), Render (backend) |
+
+---
+
+## How it works
 
 ```text
-embs-website/
-├── index.html              Home
-├── about.html              About, vision, history, core team
-├── activities.html         Activities overview
-├── events.html             Events listing            (loads from API)
-├── projects.html           Projects listing          (loads from API)
-├── project.html            Single project detail     (loads from API, ?id=…)
-├── blog.html               Blog listing              (loads from API)
-├── podcast.html            Podcast episodes          (loads from API)
-├── gallery.html            Photo gallery             (loads from API)
-├── members.html            Member directory          (loads from API)
-├── achievements.html       Achievements              (loads from API)
-├── announcements.html      Announcements             (loads from API)
-├── contact.html            Contact form              (posts to API)
-│
-├── config.js               THE backend address — the only place it is set
-├── navbar.css              Shared navbar, footer, home page styles
-├── api.js                  Central fetch helper used by the module scripts
-├── navbar.js               Navbar, mobile drawer, dropdowns
-│
-├── admin/                  Password-protected content manager (10 pages)
-│
-├── backend/                Express + MongoDB API
-│   ├── server.js           App entry, CORS, route mounting
-│   ├── models/             Mongoose schemas
-│   ├── controllers/        Route handlers
-│   ├── routes/             Route definitions
-│   ├── middleware/         Auth, uploads, error handling
-│   ├── seed.js             DESTRUCTIVE reset — see warning below
-│   └── seedContent.js      Safe additive seeder
-│
-├── vercel.json             Vercel static hosting config
-└── .vercelignore           Keeps backend/ out of the Vercel deploy
-```
-
----
-
-## How it fits together
-
-The site is deliberately split in two, and the two halves deploy independently.
-
-```text
-┌──────────────────────────┐        HTTPS         ┌──────────────────────────┐
-│  Static site on Vercel   │  ──── fetch ────▶    │  Express API on Render   │
-│  HTML + CSS + JS         │                      │  Node + Mongoose         │
-│  no build step           │  ◀─── JSON ─────     │                          │
+┌──────────────────────────┐                      ┌──────────────────────────┐
+│  Static site (Vercel)    │  ── fetch / JSON ──▶ │  Express API (Render)    │
+│  HTML + CSS + JS         │  ◀───────────────────│  Node + Mongoose         │
 └──────────────────────────┘                      └────────────┬─────────────┘
                                                                │
                                               ┌────────────────┴───────────────┐
-                                              │                                │
-                                     ┌────────▼────────┐             ┌─────────▼────────┐
-                                     │ MongoDB Atlas   │             │   Cloudinary     │
-                                     │ content records │             │  uploaded images │
+                                              ▼                                ▼
+                                     ┌─────────────────┐             ┌──────────────────┐
+                                     │  MongoDB Atlas  │             │    Cloudinary    │
+                                     │  content data   │             │  uploaded media  │
                                      └─────────────────┘             └──────────────────┘
 ```
 
-There is **no build step** for the website. The `.html`, `.css` and `.js` files are served exactly as they are, which is why Vercel needs no framework setting.
+The frontend and backend are deployed separately. Every page loads [`config.js`](config.js) first, which sets the API address in one place:
 
-The backend address lives in exactly one place, [`config.js`](config.js):
+- on `localhost` it points at `http://localhost:5000/api`
+- everywhere else it points at the live Render API
 
-```js
-window.EMBS_API_BASE = 'https://embs-website-89fl.onrender.com/api';
-```
-
-Every page, public and admin, loads that file before its own scripts. To point
-the whole site at a different backend, change that single line. Nothing else
-in the project hardcodes the URL.
+So switching backends is a one-line change.
 
 ---
 
-## Running it locally
+## Project structure
 
-You need [Node.js](https://nodejs.org) 18 or newer.
+```text
+EMBS-Website/
+├── index.html, about.html, events.html, ...   Public pages
+├── event.html, project.html, post.html         Detail pages (read ?id= from the URL)
+├── *.css / *.js                                Page styles and data scripts
+├── *-experience.js / *-experience.css          Per-page GSAP animation engines
+├── experience-core.js                          Shared animation building blocks
+├── motion.js, animations.js                    Lightweight reveal / parallax layer (no dependencies)
+├── loader.js, loader.css                       Startup loader logic (API wake-up, readiness)
+├── loader/                                     3D heart scene (Three.js), UI, assets, vendored libs
+├── config.js                                   API address + social links
+├── api.js                                      Shared fetch helper
+├── navbar.js, navbar.css, responsive.css       Shared layout
+│
+├── admin/                                      Admin panel (login, dashboard, one page per section)
+│
+├── backend/
+│   ├── server.js                               App entry: middleware, CORS, routes
+│   ├── config/                                 Database, Cloudinary, JWT setup
+│   ├── models/                                 Mongoose schemas
+│   ├── controllers/                            Request handlers
+│   ├── routes/                                 API route definitions
+│   ├── middleware/                             Auth, uploads, error handling
+│   ├── utils/                                  Email, pagination, validation helpers
+│   ├── seedContent.js                          Safe demo-content seeder
+│   └── seed.js                                 Full reset (destructive, see below)
+│
+├── audit/                                      Automated API + browser test suites
+│
+├── vercel.json                                 Headers, caching, /admin rewrite
+└── .vercelignore                               Keeps backend/ out of the Vercel deploy
+```
 
-### The website
+---
 
-The pages are plain HTML, but they use JavaScript modules, which browsers refuse to load from a `file://` path. Serve the folder over HTTP instead:
+## Getting started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org) 18 or newer
+- A [MongoDB Atlas](https://www.mongodb.com/atlas) database
+- A [Cloudinary](https://cloudinary.com) account (for image uploads)
+- An SMTP email account (Gmail with an App Password works)
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/Carain-dev/EMBS-Website.git
+cd EMBS-Website
+```
+
+### 2. Start the backend
+
+```bash
+cd backend
+npm install
+cp .env.example .env      # then fill in your own values
+npm run dev               # runs on http://localhost:5000
+```
+
+Check it's running:
+
+```bash
+curl http://localhost:5000/api/health
+# {"success":true,"message":"Server is running"}
+```
+
+### 3. Start the frontend
+
+From the project root, in a second terminal:
 
 ```bash
 npx serve .
 ```
 
-Then open the address it prints (usually `http://localhost:3000`).
+Open the address it prints (usually `http://localhost:3000`). Because you're on localhost, `config.js` automatically talks to your local backend.
 
-By default the local pages still talk to the **live** API on Render, so you will see real content straight away.
-
-### The backend
-
-Only needed if you are changing the API itself.
-
-```bash
-cd backend
-npm install
-cp .env.example .env      # then fill in the real values
-npm run dev               # starts on http://localhost:5000
-```
-
-Check it is alive:
-
-```bash
-curl http://localhost:5000/api/health
-```
-
-To point the website at your local API, change the one line in `config.js` to `http://localhost:5000/api`. Localhost origins are already allowed by CORS.
-
-> **Never commit `backend/.env`.** It holds live database and API credentials. It is already listed in `.gitignore`.
+> The pages use JavaScript modules, so opening the HTML files directly (`file://`) won't work. Always serve the folder.
 
 ---
 
-## Deploying the website to Vercel
+## Environment variables
 
-Vercel's free Hobby tier is enough for this site. These steps deploy the **website only** — the API stays on Render.
+Create `backend/.env` from [`backend/.env.example`](backend/.env.example).
 
-### 1. Create a Vercel account
-
-Go to [vercel.com/signup](https://vercel.com/signup) and sign up with the **same GitHub account that owns this repository**. That way Vercel can see the repo without any extra permissions.
-
-### 2. Import the repository
-
-1. On the Vercel dashboard, click **Add New → Project**.
-2. Find `embs-website` in the repository list and click **Import**.
-   (If it is not listed, click *Adjust GitHub App Permissions* and grant access to the repo.)
-
-### 3. Configure the project
-
-Vercel will try to auto-detect a framework. There isn't one, so set:
-
-| Setting              | Value                          |
-| -------------------- | ------------------------------ |
-| **Framework Preset** | `Other`                        |
-| **Root Directory**   | `./` (leave as is)             |
-| **Build Command**    | leave **empty**                |
-| **Output Directory** | leave **empty**                |
-| **Install Command**  | leave **empty**                |
-
-`vercel.json` in this repo already handles caching headers, security headers, and the `/admin` route, so you should not need to change anything else.
-
-### 4. Deploy
-
-Click **Deploy**. It takes well under a minute since nothing is compiled.
-
-You will get a URL like `https://embs-website.vercel.app`. That is the live site.
-
-### 5. Check it worked
-
-Open the deployed URL and confirm:
-
-- The home page loads with the announcement ticker running.
-- **Events** and **Members** show real content (this proves the API connection works).
-- The hamburger menu opens on a phone-sized screen.
-- `https://your-site.vercel.app/admin` shows the login page.
-
-### Redeploying later
-
-Every push to the `main` branch redeploys automatically. Pushes to other branches get their own preview URL, which is handy for testing before it goes live.
-
----
-
-## The backend API on Render
-
-The API already runs at `https://embs-website-89fl.onrender.com`. You only need this section if you are redeploying it.
-
-### Environment variables
-
-Set these in the Render dashboard under **Environment**. See [`backend/.env.example`](backend/.env.example) for the full annotated list.
-
-| Variable | Purpose |
+| Variable | What it's for |
 | --- | --- |
+| `NODE_ENV` | `development` or `production` |
+| `PORT` | API port (default `5000`) |
+| `CLIENT_URL` | Extra allowed frontend origins, comma-separated (e.g. a Vercel preview URL or a custom domain) |
 | `MONGO_URI` | MongoDB Atlas connection string |
-| `JWT_SECRET` | Signing key for login tokens |
+| `JWT_SECRET` | Long random string used to sign login tokens |
 | `JWT_EXPIRES_IN` | Token lifetime, e.g. `7d` |
 | `COOKIE_EXPIRES_IN` | Cookie lifetime in days, e.g. `7` |
-| `NODE_ENV` | `production` |
-| `CLIENT_URL` | Custom frontend domain, if you have one |
-| `CLOUDINARY_CLOUD_NAME` / `_API_KEY` / `_API_SECRET` | Image uploads |
-| `EMAIL_HOST` / `_PORT` / `_USER` / `_PASS` | Contact form and newsletter |
+| `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | Image uploads |
+| `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASS` | Contact form and newsletter emails |
 
-### Which origins can call the API
-
-`server.js` allows a request when **any** of these hold:
-
-- it has no `Origin` header (curl, server-to-server, health checks)
-- the origin ends in `.vercel.app` or `.netlify.app`
-- the origin is `localhost` or `127.0.0.1` on any port
-- the origin appears in `CLIENT_URL` (comma-separated for several)
-
-So a fresh Vercel deploy works with no configuration. `CLIENT_URL` is only needed for a custom domain like `embs.kpriet.ac.in`.
-
-> After changing `server.js`, redeploy on Render for the change to take effect.
+> Never commit `backend/.env`. It's already in `.gitignore`.
 
 ---
 
-## Using the admin panel
+## API overview
 
-Visit `/admin` on the deployed site and log in with the admin password.
+All routes are under `/api`. Reading content is public; creating and editing needs an `admin` or `editor` login, and deleting needs `admin`.
 
-From there you can create, edit and delete: events, members, projects, blogs, podcasts, gallery images, achievements and announcements. Images uploaded here go to Cloudinary and the URL is stored in MongoDB.
+| Resource | Endpoint |
+| --- | --- |
+| Auth | `/api/auth` (`login`, `logout`, `me`, `update-me`, `update-password`, admin-only `register`) |
+| Events | `/api/events` |
+| Projects | `/api/projects` |
+| Blogs | `/api/blogs` |
+| Podcasts | `/api/podcasts` |
+| Gallery | `/api/gallery` |
+| Members | `/api/members` |
+| Achievements | `/api/achievements` |
+| Announcements | `/api/announcements` |
+| Timeline | `/api/timeline` |
+| Documents | `/api/documents` |
+| Site settings | `/api/site-settings` |
+| Updates feed | `/api/updates` |
+| Dashboard stats | `/api/dashboard/stats` |
+| Newsletter | `/api/newsletter` (`subscribe`, `unsubscribe`, admin `send`) |
+| Contact | `/api/contact` |
+| Health check | `/api/health` |
 
-Anything published in the admin panel appears on the public pages immediately, since those pages read from the same API on load.
+Content resources follow the same pattern: `GET /`, `GET /:id`, `POST /`, `PATCH /:id` (events use `PUT`), `DELETE /:id`. List endpoints support optional pagination with `?page=` and `?limit=` (max 100).
 
 ---
 
-## Adding demo content
+## Deployment
 
-Some sections start out empty. To fill them with realistic placeholder content:
+### Frontend → Vercel
+
+1. Import the repo into [Vercel](https://vercel.com).
+2. Set **Framework Preset** to `Other` and leave the build, output and install commands empty.
+3. Deploy. `vercel.json` already handles headers, caching and the `/admin` route.
+
+Every push to `main` redeploys automatically.
+
+### Backend → Render
+
+1. Create a **Web Service** on [Render](https://render.com) from this repo.
+2. Set **Root Directory** to `backend`, **Build Command** to `npm install` and **Start Command** to `npm start`.
+3. Add the environment variables listed above, with `NODE_ENV=production`.
+4. Put the service URL (ending in `/api`) in `config.js`.
+
+For security, the API only accepts logged-in requests from the production site's domains (listed in `backend/server.js`) and from localhost. It doesn't trust every `*.vercel.app` site, because anyone can deploy there. To allow a preview deployment or a custom domain, add it to `CLIENT_URL`.
+
+> Render's free tier sleeps after about 15 minutes of no traffic, so the first request after that can take 30–50 seconds.
+
+---
+
+## Demo content
+
+To fill empty sections with sample data:
 
 ```bash
 cd backend
-npm run seed:content          # DRY RUN — prints what it would do, changes nothing
+npm run seed:content          # dry run: shows what it would add, changes nothing
 npm run seed:content:apply    # actually writes
 ```
 
-`seedContent.js` is deliberately cautious:
+It only adds to collections that are empty, so it never overwrites real content.
 
-- it **only** inserts into collections that are already empty, so it can never duplicate or overwrite real content;
-- it removes three specific leftover test events, and only after re-checking that each still matches the junk record it expects;
-- it does nothing at all unless you pass `--apply`.
+> ⚠️ `seed.js` is a **full reset**. It deletes users (including the admin account), events and members. It refuses to run without `--force`. Use `seedContent.js` for normal work.
 
-### A warning about `seed.js`
+---
 
-The older `backend/seed.js` is a **destructive reset**. It deletes every user, event and member before inserting its own fixtures — including the admin account. It now refuses to run without an explicit flag:
+## Testing
+
+The `audit/` folder has automated test suites for the API and the browser:
 
 ```bash
-node seed.js --force    # only if you genuinely want to wipe and reset
+node audit/run.mjs           # everything
+node audit/run.mjs api       # API suite only
+node audit/run.mjs browser   # browser suite (headless Chrome)
+node audit/run.mjs prod      # read-only checks against production
 ```
 
-Use `seedContent.js` for everyday content work.
+The suites that change data run against a **separate throwaway database** (`embs-audit-tmp`) on port 5055, with a fake email server. A guard blocks any request that would change production data before it is sent. The production suite only reads.
+
+> Needs `backend/.env` and installed backend dependencies. The browser suite currently looks for Chrome in the default Windows install path.
+
+---
+
+## Security notes
+
+- Admin registration is admin-only, and roles are validated on the server.
+- Login is rate-limited (10 failed attempts per 15 minutes) and inputs are type-checked.
+- Passwords are hashed with bcrypt; sessions use an httpOnly, Secure cookie.
+- CORS allows only the production domains, `CLIENT_URL` and localhost, not every `*.vercel.app` site.
+- User-submitted text is HTML-escaped before it goes into emails.
+- Helmet sets security headers and request bodies are capped at 1 MB.
 
 ---
 
 ## Troubleshooting
 
-**Events and members are empty, and the browser console shows a CORS error.**
-The API is rejecting the site's origin. Confirm the deployed URL ends in `.vercel.app`, or add it to `CLIENT_URL` on Render and redeploy.
-
-**The first page load after a while takes 30–50 seconds.**
-Render's free tier puts the API to sleep after 15 minutes of inactivity, and the next request wakes it. Everything after that is fast. Upgrading the Render plan is the only real fix.
-
-**Opening a page directly from the file manager shows no content.**
-Module scripts cannot load over `file://`. Serve the folder with `npx serve .` instead.
-
-**Images uploaded in the admin panel do not appear.**
-Check the three `CLOUDINARY_*` variables on Render. If the credentials are wrong, the upload fails silently and the record is saved without an image.
-
-**Login fails with "Could not reach the server".**
-The API is probably asleep or redeploying. Open `https://embs-website-89fl.onrender.com/api/health` directly and wait for it to return `{"success":true}`.
+| Problem | Likely fix |
+| --- | --- |
+| Pages load but content is empty, CORS error in console | Add your frontend's domain to `CLIENT_URL` on the backend and redeploy |
+| Loader stays on screen for a while on the first visit | The free Render backend was asleep. The loader is waking it up and will continue once it responds |
+| The 3D heart doesn't appear | WebGL is unavailable or the device is low-power. The loader shows a still image instead, which is expected |
+| Nothing animates | Check whether *Reduce motion* is on in your OS settings. If it is, the site turns animations off on purpose |
+| Nothing loads when opening an HTML file directly | Serve the folder with `npx serve .` |
+| Uploaded images don't show | Check the three `CLOUDINARY_*` variables |
+| Admin login says "Could not reach the server" | Open `<your-api>/api/health` and wait for it to respond |
 
 ---
 
+## Author
+
+Built and maintained by **[Carain-dev](https://github.com/Carain-dev)** for the IEEE EMBS Student Chapter, KPR Institute of Engineering and Technology.
+
 ## Credits
 
-Built by IEEE EMBS design team, KPR Institute of Engineering and Technology.
+- 3D heart model: **"Human heart for Cycles"** by **elZancudo**, licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). It was converted to GLB, compressed, retextured and given a mobile version for this site. See [`loader/assets/CREDITS.md`](loader/assets/CREDITS.md).
+- [Three.js](https://threejs.org) (MIT) and [GSAP](https://gsap.com).
+
+## License
+
+This project is licensed under the MIT License (as declared in `backend/package.json`). Third-party assets keep their own licences, listed above.
